@@ -48,19 +48,28 @@ export function AppLayout({ children }: AppLayoutProps) {
     const visibleNavItems = navItems.filter((item) => item.roles.includes(user.role));
 
     return (
-        <div className="min-h-screen bg-gray-50 flex">
+        <div className="min-h-screen bg-background text-foreground flex transition-colors duration-300">
             {/* Sidebar */}
-            <aside className={`bg-white border-r border-gray-200 transition-all duration-300 ${isSidebarOpen ? 'w-64' : 'w-20'} flex flex-col`}>
-                <div className="h-16 flex items-center justify-between px-4 border-b border-gray-200">
-                    <div className={`font-bold text-xl text-blue-600 ${isSidebarOpen ? 'block' : 'hidden'}`}>
+            <aside className={cn(
+                "bg-card border-r border-border transition-all duration-300 flex flex-col shadow-sm z-20",
+                isSidebarOpen ? 'w-64' : 'w-20'
+            )}>
+                <div className="h-16 flex items-center justify-between px-4 border-b border-border/50">
+                    <div className={cn(
+                        "font-bold text-xl tracking-tight bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent transition-all",
+                        isSidebarOpen ? 'opacity-100' : 'opacity-0 w-0 overflow-hidden'
+                    )}>
                         Kaamsetu
                     </div>
-                    <button onClick={() => setIsSidebarOpen(!isSidebarOpen)} className="p-2 rounded-lg hover:bg-gray-100 text-gray-500">
+                    <button 
+                        onClick={() => setIsSidebarOpen(!isSidebarOpen)} 
+                        className="p-2 rounded-xl hover:bg-muted text-muted-foreground transition-all hover:text-primary active:scale-95"
+                    >
                         <Menu className="w-5 h-5" />
                     </button>
                 </div>
 
-                <nav className="flex-1 py-4 px-3 space-y-1">
+                <nav className="flex-1 py-6 px-3 space-y-2">
                     {visibleNavItems.map((item) => {
                         const Icon = item.icon;
                         const isActive = pathname.startsWith(item.href);
@@ -68,48 +77,75 @@ export function AppLayout({ children }: AppLayoutProps) {
                             <NextLink
                                 key={item.href}
                                 href={item.href}
-                                className={`flex items-center px-3 py-2.5 rounded-lg font-medium transition-colors ${isActive ? "bg-blue-50 text-blue-700" : "text-gray-700 hover:bg-gray-100"
-                                    } ${!isSidebarOpen && "justify-center"}`}
+                                className={cn(
+                                    "flex items-center px-3 py-2.5 rounded-xl font-medium transition-all group relative",
+                                    isActive 
+                                        ? "bg-primary/10 text-primary shadow-[0_0_0_1px_rgba(var(--primary-color),0.1)]" 
+                                        : "text-muted-foreground hover:bg-muted hover:text-foreground",
+                                    !isSidebarOpen && "justify-center"
+                                )}
                             >
-                                <Icon className={`w-5 h-5 ${isActive ? "text-blue-700" : "text-gray-400"}`} />
-                                {isSidebarOpen && <span className="ml-3">{item.name}</span>}
+                                <Icon className={cn(
+                                    "w-5 h-5 transition-transform group-hover:scale-110",
+                                    isActive ? "text-primary" : "text-muted-foreground group-hover:text-foreground"
+                                )} />
+                                {isSidebarOpen && (
+                                    <>
+                                        <span className="ml-3 flex-1">{item.name}</span>
+                                        {isActive && <div className="absolute left-[-12px] w-1 h-6 bg-primary rounded-r-full" />}
+                                    </>
+                                )}
+                                {!isSidebarOpen && isActive && <div className="absolute left-0 w-1 h-6 bg-primary rounded-r-full" />}
                             </NextLink>
                         );
                     })}
                 </nav>
 
-                <div className="p-4 border-t border-gray-200">
+                <div className="p-4 border-t border-border/50">
                     <button
                         onClick={handleLogout}
-                        className={`flex items-center w-full px-3 py-2.5 rounded-lg font-medium text-red-600 hover:bg-red-50 transition-colors ${!isSidebarOpen && "justify-center"}`}
+                        className={cn(
+                            "flex items-center w-full px-3 py-3 rounded-xl font-medium text-destructive hover:bg-destructive/10 transition-all active:scale-[0.98]",
+                            !isSidebarOpen && "justify-center"
+                        )}
                     >
-                        <LogOut className="w-5 h-5 text-red-500" />
+                        <LogOut className="w-5 h-5" />
                         {isSidebarOpen && <span className="ml-3">Logout</span>}
                     </button>
                 </div>
             </aside>
 
             {/* Main Content */}
-            <main className="flex-1 flex flex-col min-w-0">
-                <header className="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-8 shadow-sm z-10">
-                    <h1 className="text-xl font-semibold text-gray-800 capitalize">
-                        {pathname.split('/')[1] || 'Dashboard'}
-                    </h1>
+            <main className="flex-1 flex flex-col min-w-0 transition-all duration-300">
+                <header className="h-16 bg-card border-b border-border/50 flex items-center justify-between px-8 shadow-sm z-10 sticky top-0">
                     <div className="flex items-center gap-4">
-                        <div className="h-8 w-8 rounded-full bg-blue-100 border border-blue-200 flex items-center justify-center text-blue-700 font-bold shadow-sm">
-                            {user.name.charAt(0).toUpperCase()}
-                        </div>
-                        <div className="flex flex-col">
-                            <span className="text-sm font-semibold text-gray-700 leading-tight">{user.name}</span>
-                            <span className="text-xs text-gray-500 leading-tight capitalize">{user.role}</span>
+                        <h1 className="text-lg font-semibold text-foreground/90 capitalize tracking-tight">
+                            {pathname.split('/')[1]?.replace(/-/g, ' ') || 'Dashboard'}
+                        </h1>
+                    </div>
+                    
+                    <div className="flex items-center gap-6">
+                        <div className="flex items-center gap-3 pr-6 border-r border-border/50">
+                            <div className="flex flex-col items-end">
+                                <span className="text-sm font-semibold text-foreground leading-tight">{user.name || "User"}</span>
+                                <span className="text-[10px] text-muted-foreground uppercase font-bold tracking-widest">{user.role}</span>
+                            </div>
+                            <div className="h-9 w-9 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center text-primary font-bold shadow-inner transition-transform hover:rotate-3">
+                                {(user.name || "User").charAt(0).toUpperCase()}
+                            </div>
                         </div>
                     </div>
                 </header>
 
-                <div className="flex-1 p-8 overflow-y-auto">
-                    {children}
+                <div className="flex-1 p-8 overflow-y-auto bg-background/50 scrollbar-thin scrollbar-thumb-muted">
+                    <div className="animate-in fade-in slide-in-from-bottom-2 duration-500">
+                        {children}
+                    </div>
                 </div>
             </main>
         </div>
     );
 }
+
+// Helper for conditional classes if not already imported
+import { cn } from "@/lib/utils";

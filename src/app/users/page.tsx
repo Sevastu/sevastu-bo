@@ -65,8 +65,9 @@ export default function UsersPage() {
 
     return (
         <AppLayout>
-            <div className="flex justify-between items-center mb-6">
-                <h2 className="text-2xl font-bold text-gray-800">Users Management</h2>
+            <div className="flex flex-col gap-1 mb-8">
+                <h2 className="text-3xl font-bold tracking-tight text-foreground">User Management</h2>
+                <p className="text-muted-foreground">Manage and monitor all platform users and their access levels.</p>
             </div>
             <DataTable
                 data={data}

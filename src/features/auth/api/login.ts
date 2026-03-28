@@ -11,7 +11,7 @@ export interface LoginResponse {
 
 export const loginApi = async (email: string, password: string): Promise<LoginResponse> => {
     const response = await apiClient.post<LoginResponse>('/admin/auth/login', { email, password });
-    const { access_token, user } = response.data.data;
+    const { access_token, user } = response.data as any; // Cast as any because LoginResponse might still have the old structure
 
     setToken(access_token);
     setUser(user);
