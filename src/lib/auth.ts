@@ -1,5 +1,5 @@
-export const TOKEN_KEY = 'kaamsetu_access_token';
-export const USER_KEY = 'kaamsetu_user';
+export const TOKEN_KEY = 'sevastu_access_token';
+export const USER_KEY = 'sevastu_user';
 
 export interface User {
     id: string;
@@ -38,7 +38,14 @@ export const setUser = (user: User) => {
 export const getUser = (): User | null => {
     if (typeof window !== 'undefined') {
         const user = localStorage.getItem(USER_KEY);
-        return user ? JSON.parse(user) : null;
+        if (!user || user === 'undefined') return null;
+        try {
+            return JSON.parse(user);
+        } catch (e) {
+            console.warn('Failed to parse user from localStorage', e);
+            localStorage.removeItem(USER_KEY);
+            return null;
+        }
     }
     return null;
 };

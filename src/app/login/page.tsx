@@ -37,7 +37,7 @@ export default function LoginPage() {
                     <div className="w-12 h-12 bg-blue-600 rounded-xl mb-4 flex items-center justify-center shadow-lg">
                         <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
                     </div>
-                    <CardTitle className="text-3xl font-extrabold tracking-tight text-neutral-900">Kaamsetu</CardTitle>
+                    <CardTitle className="text-3xl font-extrabold tracking-tight text-neutral-900">sevastu</CardTitle>
                     <CardDescription className="text-neutral-500 font-medium">Log into the administrative dashboard</CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -47,7 +47,7 @@ export default function LoginPage() {
                             <Input
                                 id="email"
                                 type="email"
-                                placeholder="admin@kaamsetu.com"
+                                placeholder="admin@sevastu.com"
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                                 required
