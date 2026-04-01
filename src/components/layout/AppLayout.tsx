@@ -59,10 +59,10 @@ export function AppLayout({ children }: AppLayoutProps) {
                         "font-bold text-xl tracking-tight bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent transition-all",
                         isSidebarOpen ? 'opacity-100' : 'opacity-0 w-0 overflow-hidden'
                     )}>
-                        Kaamsetu
+                        sevastu
                     </div>
-                    <button 
-                        onClick={() => setIsSidebarOpen(!isSidebarOpen)} 
+                    <button
+                        onClick={() => setIsSidebarOpen(!isSidebarOpen)}
                         className="p-2 rounded-xl hover:bg-muted text-muted-foreground transition-all hover:text-primary active:scale-95"
                     >
                         <Menu className="w-5 h-5" />
@@ -79,8 +79,8 @@ export function AppLayout({ children }: AppLayoutProps) {
                                 href={item.href}
                                 className={cn(
                                     "flex items-center px-3 py-2.5 rounded-xl font-medium transition-all group relative",
-                                    isActive 
-                                        ? "bg-primary/10 text-primary shadow-[0_0_0_1px_rgba(var(--primary-color),0.1)]" 
+                                    isActive
+                                        ? "bg-primary/10 text-primary shadow-[0_0_0_1px_rgba(var(--primary-color),0.1)]"
                                         : "text-muted-foreground hover:bg-muted hover:text-foreground",
                                     !isSidebarOpen && "justify-center"
                                 )}
@@ -123,7 +123,7 @@ export function AppLayout({ children }: AppLayoutProps) {
                             {pathname.split('/')[1]?.replace(/-/g, ' ') || 'Dashboard'}
                         </h1>
                     </div>
-                    
+
                     <div className="flex items-center gap-6">
                         <div className="flex items-center gap-3 pr-6 border-r border-border/50">
                             <div className="flex flex-col items-end">

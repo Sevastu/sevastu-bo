@@ -23,7 +23,7 @@ export default function DashboardPage() {
                 <h2 className="text-3xl font-bold tracking-tight bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
                     Welcome back, {user?.name || 'User'}! 👋
                 </h2>
-                <p className="text-muted-foreground">Here's a quick overview of Kaamsetu's performance.</p>
+                <p className="text-muted-foreground">Here's a quick overview of sevastu's performance.</p>
             </div>
 
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 text-card-foreground">

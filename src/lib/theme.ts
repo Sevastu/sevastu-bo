@@ -27,7 +27,7 @@ export const DARK_THEME_DEFAULTS: Partial<ThemeConfig> = {
   borderColor: "#1e293b",
 };
 
-const THEME_STORAGE_KEY = "kaamsetu-admin-theme";
+const THEME_STORAGE_KEY = "sevastu-admin-theme";
 
 export function getStoredTheme(): ThemeConfig {
   if (typeof window === "undefined") return DEFAULT_THEME;
