@@ -8,6 +8,18 @@ export interface DashboardStats {
 }
 
 export const fetchDashboardStats = async (): Promise<DashboardStats> => {
-    const res = await apiClient.get('/admin/dashboard/stats');
-    return res.data.data;
+    try {
+        const res = await apiClient.get('/admin/dashboard/stats');
+        const data = res.data?.data;
+        
+        return {
+            totalUsers: data?.totalUsers ?? 0,
+            activeJobs: data?.activeJobs ?? 0,
+            openLeads: data?.openLeads ?? 0,
+            revenue: data?.revenue ?? "₹0",
+        };
+    } catch (error) {
+        console.error("API error in fetchDashboardStats:", error);
+        throw error;
+    }
 };
