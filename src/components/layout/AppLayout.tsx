@@ -3,10 +3,9 @@
 import { useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { getUser, clearAuth, User } from "@/lib/auth";
-
-import { LayoutDashboard, Users, Briefcase, FileText, Settings, LogOut, Menu } from "lucide-react";
-// Since next/landing might not exist, using next/link, ah it should be next/link
+import { LayoutDashboard, Users, Briefcase, FileText, Settings, LogOut, Menu, Loader2 } from "lucide-react";
 import NextLink from "next/link";
+import { cn } from "@/lib/utils";
 
 interface AppLayoutProps {
     children: React.ReactNode;
@@ -17,8 +16,10 @@ export function AppLayout({ children }: AppLayoutProps) {
     const pathname = usePathname();
     const [user, setUser] = useState<User | null>(null);
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+    const [mounted, setMounted] = useState(false);
 
     useEffect(() => {
+        setMounted(true);
         // Check if user is logged in
         const currentUser = getUser();
         if (currentUser) {
@@ -33,8 +34,24 @@ export function AppLayout({ children }: AppLayoutProps) {
         router.push("/login");
     };
 
-    if (!user) {
-        return null; // or a loading spinner
+    // Prevent hydration mismatch and show loading during auth check
+    if (!mounted || !user) {
+        return (
+            <div className="min-h-screen bg-background flex flex-col items-center justify-center gap-4">
+                <div className="relative">
+                    <div className="w-16 h-16 border-4 border-primary/20 rounded-full animate-pulse" />
+                    <Loader2 className="w-8 h-8 text-primary animate-spin absolute inset-0 m-auto" />
+                </div>
+                <div className="flex flex-col items-center gap-1">
+                    <h2 className="text-xl font-bold tracking-tight bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
+                        sevastu
+                    </h2>
+                    <p className="text-xs text-muted-foreground font-medium animate-pulse">
+                        Authenticating access...
+                    </p>
+                </div>
+            </div>
+        );
     }
 
     const navItems = [
@@ -147,5 +164,3 @@ export function AppLayout({ children }: AppLayoutProps) {
     );
 }
 
-// Helper for conditional classes if not already imported
-import { cn } from "@/lib/utils";
