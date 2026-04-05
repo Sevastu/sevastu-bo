@@ -17,27 +17,45 @@ export function AppLayout({ children }: AppLayoutProps) {
     const [user, setUser] = useState<User | null>(null);
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
     const [mounted, setMounted] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         setMounted(true);
-        // Check if user is logged in
-        const currentUser = getUser();
-        if (currentUser) {
-            setUser(currentUser);
-        } else {
-            router.push("/login");
-        }
-    }, [router]);
+        
+        const checkAuth = () => {
+            try {
+                const currentUser = getUser();
+                // In Next.js, we also want to check the token presence on the client
+                const hasToken = typeof window !== 'undefined' && localStorage.getItem('sevastu_access_token');
+
+                if (!currentUser || !hasToken) {
+                    // Not authenticated, redirect to login unless already there
+                    if (pathname !== '/login') {
+                        clearAuth();
+                        router.replace("/login");
+                    }
+                } else {
+                    setUser(currentUser);
+                }
+            } catch (error) {
+                console.error("Auth check failed:", error);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        checkAuth();
+    }, [pathname, router]);
 
     const handleLogout = () => {
         clearAuth();
         router.push("/login");
     };
 
-    // Prevent hydration mismatch and show loading during auth check
-    if (!mounted || !user) {
+    // Prevent hydration mismatch and show loading during active auth check
+    if (!mounted || isLoading) {
         return (
-            <div className="min-h-screen bg-background flex flex-col items-center justify-center gap-4">
+            <div className="min-h-screen bg-background flex flex-col items-center justify-center gap-4 animate-in fade-in duration-500">
                 <div className="relative">
                     <div className="w-16 h-16 border-4 border-primary/20 rounded-full animate-pulse" />
                     <Loader2 className="w-8 h-8 text-primary animate-spin absolute inset-0 m-auto" />
@@ -53,6 +71,9 @@ export function AppLayout({ children }: AppLayoutProps) {
             </div>
         );
     }
+
+    // Only render the layout content if we have a user, otherwise return null (redirection is handled in useEffect)
+    if (!user) return null;
 
     const navItems = [
         { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard, roles: ["admin", "staff"] },

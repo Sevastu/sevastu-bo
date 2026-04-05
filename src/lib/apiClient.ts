@@ -1,14 +1,14 @@
 import axios from 'axios';
 import { getToken, clearAuth } from './auth';
 
-const IS_DEV = process.env.NODE_ENV === 'development';
-const API_BASE_URL = IS_DEV ? '/api' : (process.env.NEXT_PUBLIC_API_URL || 'https://sevastu-be.vercel.app');
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://sevastu-be.onrender.com';
 
 export const apiClient = axios.create({
     baseURL: API_BASE_URL,
     headers: {
         'Content-Type': 'application/json',
     },
+    timeout: 10000,
 });
 
 apiClient.interceptors.request.use(
