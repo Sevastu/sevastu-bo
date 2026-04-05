@@ -1,43 +1,91 @@
 :root {
-  /* Default Theme Variables */
-  --primary-color: #3b82f6; /* Default Blue 500 */
-  --background-color: #ffffff;
-  --card-color: #ffffff;
-  --text-color: #0f172a;
-  --border-color: #e2e8f0;
+  /* Core Color Variables - Light Theme */
+  --color-bg: #ffffff;
+  --color-bg-secondary: #f8fafc;
+  --color-card: #ffffff;
+  --color-text: #0f172a;
+  --color-text-secondary: #64748b;
+  --color-text-muted: #94a3b8;
+  --color-primary: #3b82f6;
+  --color-primary-hover: #2563eb;
+  --color-border: #e2e8f0;
+  --color-border-hover: #cbd5e1;
+  --color-input: #ffffff;
+  --color-focus: #3b82f6;
+  --color-focus-ring: rgba(59, 130, 246, 0.2);
   
-  --success-color: #22c55e;
-  --warning-color: #f59e0b;
-  --error-color: #ef4444;
-
+  /* State Colors */
+  --color-success: #22c55e;
+  --color-warning: #f59e0b;
+  --color-error: #ef4444;
+  --color-destructive: var(--color-error);
+  
+  /* Component Colors */
+  --color-muted: #f1f5f9;
+  --color-muted-foreground: #64748b;
+  --color-accent: #f8fafc;
+  --color-accent-foreground: #0f172a;
+  
+  /* Gradient Colors */
+  --color-gradient-from: #e0f2fe;
+  --color-gradient-to: #dbeafe;
+  
+  /* Shadow Colors */
+  --color-shadow: rgba(0, 0, 0, 0.1);
+  --color-shadow-lg: rgba(0, 0, 0, 0.15);
+  
   /* Theme tokens used by Tailwind */
-  --primary: var(--primary-color);
-  --background: var(--background-color);
-  --card: var(--card-color);
-  --foreground: var(--text-color);
-  --border: var(--border-color);
-  
-  --success: var(--success-color);
-  --warning: var(--warning-color);
-  --error: var(--error-color);
-  --destructive: var(--error-color);
-  
-  /* Derived / Fixed tokens */
-  --muted: #f1f5f9;
-  --muted-foreground: #64748b;
-  --accent: #f8fafc;
-  --accent-foreground: #0f172a;
+  --background: var(--color-bg);
+  --foreground: var(--color-text);
+  --card: var(--color-card);
+  --border: var(--color-border);
+  --input: var(--color-input);
+  --ring: var(--color-focus);
+  --primary: var(--color-primary);
+  --secondary: var(--color-muted);
+  --accent: var(--color-accent);
+  --muted: var(--color-muted);
+  --muted-foreground: var(--color-muted-foreground);
+  --accent-foreground: var(--color-accent-foreground);
+  --destructive: var(--color-destructive);
+  --success: var(--color-success);
+  --warning: var(--color-warning);
+  --error: var(--color-error);
 }
 
 .dark {
-  --primary-color: #60a5fa;
-  --background-color: #020617;
-  --card-color: #0f172a;
-  --text-color: #f8fafc;
-  --border-color: #1e293b;
+  /* Core Color Variables - Dark Theme */
+  --color-bg: #0f172a;
+  --color-bg-secondary: #1e293b;
+  --color-card: #1e293b;
+  --color-text: #f8fafc;
+  --color-text-secondary: #cbd5e1;
+  --color-text-muted: #94a3b8;
+  --color-primary: #60a5fa;
+  --color-primary-hover: #3b82f6;
+  --color-border: #334155;
+  --color-border-hover: #475569;
+  --color-input: #1e293b;
+  --color-focus: #60a5fa;
+  --color-focus-ring: rgba(96, 165, 250, 0.2);
   
-  --muted: #1e293b;
-  --muted-foreground: #94a3b8;
-  --accent: #1e293b;
-  --accent-foreground: #f8fafc;
+  /* State Colors - Dark versions */
+  --color-success: #10b981;
+  --color-warning: #f59e0b;
+  --color-error: #f87171;
+  --color-destructive: var(--color-error);
+  
+  /* Component Colors - Dark versions */
+  --color-muted: #1e293b;
+  --color-muted-foreground: #94a3b8;
+  --color-accent: #1e293b;
+  --color-accent-foreground: #f8fafc;
+  
+  /* Gradient Colors - Dark versions */
+  --color-gradient-from: #0f172a;
+  --color-gradient-to: #1e293b;
+  
+  /* Shadow Colors - Dark versions */
+  --color-shadow: rgba(0, 0, 0, 0.3);
+  --color-shadow-lg: rgba(0, 0, 0, 0.5);
 }
