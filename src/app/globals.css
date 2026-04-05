@@ -6,9 +6,9 @@
 @theme {
   --color-background: var(--color-bg);
   --color-foreground: var(--color-text);
-  --font-sans: var(--font-sans);
-  --font-mono: var(--font-geist-mono);
-  --font-heading: var(--font-sans);
+  --font-sans: var(--sans-serif);
+  --font-mono: var(--sans-serif);
+  --font-heading: var(--sans-serif);
   
   --color-primary: var(--color-primary);
   --color-primary-foreground: oklch(0.985 0 0);

@@ -45,13 +45,9 @@ export default function LoginPage() {
                         <div className="p-8 lg:p-12">
                             <div className="max-w-sm mx-auto">
                                 <CardHeader className="space-y-1 p-0 mb-8">
-                                    <div className="w-12 h-12 bg-blue-600 rounded-xl mb-4 flex items-center justify-center shadow-lg">
-                                        <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                                        </svg>
-                                    </div>
+                
                                     <CardTitle className="text-2xl font-bold text-theme">
-                                        Sign In
+                                        Login Into Administrative Dashboard
                                     </CardTitle>
                                     <CardDescription className="text-theme-secondary">
                                         Enter your credentials to access the admin dashboard
@@ -132,18 +128,23 @@ export default function LoginPage() {
                         {/* Right Section - Welcome Content */}
                         <div className="bg-gradient-theme p-8 lg:p-12 flex items-center justify-center transition-theme">
                             <div className="max-w-md text-center">
-                                <div className="mb-8">
-                                    <img 
-                                        src="/api/placeholder/300/200" 
-                                        alt="Sevastu Dashboard" 
-                                        className="w-64 h-40 mx-auto rounded-lg shadow-lg object-cover"
-                                    />
-                                </div>
-                                <h2 className="text-3xl font-bold text-theme mb-4">
+                                <h2 className="text-3xl font-bold text-theme">
                                     Welcome to Sevastu Backoffice
                                 </h2>
+                                 <p className="text-theme-secondary leading-relaxed mb-1 px-9 ">
+                                    The mission control for your entire infrastructure. 
+                                    Manage operartions, monitor performance and scale with precision.
+                                    
+                                </p>
+                                <div className="mb-8">
+                                    <img 
+                                        src="https://images.unsplash.com/photo-1624377632657-3902bfd35958?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
+                                        alt="Sevastu Dashboard" 
+                                        className="w-84 h-60 mx-auto rounded-lg object-cover shadow-[10px_10px_25px_rgba(0,0,0,1)]"
+                                    />
+                                </div>
                                 <p className="text-theme-secondary leading-relaxed">
-                                    Your comprehensive admin dashboard for managing and monitoring all aspects of your Sevastu platform. Access powerful tools and insights in one centralized location.
+                                        Your comprehensive admin dashboard for managing and monitoring all aspects of your Sevastu platform. Access powerful tools and insights in one centralized location.
                                 </p>
                                 <div className="mt-8 flex justify-center space-x-8">
                                     <div className="text-center">
