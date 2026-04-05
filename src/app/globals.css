@@ -3,57 +3,55 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
-@custom-variant dark (&:is(.dark *));
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+@theme {
+  --color-background: var(--color-bg);
+  --color-foreground: var(--color-text);
   --font-sans: var(--font-sans);
   --font-mono: var(--font-geist-mono);
   --font-heading: var(--font-sans);
   
-  --color-primary: var(--primary);
-  --color-primary-foreground: oklch(0.985 0 0); /* Default white-ish */
+  --color-primary: var(--color-primary);
+  --color-primary-foreground: oklch(0.985 0 0);
   
-  --color-secondary: var(--secondary);
-  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--color-muted);
+  --color-secondary-foreground: var(--color-text-secondary);
   
-  --color-muted: var(--muted);
-  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--color-muted);
+  --color-muted-foreground: var(--color-muted-foreground);
   
-  --color-accent: var(--accent);
-  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--color-accent);
+  --color-accent-foreground: var(--color-accent-foreground);
   
-  --color-destructive: var(--destructive);
+  --color-destructive: var(--color-destructive);
   
-  --color-success: var(--success);
-  --color-warning: var(--warning);
-  --color-error: var(--error);
+  --color-success: var(--color-success);
+  --color-warning: var(--color-warning);
+  --color-error: var(--color-error);
   
-  --color-border: var(--border);
-  --color-input: var(--border);
-  --color-ring: var(--primary);
+  --color-border: var(--color-border);
+  --color-input: var(--color-input);
+  --color-ring: var(--color-focus);
   
-  --color-card: var(--card);
-  --color-card-foreground: var(--foreground);
+  --color-card: var(--color-card);
+  --color-card-foreground: var(--color-text);
   
-  --color-popover: var(--card);
-  --color-popover-foreground: var(--foreground);
+  --color-popover: var(--color-card);
+  --color-popover-foreground: var(--color-text);
   
-  --color-sidebar: var(--background); /* Use background for sidebar for now, or var(--sidebar) if specific */
-  --color-sidebar-foreground: var(--foreground);
-  --color-sidebar-primary: var(--primary);
+  --color-sidebar: var(--color-bg);
+  --color-sidebar-foreground: var(--color-text);
+  --color-sidebar-primary: var(--color-primary);
   --color-sidebar-primary-foreground: oklch(0.985 0 0);
-  --color-sidebar-accent: var(--muted);
-  --color-sidebar-accent-foreground: var(--foreground);
-  --color-sidebar-border: var(--border);
-  --color-sidebar-ring: var(--primary);
+  --color-sidebar-accent: var(--color-muted);
+  --color-sidebar-accent-foreground: var(--color-text);
+  --color-sidebar-border: var(--color-border);
+  --color-sidebar-ring: var(--color-focus);
 
-  --color-chart-1: var(--chart-1);
-  --color-chart-2: var(--chart-2);
-  --color-chart-3: var(--chart-3);
-  --color-chart-4: var(--chart-4);
-  --color-chart-5: var(--chart-5);
+  --color-chart-1: var(--color-primary);
+  --color-chart-2: var(--color-success);
+  --color-chart-3: var(--color-warning);
+  --color-chart-4: var(--color-error);
+  --color-chart-5: var(--color-primary);
   
   --radius-sm: calc(var(--radius) * 0.6);
   --radius-md: calc(var(--radius) * 0.8);
@@ -66,15 +64,112 @@
   --radius: 0.625rem;
 }
 
+/* Dynamic color utility classes */
+@utility bg-theme {
+  background-color: var(--color-bg);
+}
 
-@layer base {
-  * {
-    @apply border-border outline-ring/50;
+@utility bg-theme-secondary {
+  background-color: var(--color-bg-secondary);
+}
+
+@utility bg-theme-card {
+  background-color: var(--color-card);
+}
+
+@utility bg-theme-muted {
+  background-color: var(--color-muted);
+}
+
+@utility bg-theme-accent {
+  background-color: var(--color-accent);
+}
+
+@utility text-theme {
+  color: var(--color-text);
+}
+
+@utility text-theme-secondary {
+  color: var(--color-text-secondary);
+}
+
+@utility text-theme-muted {
+  color: var(--color-text-muted);
+}
+
+@utility text-theme-primary {
+  color: var(--color-primary);
+}
+
+@utility border-theme {
+  border-color: var(--color-border);
+}
+
+@utility border-theme-hover {
+  &:hover {
+    border-color: var(--color-border-hover);
   }
-  body {
-    @apply bg-background text-foreground;
+}
+
+@utility focus-theme {
+  &:focus {
+    outline: 2px solid var(--color-focus);
+    outline-offset: 2px;
   }
-  html {
-    @apply font-sans;
+}
+
+@utility focus-ring-theme {
+  &:focus {
+    box-shadow: 0 0 0 3px var(--color-focus-ring);
   }
+}
+
+@utility bg-theme-primary {
+  background-color: var(--color-primary);
+  &:hover {
+    background-color: var(--color-primary-hover);
+  }
+}
+
+@utility bg-gradient-theme {
+  background: linear-gradient(to bottom right, var(--color-gradient-from), var(--color-gradient-to));
+}
+
+@utility shadow-theme {
+  box-shadow: 0 1px 3px 0 var(--color-shadow);
+}
+
+@utility shadow-theme-lg {
+  box-shadow: 0 10px 15px -3px var(--color-shadow-lg), 0 4px 6px -2px var(--color-shadow-lg);
+}
+
+@utility input-theme {
+  background-color: var(--color-input);
+  border-color: var(--color-border);
+  color: var(--color-text);
+  &:focus {
+    border-color: var(--color-focus);
+    box-shadow: 0 0 0 3px var(--color-focus-ring);
+  }
+}
+
+@utility transition-theme {
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Base styles */
+* {
+  border-color: var(--color-border);
+  outline-color: var(--color-focus);
+  outline-offset: 2px;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+}
+
+body {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+}
+
+html {
+  font-family: var(--font-sans);
 }
