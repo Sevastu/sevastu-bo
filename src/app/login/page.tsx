@@ -39,14 +39,14 @@ export default function LoginPage() {
 
             {/* Main Content */}
             <div className="flex-1 flex items-center justify-center px-6 py-12 bg-theme-bg">
-                <div className="w-full max-w-6xl bg-theme-card rounded-2xl shadow-theme-lg overflow-hidden transition-theme border-2 border-theme-border">
+                <div className="w-full max-w-6xl bg-theme-card rounded-2xl shadow-theme-lg overflow-hidden transition-theme border-1 border-[var(--color-primary)]">
                     <div className="grid md:grid-cols-2">
                         {/* Left Section - Login Form */}
                         <div className="p-8 lg:p-12">
                             <div className="max-w-sm mx-auto">
                                 <CardHeader className="space-y-1 p-0 mb-8">
                 
-                                    <CardTitle className="text-2xl font-bold text-theme-primary">
+                                    <CardTitle className="text-3xl font-bold text-theme-primary">
                                         Login Into Administrative Dashboard
                                     </CardTitle>
                                     <CardDescription className="text-theme-secondary font-heading">
@@ -128,19 +128,14 @@ export default function LoginPage() {
                         {/* Right Section - Welcome Content */}
                         <div className="bg-gradient-theme p-8 lg:p-12 flex items-center justify-center transition-theme">
                             <div className="max-w-md text-center">
-                                <h2 className="text-3xl font-bold text-theme-primary">
+                                <h2 className="text-3xl mb-8 font-bold text-theme-primary">
                                     Welcome to Sevastu Backoffice
                                 </h2>
-                                 <p className="text-theme-secondary leading-relaxed mb-1 px-9 ">
-                                    The mission control for your entire infrastructure. 
-                                    Manage operartions, monitor performance and scale with precision.
-                                    
-                                </p>
-                                <div className="mb-8">
+                                <div className="mb-4">
                                     <img 
-                                        src="https://images.unsplash.com/photo-1624377632657-3902bfd35958?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
+                                        src="https://images.pexels.com/photos/8961297/pexels-photo-8961297.jpeg" 
                                         alt="Sevastu Dashboard" 
-                                        className="w-84 h-60 mx-auto rounded-lg object-cover shadow-[10px_10px_25px_rgba(0,0,0,1)]"
+                                        className="w-84 h-90 mx-auto rounded-lg object-cover shadow-[10px_10px_25px_rgba(0,0,0,1)]"
                                     />
                                 </div>
                                 <p className="text-theme-secondary leading-relaxed">

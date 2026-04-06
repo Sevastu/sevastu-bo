@@ -8,7 +8,7 @@ export function DarkModeToggle() {
   return (
     <button
       onClick={toggleDark}
-      className="p-2 text-theme-secondary hover:text-theme transition-colors"
+      className="p-2 text-[var(--color-primary)] border-1 border-[var(--color-primary)] hover:bg-[var(--color-primary)] hover:text-[var(--color-bg)] hover:border-[var(--color-bg)] rounded-full transition-colors"
       title={isDark ? "Switch to light mode" : "Switch to dark mode"}
     >
       {isDark ? (
