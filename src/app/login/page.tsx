@@ -38,18 +38,18 @@ export default function LoginPage() {
             <LoginNavbar />
 
             {/* Main Content */}
-            <div className="flex-1 flex items-center justify-center px-6 py-12">
-                <div className="w-full max-w-6xl bg-theme-card rounded-2xl shadow-theme-lg overflow-hidden transition-theme">
+            <div className="flex-1 flex items-center justify-center px-6 py-12 bg-theme-bg">
+                <div className="w-full max-w-6xl bg-theme-card rounded-2xl shadow-theme-lg overflow-hidden transition-theme border-2 border-theme-border">
                     <div className="grid md:grid-cols-2">
                         {/* Left Section - Login Form */}
                         <div className="p-8 lg:p-12">
                             <div className="max-w-sm mx-auto">
                                 <CardHeader className="space-y-1 p-0 mb-8">
                 
-                                    <CardTitle className="text-2xl font-bold text-theme">
+                                    <CardTitle className="text-2xl font-bold text-theme-primary">
                                         Login Into Administrative Dashboard
                                     </CardTitle>
-                                    <CardDescription className="text-theme-secondary">
+                                    <CardDescription className="text-theme-secondary font-heading">
                                         Enter your credentials to access the admin dashboard
                                     </CardDescription>
                                 </CardHeader>
@@ -128,7 +128,7 @@ export default function LoginPage() {
                         {/* Right Section - Welcome Content */}
                         <div className="bg-gradient-theme p-8 lg:p-12 flex items-center justify-center transition-theme">
                             <div className="max-w-md text-center">
-                                <h2 className="text-3xl font-bold text-theme">
+                                <h2 className="text-3xl font-bold text-theme-primary">
                                     Welcome to Sevastu Backoffice
                                 </h2>
                                  <p className="text-theme-secondary leading-relaxed mb-1 px-9 ">
