@@ -1,17 +1,17 @@
 :root {
   /* Core Color Variables - Light Theme */
   --color-bg: #ffffff;
-  --color-bg-secondary: #f8fafc;
+  --color-bg-secondary: #eae5ed;
   --color-card: #ffffff;
   --color-text: #0f172a;
-  --color-text-secondary: #64748b;
+  --color-text-secondary: #000000c6;
   --color-text-muted: #94a3b8;
-  --color-primary: #3b82f6;
-  --color-primary-hover: #2563eb;
-  --color-border: #e2e8f0;
+  --color-primary: #700c98;
+  --color-primary-hover: #4f006e;
+  --color-border: #700c98;
   --color-border-hover: #cbd5e1;
   --color-input: #ffffff;
-  --color-focus: #3b82f6;
+  --color-focus: #7d2cc4;
   --color-focus-ring: rgba(59, 130, 246, 0.2);
   
   /* State Colors */
@@ -26,9 +26,9 @@
   --color-accent: #f8fafc;
   --color-accent-foreground: #0f172a;
   
-  /* Gradient Colors */
-  --color-gradient-from: #e0f2fe;
-  --color-gradient-to: #dbeafe;
+  /* Gradient Colors #e0f2fe */
+  --color-gradient-from: #f5e3fd;
+  --color-gradient-to: #fefefe;
   
   /* Shadow Colors */
   --color-shadow: rgba(0, 0, 0, 0.1);
