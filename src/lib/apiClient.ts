@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { getToken, clearAuth } from './auth';
-
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://sevastu-be.onrender.com';
+// const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
 
 export const apiClient = axios.create({
     baseURL: API_BASE_URL,
