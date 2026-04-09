@@ -55,11 +55,11 @@
 
 .dark {
   /* Core Color Variables - Dark Theme */
-  --color-bg: #232323;
-  --color-bg-secondary: #484849;
-  --color-card: #303030;
-  --color-text: #f8fafc;
-  --color-text-secondary: #cbd5e1;
+  --color-bg: #1e1e1e;
+  --color-bg-secondary: #2c2c2d;
+  --color-card: #2d2d2d;
+  --color-text: #cfd6dc;
+  --color-text-secondary: #b5b7b9;
   --color-text-muted: #94a3b8;
   --color-primary: #20b7ba;
   --color-primary-hover: #1391ad;
@@ -82,8 +82,8 @@
   --color-accent-foreground: #bed319;
   
   /* Gradient Colors - Dark versions */
-  --color-gradient-from: #787575;
-  --color-gradient-to: #5c5699;
+  --color-gradient-from: #242323;
+  --color-gradient-to: #000000;
   
   /* Shadow Colors - Dark versions */
   --color-shadow: rgba(36, 36, 36, 0.3);
