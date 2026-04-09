@@ -62,7 +62,7 @@ export function AppLayout({ children }: AppLayoutProps) {
                 </div>
                 <div className="flex flex-col items-center gap-1">
                     <h2 className="text-xl font-bold tracking-tight bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
-                        sevastu
+                        Sevastu
                     </h2>
                     <p className="text-xs text-muted-foreground font-medium animate-pulse">
                         Authenticating access...
@@ -97,7 +97,7 @@ export function AppLayout({ children }: AppLayoutProps) {
                         "font-bold text-xl tracking-tight bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent transition-all",
                         isSidebarOpen ? 'opacity-100' : 'opacity-0 w-0 overflow-hidden'
                     )}>
-                        sevastu
+                        Sevastu
                     </div>
                     <button
                         onClick={() => setIsSidebarOpen(!isSidebarOpen)}
