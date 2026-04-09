@@ -57,7 +57,7 @@ export function AppLayout({ children }: AppLayoutProps) {
         return (
             <div className="min-h-screen bg-background flex flex-col items-center justify-center gap-4 animate-in fade-in duration-500">
                 <div className="relative">
-                    <div className="w-16 h-16 border-4 border-primary/20 rounded-full animate-pulse" />
+                    <div className="w-16 h-16 rounded-full animate-pulse" />
                     <Loader2 className="w-8 h-8 text-primary animate-spin absolute inset-0 m-auto" />
                 </div>
                 <div className="flex flex-col items-center gap-1">
@@ -89,10 +89,10 @@ export function AppLayout({ children }: AppLayoutProps) {
         <div className="min-h-screen bg-background text-foreground flex transition-colors duration-300">
             {/* Sidebar */}
             <aside className={cn(
-                "bg-card border-r border-border transition-all duration-300 flex flex-col shadow-sm z-20",
+                "bg-card transition-all duration-300 flex flex-col shadow-sm z-20",
                 isSidebarOpen ? 'w-64' : 'w-20'
             )}>
-                <div className="h-16 flex items-center justify-between px-4 border-b border-border/50">
+                <div className="h-16 flex items-center justify-between px-4">
                     <div className={cn(
                         "font-bold text-xl tracking-tight bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent transition-all",
                         isSidebarOpen ? 'opacity-100' : 'opacity-0 w-0 overflow-hidden'
@@ -139,7 +139,7 @@ export function AppLayout({ children }: AppLayoutProps) {
                     })}
                 </nav>
 
-                <div className="p-4 border-t border-border/50">
+                <div className="p-4">
                     <button
                         onClick={handleLogout}
                         className={cn(
@@ -155,7 +155,7 @@ export function AppLayout({ children }: AppLayoutProps) {
 
             {/* Main Content */}
             <main className="flex-1 flex flex-col min-w-0 transition-all duration-300">
-                <header className="h-16 bg-card border-b border-border/50 flex items-center justify-between px-8 shadow-sm z-10 sticky top-0">
+                <header className="h-16 bg-card flex items-center justify-between px-8 shadow-sm z-10 sticky top-0">
                     <div className="flex items-center gap-4">
                         <h1 className="text-lg font-semibold text-foreground/90 capitalize tracking-tight">
                             {pathname.split('/')[1]?.replace(/-/g, ' ') || 'Dashboard'}
@@ -163,19 +163,19 @@ export function AppLayout({ children }: AppLayoutProps) {
                     </div>
 
                     <div className="flex items-center gap-6">
-                        <div className="flex items-center gap-3 pr-6 border-r border-border/50">
+                        <div className="flex items-center gap-3 pr-6">
                             <div className="flex flex-col items-end">
                                 <span className="text-sm font-semibold text-foreground leading-tight">{user.name || "User"}</span>
                                 <span className="text-[10px] text-muted-foreground uppercase font-bold tracking-widest">{user.role}</span>
                             </div>
-                            <div className="h-9 w-9 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center text-primary font-bold shadow-inner transition-transform hover:rotate-3">
+                            <div className="h-9 w-9 rounded-xl bg-primary/10 flex items-center justify-center text-primary font-bold shadow-inner transition-transform hover:rotate-3">
                                 {(user.name || "User").charAt(0).toUpperCase()}
                             </div>
                         </div>
                     </div>
                 </header>
 
-                <div className="flex-1 p-8 overflow-y-auto bg-background/50 scrollbar-thin scrollbar-thumb-muted">
+                <div className="flex-1 p-8 overflow-y-auto bg-theme-bg scrollbar-thin scrollbar-thumb-muted">
                     <div className="animate-in fade-in slide-in-from-bottom-2 duration-500">
                         {children}
                     </div>

@@ -36,8 +36,8 @@ export function DataTable<T>({
     const totalPages = Math.ceil(total / limit) || 1;
 
     return (
-        <div className="bg-card rounded-xl shadow-md border border-border/50 overflow-hidden transition-all">
-            <div className="p-4 border-b border-border/50 flex justify-between items-center bg-card/50 backdrop-blur-sm">
+        <div className="bg-card rounded-xl shadow-md border border-theme-text overflow-hidden transition-all">
+            <div className="p-4 border-b border-border-theme-text flex justify-between items-center bg-card/50 backdrop-blur-sm">
                 <form onSubmit={handleSearch} className="relative w-72 group">
                     <Input
                         type="text"
@@ -53,7 +53,7 @@ export function DataTable<T>({
             <div className="overflow-x-auto">
                 <table className="w-full text-sm text-left border-collapse">
                     <thead>
-                        <tr className="text-xs text-muted-foreground uppercase tracking-wider bg-muted/30 border-b border-border/50">
+                        <tr className="text-xs text-muted-foreground uppercase tracking-wider bg-muted/30 border-b border-theme-text">
                             {columns.map((col) => (
                                 <th key={col.key as string} className="px-6 py-4 font-semibold">
                                     {col.label}
@@ -61,12 +61,12 @@ export function DataTable<T>({
                             ))}
                         </tr>
                     </thead>
-                    <tbody className="divide-y divide-border/30">
+                    <tbody className="divide-y divide-border/20">
                         {isLoading ? (
                             <tr>
                                 <td colSpan={columns.length} className="px-6 py-12 text-center">
                                     <div className="flex flex-col items-center gap-2">
-                                        <div className="w-6 h-6 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+                                        <div className="w-6 h-6 border-2 border-theme-text border-t-transparent rounded-full animate-spin" />
                                         <span className="text-muted-foreground font-medium">Fetching data...</span>
                                     </div>
                                 </td>
@@ -98,7 +98,7 @@ export function DataTable<T>({
                 </table>
             </div>
 
-            <div className="p-4 border-t border-border/50 bg-card/50 flex items-center justify-between">
+            <div className="p-4 border-t border-theme-text bg-card/50 flex items-center justify-between">
                 <div className="flex items-center gap-2">
                     <span className="text-sm font-medium text-muted-foreground">
                         Page <span className="text-foreground">{page}</span> of <span className="text-foreground">{totalPages}</span>
