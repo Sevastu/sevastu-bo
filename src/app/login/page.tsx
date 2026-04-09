@@ -39,7 +39,7 @@ export default function LoginPage() {
 
             {/* Main Content */}
             <div className="flex-1 flex items-center justify-center px-6 py-12 bg-theme-bg">
-                <div className="w-full max-w-6xl bg-theme-card rounded-2xl shadow-theme-lg overflow-hidden transition-theme border-1 border-[var(--color-primary)]">
+                <div className="w-full max-w-6xl bg-theme-card rounded-2xl shadow-theme-lg overflow-hidden transition-theme border-1 border-[var(--color-bg)]">
                     <div className="grid md:grid-cols-2">
                         {/* Left Section - Login Form */}
                         <div className="p-8 lg:p-12">
@@ -69,7 +69,7 @@ export default function LoginPage() {
                                                 value={email}
                                                 onChange={(e) => setEmail(e.target.value)}
                                                 required
-                                                className="h-12 border border-theme rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 input-theme transition-all"
+                                                className="h-10 border border-theme-border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 input-theme transition-all"
                                             />
                                         </div>
 
@@ -85,7 +85,7 @@ export default function LoginPage() {
                                                 value={password}
                                                 onChange={(e) => setPassword(e.target.value)}
                                                 required
-                                                className="h-12 border border-theme rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 input-theme transition-all"
+                                                className="h-10 border border-theme-border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 input-theme transition-all"
                                             />
                                         </div>
 

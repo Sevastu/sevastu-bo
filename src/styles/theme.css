@@ -1,16 +1,17 @@
 :root {
   /* Core Color Variables - Light Theme */
-  --color-bg: #f6eafe;
-  --color-bg-secondary: #eae5ed;
-  --color-card: #f9edfd;
+  --color-bg: #e6f5fa;
+  --color-bg-secondary: #e1f4f8;
+  --color-card: #eef6fa;
   --color-text: #0f172a;
   --color-text-secondary: #000000c6;
-  --color-text-muted: #94a3b8;
-  --color-primary: #700c98;
-  --color-primary-hover: #4f006e;
-  --color-border: #605e61;
-  --color-border-hover: #cbd5e1;
-  --color-input: #ffffff;
+  --color-text-muted: #073a7d;
+  --color-primary: #0ab804;
+  /* #7a32df */
+  --color-primary-hover: #159604;
+  --color-border: #e8e1ed;
+  --color-border-hover: #000000;
+  --color-input: #dcd8e6;
   --color-focus: #7d2cc4;
   --color-focus-ring: rgba(59, 130, 246, 0.2);
   
@@ -21,14 +22,14 @@
   --color-destructive: var(--color-error);
   
   /* Component Colors */
-  --color-muted: #f1f5f9;
-  --color-muted-foreground: #64748b;
-  --color-accent: #f8fafc;
+  --color-muted: #d1bdf0;
+  --color-muted-foreground: #424044;
+  --color-accent: #a3bfd5;
   --color-accent-foreground: #0f172a;
   
   /* Gradient Colors #e0f2fe */
-  --color-gradient-from: #f5e3fd;
-  --color-gradient-to: #fefefe;
+  --color-gradient-from: #ebf8ff;
+  --color-gradient-to: #ccf3f6;
   
   /* Shadow Colors */
   --color-shadow: rgba(0, 0, 0, 0.1);
