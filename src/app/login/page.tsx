@@ -63,6 +63,8 @@ export default function LoginPage() {
                                             <Input
                                                 id="email"
                                                 type="email"
+                                                autoComplete="email"
+                                                // placeholder="admin@test.com"
                                                 placeholder="admin@sevastu.com"
                                                 value={email}
                                                 onChange={(e) => setEmail(e.target.value)}
@@ -78,6 +80,7 @@ export default function LoginPage() {
                                             <Input
                                                 id="password"
                                                 type="password"
+                                                autoComplete="current-password"
                                                 placeholder="••••••••"
                                                 value={password}
                                                 onChange={(e) => setPassword(e.target.value)}
@@ -128,8 +131,8 @@ export default function LoginPage() {
                         {/* Right Section - Welcome Content */}
                         <div className="bg-gradient-theme p-8 lg:p-12 flex items-center justify-center transition-theme">
                             <div className="max-w-md text-center">
-                                <h2 className="text-3xl mb-8 font-bold text-theme-primary">
-                                    Welcome to Sevastu Backoffice
+                                <h2 className="text-3xl mb-8 font-bold text-theme-secondary">
+                                    Welcome to <span className="text-theme-primary">Sevastu</span> Backoffice
                                 </h2>
                                 <div className="mb-4">
                                     <img 
