@@ -10,6 +10,7 @@
 | Variable | Description |
 |----------|-------------|
 | `NEXT_PUBLIC_API_URL` | Full origin of the Nest API (e.g. `https://api.example.com`) — **no trailing slash** |
+| `NEXT_PUBLIC_API_TIMEOUT_MS` | Optional. Axios timeout in ms (default **60000**). Raise if login still times out on very slow cold starts. |
 
 If unset, the client defaults to the Render URL baked into `apiClient.ts`; override for every non-default environment.
 

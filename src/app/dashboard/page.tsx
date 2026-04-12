@@ -3,25 +3,32 @@
 import { useEffect, useState, useCallback } from "react";
 import { getUser, User } from "@/lib/auth";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Users, Briefcase, TrendingUp, AlertCircle, RefreshCcw, Loader2 } from "lucide-react";
-import { fetchDashboardStats, DashboardStats } from "@/features/dashboard/api";
+import { Users, Briefcase, TrendingUp, AlertCircle, RefreshCcw, Loader2, Hammer, UserCheck, DollarSign } from "lucide-react";
+import { fetchDashboardStats, DashboardStats, fetchAnalytics, AnalyticsData } from "@/features/dashboard/api";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { cn } from "@/lib/utils";
 
 export default function DashboardPage() {
     const [user, setUser] = useState<User | null>(null);
     const [stats, setStats] = useState<DashboardStats | null>(null);
+    const [analytics, setAnalytics] = useState<AnalyticsData[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
-    const loadStats = useCallback(async () => {
+    const loadData = useCallback(async () => {
         setIsLoading(true);
         setError(null);
         try {
-            const data = await fetchDashboardStats();
-            setStats(data);
+            const [statsData, analyticsData] = await Promise.all([
+                fetchDashboardStats(),
+                fetchAnalytics()
+            ]);
+            setStats(statsData);
+            setAnalytics(analyticsData);
         } catch (err: any) {
-            console.error("Could not fetch stats:", err);
-            setError(err?.response?.data?.message || err?.message || "Failed to load dashboard statistics. Please try again.");
+            console.error("Could not fetch dashboard data:", err);
+            setError(err?.response?.data?.message || err?.message || "Failed to load dashboard data.");
         } finally {
             setIsLoading(false);
         }
@@ -29,8 +36,8 @@ export default function DashboardPage() {
 
     useEffect(() => {
         setUser(getUser());
-        loadStats();
-    }, [loadStats]);
+        loadData();
+    }, [loadData]);
 
     if (error) {
         return (
@@ -43,7 +50,7 @@ export default function DashboardPage() {
                     <p className="text-muted-foreground max-w-md">{error}</p>
                 </div>
                 <Button 
-                    onClick={loadStats} 
+                    onClick={loadData} 
                     variant="outline" 
                     className="gap-2 hover:bg-destructive/5 hover:text-destructive border-destructive/20"
                 >
@@ -67,72 +74,95 @@ export default function DashboardPage() {
         </Card>
     );
 
+    const maxAnalyticsCount = Math.max(...analytics.map(a => a.count), 1);
+
     return (
-        <div className="space-y-6">
-            <div className="flex items-center justify-between">
+        <div className="space-y-8">
+            <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
                 <div className="flex flex-col gap-1">
-                    <h2 className="text-3xl font-bold tracking-tight bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
-                        Welcome back, {user?.name || 'User'}! 👋
+                    <h2 className="text-4xl font-extrabold tracking-tighter bg-gradient-to-br from-foreground to-foreground/50 bg-clip-text text-transparent">
+                        Dashboard Analytics
                     </h2>
-                    <p className="text-muted-foreground font-medium">Here's a quick overview of sevastu's performance.</p>
+                    <p className="text-muted-foreground font-medium text-lg">Real-time operational health and growth metrics.</p>
                 </div>
-                {isLoading && <Loader2 className="w-5 h-5 text-primary animate-spin" />}
+                <div className="flex gap-3">
+                    <Button variant="outline" className="rounded-2xl border-border/50 bg-card hover:bg-muted font-bold h-12 shadow-sm" onClick={loadData}>
+                        <RefreshCcw className={cn("w-4 h-4 mr-2", isLoading && "animate-spin")} />
+                        Refresh Data
+                    </Button>
+                </div>
             </div>
 
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 text-card-foreground">
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
                 {isLoading ? (
                     <>
+                        <StatSkeleton />
                         <StatSkeleton />
                         <StatSkeleton />
                         <StatSkeleton />
                     </>
                 ) : (
                     <>
-                        {/* Metric Cards */}
-                        <Card className="shadow-md border-none group hover:shadow-lg transition-all duration-300 overflow-hidden ring-1 ring-border/50">
+                        <Card className="shadow-2xl border-none ring-1 ring-border/50 relative overflow-hidden group">
+                           <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -mr-16 -mt-16 blur-3xl group-hover:bg-primary/10 transition-colors" />
                             <CardHeader className="flex flex-row items-center justify-between pb-2">
-                                <CardTitle className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">Total Users</CardTitle>
-                                <div className="p-2 rounded-lg bg-primary/10 text-primary group-hover:scale-110 transition-transform">
-                                    <Users className="w-4 h-4" />
-                                </div>
+                                <CardTitle className="text-xs font-black text-muted-foreground uppercase tracking-widest">Active Scale</CardTitle>
+                                <Users className="w-4 h-4 text-primary" />
                             </CardHeader>
                             <CardContent>
-                                <div className="text-3xl font-bold tracking-tight">{stats?.totalUsers ?? 0}</div>
-                                <p className="text-xs text-success mt-2 flex items-center font-semibold bg-success/10 w-fit px-2 py-1 rounded-full">
-                                    <TrendingUp className="w-3 h-3 mr-1" />
-                                    +14% <span className="text-muted-foreground font-normal ml-1">vs last month</span>
-                                </p>
+                                <div className="text-4xl font-black tracking-tighter">{stats?.totalUsers ?? 0}</div>
+                                <div className="mt-4 flex flex-col gap-1">
+                                    <div className="flex justify-between text-[10px] font-bold">
+                                        <span className="text-blue-500 uppercase">{stats?.totalCustomers} Clients</span>
+                                        <span className="text-purple-500 uppercase">{stats?.totalWorkers} Pros</span>
+                                    </div>
+                                    <div className="h-1.5 w-full bg-muted rounded-full flex overflow-hidden">
+                                        <div className="bg-blue-500 h-full" style={{ width: `${(stats?.totalCustomers || 0) / (stats?.totalUsers || 1) * 100}%` }} />
+                                        <div className="bg-purple-500 h-full" style={{ width: `${(stats?.totalWorkers || 0) / (stats?.totalUsers || 1) * 100}%` }} />
+                                    </div>
+                                </div>
                             </CardContent>
                         </Card>
 
-                        <Card className="shadow-md border-none group hover:shadow-lg transition-all duration-300 overflow-hidden ring-1 ring-border/50">
+                        <Card className="shadow-2xl border-none ring-1 ring-border/50 relative overflow-hidden group">
+                           <div className="absolute top-0 right-0 w-32 h-32 bg-green-500/5 rounded-full -mr-16 -mt-16 blur-3xl group-hover:bg-green-500/10 transition-colors" />
                             <CardHeader className="flex flex-row items-center justify-between pb-2">
-                                <CardTitle className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">Active Jobs</CardTitle>
-                                <div className="p-2 rounded-lg bg-primary/10 text-primary group-hover:scale-110 transition-transform">
-                                    <Briefcase className="w-4 h-4" />
-                                </div>
+                                <CardTitle className="text-xs font-black text-muted-foreground uppercase tracking-widest">Volume Today</CardTitle>
+                                <TrendingUp className="w-4 h-4 text-green-500" />
                             </CardHeader>
                             <CardContent>
-                                <div className="text-3xl font-bold tracking-tight">{stats?.activeJobs ?? 0}</div>
-                                <p className="text-xs text-success mt-2 flex items-center font-semibold bg-success/10 w-fit px-2 py-1 rounded-full">
-                                    <TrendingUp className="w-3 h-3 mr-1" />
-                                    +5% <span className="text-muted-foreground font-normal ml-1">vs last week</span>
-                                </p>
+                                <div className="text-4xl font-black tracking-tighter">{stats?.jobsToday ?? 0}</div>
+                                <div className="mt-4 flex items-center gap-2">
+                                    <Badge className="bg-green-500/10 text-green-600 border-none shadow-none font-black text-[10px]">
+                                        {stats?.completedToday} RESOLVED
+                                    </Badge>
+                                </div>
                             </CardContent>
                         </Card>
 
-                        <Card className="shadow-md border-none group hover:shadow-lg transition-all duration-300 overflow-hidden ring-1 ring-border/50">
+                        <Card className="shadow-2xl border-none ring-1 ring-border/50 relative overflow-hidden group">
+                           <div className="absolute top-0 right-0 w-32 h-32 bg-amber-500/5 rounded-full -mr-16 -mt-16 blur-3xl group-hover:bg-amber-500/10 transition-colors" />
                             <CardHeader className="flex flex-row items-center justify-between pb-2">
-                                <CardTitle className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">New Leads</CardTitle>
-                                <div className="p-2 rounded-lg bg-primary/10 text-primary group-hover:scale-110 transition-transform">
-                                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
-                                </div>
+                                <CardTitle className="text-xs font-black text-muted-foreground uppercase tracking-widest">Live Operations</CardTitle>
+                                <Briefcase className="w-4 h-4 text-amber-500" />
                             </CardHeader>
                             <CardContent>
-                                <div className="text-3xl font-bold tracking-tight">{stats?.openLeads ?? 0}</div>
-                                <p className="text-xs text-success mt-2 flex items-center font-semibold bg-success/10 w-fit px-2 py-1 rounded-full">
-                                    <TrendingUp className="w-3 h-3 mr-1" />
-                                    +12 <span className="text-muted-foreground font-normal ml-1">new today</span>
+                                <div className="text-4xl font-black tracking-tighter">{stats?.activeJobs ?? 0}</div>
+                                <p className="text-[10px] font-bold text-muted-foreground mt-4 uppercase tracking-tighter italic">In-progress or assigned jobs</p>
+                            </CardContent>
+                        </Card>
+
+                        <Card className="shadow-2xl border-none ring-1 ring-border/50 relative overflow-hidden group">
+                           <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-500/5 rounded-full -mr-16 -mt-16 blur-3xl group-hover:bg-indigo-500/10 transition-colors" />
+                            <CardHeader className="flex flex-row items-center justify-between pb-2">
+                                <CardTitle className="text-xs font-black text-muted-foreground uppercase tracking-widest">Gross Revenue</CardTitle>
+                                <DollarSign className="w-4 h-4 text-indigo-500" />
+                            </CardHeader>
+                            <CardContent>
+                                <div className="text-4xl font-black tracking-tighter italic text-foreground/90 underline decoration-primary/20 underline-offset-8 decoration-4">{stats?.revenue ?? "₹0"}</div>
+                                <p className="text-[10px] font-bold text-indigo-500 mt-6 flex items-center gap-1">
+                                    <span className="w-1.5 h-1.5 rounded-full bg-indigo-500 animate-pulse" />
+                                    CONSOLIDATED PLATFORM EARNINGS
                                 </p>
                             </CardContent>
                         </Card>
@@ -140,20 +170,85 @@ export default function DashboardPage() {
                 )}
             </div>
 
-            {/* Chart Section Prototype */}
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-7">
-                <Card className="col-span-4 shadow-md border-none min-h-[350px] flex items-center justify-center bg-muted/30 border border-dashed border-border group hover:bg-muted/40 transition-colors">
-                    <div className="flex flex-col items-center gap-2 text-muted-foreground group-hover:text-primary transition-colors">
-                        <TrendingUp className="w-8 h-8 opacity-20" />
-                        <p className="font-semibold tracking-tight text-lg">Activity Analytics</p>
-                        <p className="text-xs">Visualization coming soon</p>
+            <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-7">
+                <Card className="col-span-4 shadow-2xl border-none ring-1 ring-border/50 rounded-3xl p-6 bg-card">
+                    <div className="flex justify-between items-center mb-10">
+                        <div className="flex flex-col gap-1">
+                            <h3 className="text-xl font-black tracking-tight flex items-center gap-2">
+                                <TrendingUp className="w-5 h-5 text-primary" />
+                                Growth Trajectory
+                            </h3>
+                            <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest">Last 30 days job volume</p>
+                        </div>
+                    </div>
+                    <div className="h-[300px] w-full flex items-end justify-between gap-1 px-2 mb-4">
+                        {analytics.length === 0 ? (
+                            <div className="h-full w-full flex items-center justify-center text-muted-foreground/30 font-black italic border-2 border-dashed border-border/50 rounded-2xl">
+                                NO ANALYTICS DATA RECORDED
+                            </div>
+                        ) : (
+                            analytics.map((day, idx) => (
+                                <div key={day._id} className="group relative flex flex-col items-center flex-1 max-w-[40px]">
+                                    <div 
+                                        className="w-full bg-primary/20 group-hover:bg-primary transition-all duration-500 rounded-t-sm group-hover:rounded-t-md relative"
+                                        style={{ height: `${(day.count / maxAnalyticsCount) * 100}%` }}
+                                    >
+                                        <div className="absolute -top-10 left-1/2 -translate-x-1/2 bg-foreground text-background text-[10px] font-black px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap shadow-xl">
+                                            {day.count} JOBS
+                                        </div>
+                                    </div>
+                                    {idx % 5 === 0 && (
+                                        <span className="text-[8px] font-black text-muted-foreground mt-2 rotate-45 origin-left">
+                                            {day._id.split('-').slice(1).join('/')}
+                                        </span>
+                                    )}
+                                </div>
+                            ))
+                        )}
                     </div>
                 </Card>
-                <Card className="col-span-3 shadow-md border-none min-h-[350px] flex items-center justify-center bg-muted/30 border border-dashed border-border group hover:bg-muted/40 transition-colors">
-                    <div className="flex flex-col items-center gap-2 text-muted-foreground group-hover:text-primary transition-colors">
-                        <Users className="w-8 h-8 opacity-20" />
-                        <p className="font-semibold tracking-tight text-lg">Recent Onboarding</p>
-                        <p className="text-xs">User log coming soon</p>
+
+                <Card className="col-span-3 shadow-2xl border-none ring-1 ring-border/50 rounded-3xl p-6 flex flex-col bg-card">
+                    <div className="flex flex-col gap-1 mb-8">
+                        <h3 className="text-xl font-black tracking-tight flex items-center gap-2">
+                            <Briefcase className="w-5 h-5 text-purple-500" />
+                            System Health
+                        </h3>
+                        <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest">Resource utilization & demand</p>
+                    </div>
+                    <div className="flex-1 flex flex-col justify-center gap-6">
+                        <div className="space-y-2">
+                            <div className="flex justify-between items-center text-xs font-black uppercase tracking-wider">
+                                <span>Worker Utilization</span>
+                                <span className="text-primary font-black italic">84%</span>
+                            </div>
+                            <div className="h-4 w-full bg-muted rounded-full overflow-hidden p-1 border border-border/50">
+                                <div className="h-full bg-gradient-to-r from-primary/50 to-primary rounded-full" style={{ width: '84%' }} />
+                            </div>
+                        </div>
+                        <div className="space-y-2">
+                            <div className="flex justify-between items-center text-xs font-black uppercase tracking-wider">
+                                <span>Customer Conversion</span>
+                                <span className="text-green-500 font-black italic">62%</span>
+                            </div>
+                            <div className="h-4 w-full bg-muted rounded-full overflow-hidden p-1 border border-border/50">
+                                <div className="h-full bg-gradient-to-r from-green-500/50 to-green-500 rounded-full" style={{ width: '62%' }} />
+                            </div>
+                        </div>
+                        <div className="space-y-2">
+                            <div className="flex justify-between items-center text-xs font-black uppercase tracking-wider">
+                                <span>Lead Fulfillment</span>
+                                <span className="text-amber-500 font-black italic">41%</span>
+                            </div>
+                            <div className="h-4 w-full bg-muted rounded-full overflow-hidden p-1 border border-border/50">
+                                <div className="h-full bg-gradient-to-r from-amber-500/50 to-amber-500 rounded-full" style={{ width: '41%' }} />
+                            </div>
+                        </div>
+                    </div>
+                    <div className="mt-8 pt-6 border-t border-border/50">
+                        <Button className="w-full h-12 rounded-2xl font-black uppercase tracking-widest text-[11px] shadow-lg shadow-primary/20" variant="default">
+                            View Deep Analytics Report
+                        </Button>
                     </div>
                 </Card>
             </div>

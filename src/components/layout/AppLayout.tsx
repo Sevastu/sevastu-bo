@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { getUser, clearAuth, User } from "@/lib/auth";
-import { LayoutDashboard, Users, Briefcase, FileText, Settings, LogOut, Menu, Loader2 } from "lucide-react";
+import { LayoutDashboard, Users, Briefcase, FileText, Settings, LogOut, Menu, Loader2, UserCheck, Hammer, Layers, Trophy } from "lucide-react";
 import NextLink from "next/link";
 import { cn } from "@/lib/utils";
 
@@ -77,8 +77,13 @@ export function AppLayout({ children }: AppLayoutProps) {
 
     const navItems = [
         { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard, roles: ["admin", "staff"] },
-        { name: "Users", href: "/users", icon: Users, roles: ["admin", "staff"] },
+        { name: "Categories", href: "/categories", icon: LayoutDashboard, roles: ["admin", "staff"] },
+        { name: "Services", href: "/services", icon: Hammer, roles: ["admin", "staff"] },
+        { name: "Sub-Services", href: "/sub-services", icon: Layers, roles: ["admin", "staff"] },
+        { name: "Customers", href: "/customers", icon: UserCheck, roles: ["admin", "staff"] },
+        { name: "Workers", href: "/workers", icon: Hammer, roles: ["admin", "staff"] },
         { name: "Jobs", href: "/jobs", icon: Briefcase, roles: ["admin", "staff"] },
+        { name: "Performance", href: "/performance", icon: Trophy, roles: ["admin"] },
         { name: "Leads", href: "/leads", icon: FileText, roles: ["admin", "staff"] },
         { name: "Settings", href: "/settings", icon: Settings, roles: ["admin"] },
     ];

@@ -28,6 +28,8 @@ export function DataTable<T>({
 }: DataTableProps<T>) {
     const [searchTerm, setSearchTerm] = useState("");
 
+    const rows = Array.isArray(data) ? data : [];
+
     const handleSearch = (e: React.FormEvent) => {
         e.preventDefault();
         onSearch(searchTerm);
@@ -71,7 +73,7 @@ export function DataTable<T>({
                                     </div>
                                 </td>
                             </tr>
-                        ) : data.length === 0 ? (
+                        ) : rows.length === 0 ? (
                             <tr>
                                 <td colSpan={columns.length} className="px-6 py-12 text-center">
                                     <div className="flex flex-col items-center gap-2 text-muted-foreground">
@@ -81,7 +83,7 @@ export function DataTable<T>({
                                 </td>
                             </tr>
                         ) : (
-                            data.map((item, rowIndex) => (
+                            rows.map((item, rowIndex) => (
                                 <tr 
                                     key={rowIndex} 
                                     className="hover:bg-primary/5 transition-colors group cursor-default"
