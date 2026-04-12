@@ -1,10 +1,14 @@
 export const TOKEN_KEY = 'sevastu_access_token';
 export const USER_KEY = 'sevastu_user';
 
+import { UserRole, UserStatus } from './enums';
+
 export interface User {
     id: string;
     name: string;
-    role: 'admin' | 'staff';
+    email?: string;
+    role: UserRole;
+    status: UserStatus;
 }
 
 export const setToken = (token: string) => {

@@ -11,20 +11,14 @@ export interface LoginResponse {
 
 export const loginApi = async (email: string, password: string): Promise<LoginResponse> => {
     const response = await apiClient.post<LoginResponse>('/admin/auth/login', { email, password });
-    console.log("Raw login response data:", response.data);
-    let access_token, user;
-    if ((response.data as any).data && (response.data as any).data.access_token) {
-        access_token = (response.data as any).data.access_token;
-        user = (response.data as any).data.user;
-    } else {
-        access_token = (response.data as any).access_token;
-        user = (response.data as any).user;
-    }
-    console.log("Extracted token:", access_token);
-    console.log("Extracted user:", user);
+    
+    // Standard response format from backend is { success: true, data: { accessToken, user } }
+    const { access_token: accessToken, user } = response.data.data;
 
-    setToken(access_token);
-    setUser(user);
+    if (accessToken && user) {
+        setToken(accessToken);
+        setUser(user);
+    }
 
     return response.data;
 };
