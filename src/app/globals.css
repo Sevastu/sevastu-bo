@@ -161,8 +161,8 @@
 * {
   /* border-color: var(--color-border); */
   /* outline-color: var(--color-focus); */
-  outline-offset: 2px;
-  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+  /* outline-offset: 2px;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease; */
 }
 
 body {

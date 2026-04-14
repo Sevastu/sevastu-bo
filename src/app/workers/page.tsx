@@ -113,7 +113,7 @@ export default function WorkersPage() {
         <AppLayout>
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
                 <div className="flex flex-col gap-1">
-                    <h2 className="text-3xl font-bold tracking-tight text-foreground">Worker Management</h2>
+                    <h2 className="text-3xl font-bold tracking-tight text-primary">Worker Management</h2>
                     <p className="text-muted-foreground">Approve and manage service providers.</p>
                 </div>
                 

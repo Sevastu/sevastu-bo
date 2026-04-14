@@ -6,9 +6,9 @@
   --color-text: #0f172a;
   --color-text-secondary: #000000c6;
   --color-text-muted: #073a7d;
-  --color-primary: #0ab804;
+  --color-primary: #044cb8;
   /* #7a32df */
-  --color-primary-hover: #159604;
+  --color-primary-hover: #2b3be4;
   --color-border: #e8e1ed;
   --color-border-hover: #000000;
   --color-input: #dcd8e6;
@@ -22,7 +22,7 @@
   --color-destructive: var(--color-error);
   
   /* Component Colors */
-  --color-muted: #d1bdf0;
+  --color-muted: #cfe3fa;
   --color-muted-foreground: #424044;
   --color-accent: #a3bfd5;
   --color-accent-foreground: #0f172a;
