@@ -96,7 +96,7 @@ export default function CategoriesPage() {
         <AppLayout>
             <div className="flex justify-between items-center mb-8">
                 <div className="flex flex-col gap-1">
-                    <h2 className="text-3xl font-bold tracking-tight text-foreground">Category Management</h2>
+                    <h2 className="text-3xl font-bold tracking-tight text-primary">Category Management</h2>
                     <p className="text-muted-foreground">Define top-level business categories for the platform.</p>
                 </div>
                 {isAdmin && (
