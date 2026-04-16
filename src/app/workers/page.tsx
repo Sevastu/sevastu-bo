@@ -1,41 +1,63 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { fetchUsers, updateUserStatus, User } from "@/features/users/api";
-import { UserRole, UserStatus, WorkerProfileStatus } from "@/lib/enums";
-import { fetchWorkersByStatus, approveWorker, rejectWorker } from "@/features/workers/api";
+import { WorkerProfileStatus } from "@/lib/enums";
+import { fetchWorkers, fetchWorkersByStatus } from "@/features/workers/api";
 import { DataTable } from "@/components/DataTable";
 import { AppLayout } from "@/components/layout/AppLayout";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Eye, CheckCircle, XCircle } from "lucide-react";
+import { Eye } from "lucide-react";
+import { WorkerReviewSheet } from "./components/WorkerReviewSheet";
+
+function resolveWorkerUserId(row: Record<string, unknown>): string {
+    return String(row.userId ?? row.id ?? "");
+}
 
 export default function WorkersPage() {
-    const [data, setData] = useState<User[]>([]);
+    const [data, setData] = useState<Record<string, unknown>[]>([]);
     const [total, setTotal] = useState(0);
     const [page, setPage] = useState(1);
     const [search, setSearch] = useState("");
     const [loading, setLoading] = useState(false);
     const [viewStatus, setViewStatus] = useState<WorkerProfileStatus | "all">("all");
+    const [sheetOpen, setSheetOpen] = useState(false);
+    const [selectedWorkerUserId, setSelectedWorkerUserId] = useState<string | null>(null);
+    const [selectedRowStatus, setSelectedRowStatus] = useState<string | undefined>(undefined);
 
     const loadWorkers = async () => {
         setLoading(true);
         try {
-            let result;
+            let workers: Record<string, unknown>[] = [];
             if (viewStatus === "all") {
-                result = await fetchUsers(page, 10, search, UserRole.WORKER);
+                workers = await fetchWorkers();
             } else {
-                // Simplified for this view, assuming fetchWorkersByStatus returns a similar structure
-                const workers = await fetchWorkersByStatus(viewStatus as WorkerProfileStatus);
-                result = { success: true, data: workers, pagination: { total: workers.length } };
+                workers = await fetchWorkersByStatus(viewStatus as WorkerProfileStatus);
             }
 
-            if (result.success) {
-                setData(result.data);
-                setTotal(result.pagination.total);
-            }
+            const normalizedSearch = search.trim().toLowerCase();
+            const filtered = normalizedSearch
+                ? workers.filter((w) =>
+                      String(w.name ?? "")
+                          .toLowerCase()
+                          .includes(normalizedSearch) ||
+                      String(w.phone ?? "")
+                          .toLowerCase()
+                          .includes(normalizedSearch) ||
+                      String(w.userId ?? "")
+                          .toLowerCase()
+                          .includes(normalizedSearch),
+                  )
+                : workers;
+
+            const start = (page - 1) * 10;
+            const paged = filtered.slice(start, start + 10);
+            setData(paged);
+            setTotal(filtered.length);
         } catch (err) {
             console.error("Failed to fetch workers", err);
+            setData([]);
+            setTotal(0);
         } finally {
             setLoading(false);
         }
@@ -45,29 +67,20 @@ export default function WorkersPage() {
         loadWorkers();
     }, [page, search, viewStatus]);
 
-    const handleApprove = async (id: string) => {
-        if (!confirm("Are you sure you want to verify this worker?")) return;
-        try {
-            await approveWorker(id);
-            loadWorkers();
-        } catch (err) {
-            console.error("Failed to approve worker", err);
-        }
-    };
-
-    const handleReject = async (id: string) => {
-        const reason = prompt("Please enter a rejection reason:");
-        if (!reason) return;
-        try {
-            await rejectWorker(id, reason);
-            loadWorkers();
-        } catch (err) {
-            console.error("Failed to reject worker", err);
-        }
+    const openReview = (row: Record<string, unknown>) => {
+        const uid = resolveWorkerUserId(row);
+        if (!uid) return;
+        setSelectedWorkerUserId(uid);
+        setSelectedRowStatus(String(row.profileStatus ?? ""));
+        setSheetOpen(true);
     };
 
     const columns: any[] = [
-        { key: "id", label: "ID" },
+        {
+            key: "id",
+            label: "User ID",
+            render: (u: Record<string, unknown>) => String(u.userId ?? u.id ?? "—"),
+        },
         { key: "name", label: "Name" },
         { 
             key: "profileStatus", 
@@ -86,24 +99,17 @@ export default function WorkersPage() {
         {
             key: "actions",
             label: "Actions",
-            render: (u: User) => {
-                const status = (u as any).profileStatus;
+            render: (u: Record<string, unknown>) => {
                 return (
-                    <div className="flex gap-2">
-                        {status === WorkerProfileStatus.UNDER_REVIEW && (
-                            <>
-                                <Button size="sm" variant="default" onClick={() => handleApprove(u.id)} className="h-8 gap-1">
-                                    <CheckCircle className="w-4 h-4" /> Approve
-                                </Button>
-                                <Button size="sm" variant="destructive" onClick={() => handleReject(u.id)} className="h-8 gap-1">
-                                    <XCircle className="w-4 h-4" /> Reject
-                                </Button>
-                            </>
-                        )}
-                        <Button size="sm" variant="outline" className="h-8">
-                            <Eye className="w-4 h-4" />
-                        </Button>
-                    </div>
+                    <Button
+                        size="sm"
+                        variant="outline"
+                        className="h-8 gap-1"
+                        onClick={() => openReview(u)}
+                    >
+                        <Eye className="w-4 h-4" />
+                        Review
+                    </Button>
                 );
             },
         },
@@ -144,6 +150,14 @@ export default function WorkersPage() {
                 onPageChange={setPage}
                 onSearch={(s) => { setSearch(s); setPage(1); }}
                 isLoading={loading}
+            />
+
+            <WorkerReviewSheet
+                open={sheetOpen}
+                onOpenChange={setSheetOpen}
+                workerUserId={selectedWorkerUserId}
+                initialProfileStatus={selectedRowStatus}
+                onAfterChange={loadWorkers}
             />
         </AppLayout>
     );
