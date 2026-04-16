@@ -4,18 +4,19 @@
 The Sevastu Back Office is the central administrative web portal designed to give operators, moderators, and support staff a holistic view and control over the platform's daily operations. Built with Next.js, it translates the backend orchestration into actionable UI interfaces.
 
 ## 2. Current Implementation (Already Built)
-- ✅ **Modular Alignment**: Refactored to seamlessly digest the unified user and modular hierarchy of the backend.
-- ✅ **Service Management System**: 3-tier hierarchical catalog (Category → Service → Sub-Service) creation and administration.
-- ✅ **Worker Moderation**: Review queue and approval workflows executing verification (`KYC`) state transitions.
-- ✅ **Job Management Dashboard**: Deep integration providing visual job tracking, live status timelines, and manual assignment overrides.
-- ✅ **Analytics Dashboard**: Real-time telemetry surveying active statuses, aggregated throughputs, and overarching completion rates.
-- 🚧 **Access Control UI**: Hardened access routes protecting admin features.
+- ✅ **Modular alignment**: Next.js App Router structure aligned with backend domains (workers, jobs, services, auth, etc.).
+- ✅ **Service management**: Three-tier catalog (**Category → Service → Sub-Service**) with CRUD-style admin pages.
+- ✅ **Worker moderation**: Workers list and **review sheet** for profiles awaiting verification; **approve / reject** drives backend worker + KYC status; **signed private URLs** for ID images via `GET /upload/private-url` (handles `expiresAt` / expiry UX).
+- ✅ **Job management dashboard**: Job listing, status visibility, and admin actions where implemented.
+- ✅ **Analytics dashboard**: Aggregated views of activity and completion-oriented metrics (as wired to current APIs).
+- ✅ **API client**: `NEXT_PUBLIC_API_URL` (no trailing slash) and optional **`NEXT_PUBLIC_API_TIMEOUT_MS`** for slow cold starts; Axios-based `apiClient` with auth token handling.
+- 🚧 **Access control UI**: Continued hardening for staff vs admin capabilities and route guards.
 
 ## 3. System Architecture
-- **Framework**: Next.js
-- **UI System**: Tailwind CSS with custom built high-fidelity modular components.
-- **Integration**: Specialized internal Axios clients adapting backend REST standard.
-- **Modules**: auth, user, worker, customer, kyc, service, job, matching, admin, analytics, chat, notification, payment
+- **Framework**: Next.js (App Router)
+- **UI**: Tailwind CSS and shared components (e.g. data tables, layout primitives)
+- **Backend integration**: REST via typed `features/*` helpers and `lib/apiClient`; mirrors Nest **admin** and **worker** read models where exposed
+- **Related backend concepts (not all surfaced in UI yet)**: `verificationAudits` (immutable admin decisions), **`workerOcr`** / **`ocrStatus`** (async Aadhaar OCR—derived fields only on server); backoffice can be extended to show **name match** and **last-four** hints without ever displaying full ID numbers or raw OCR
 
 ## 4. End-to-End Flow
 **User Journey:**
@@ -69,10 +70,13 @@ The Sevastu Back Office is the central administrative web portal designed to giv
 - 🟡 Automated payout verifications.
 
 ## 9. Technical Strengths
-- **Custom UI Library**: Implemented robust primitive components escaping environmental compilation errors of third-party libraries.
-- **Deep Filter Queries**: Performant local-state management allowing operators to execute multi-dimensional matrix queries on massive datatables.
+- **Operational safety on ID review**: Time-bounded signed URLs reduce exposure of private ID objects compared to long-lived direct links.
+- **Composable admin UI**: Reusable table and sheet patterns for review workflows.
+- **Configurable API base**: Environment-driven API origin and timeout suit local dev, tunnels, and production hosts.
 
 ## 10. Roadmap / Pending Work
-- 🚧 **Dispute Management Panel**: Interface for the upcoming payment module.
-- 🟡 **Live Support Integration**: Operator intervention endpoints.
-- 🟡 **Advanced Role Control**: Limit capabilities within the Back Office between Staff vs Executive operators.
+- 🟡 **OCR assist panel**: Display `workerOcr` summary (`nameMatch`, `aadhaarLast4`, `confidence`, `ocrStatus`) beside manual review—**no full OCR text** or full UID.
+- 🟡 **Verification audit viewer**: Read-only list from `verificationAudits` for compliance exports.
+- 🚧 **Dispute management**: UI for the future payment and refunds module.
+- 🟡 **Live support**: Operator tooling hooks when backend endpoints exist.
+- 🟡 **Advanced role control**: Finer Staff vs Admin feature flags in the UI layer.

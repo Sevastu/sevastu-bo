@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 
 interface DataTableProps<T> {
     data: T[];
-    columns: { key: keyof T; label: string; render?: (item: T) => React.ReactNode }[];
+    columns: { key: keyof T; label: string; render?: (item: T, index: number) => React.ReactNode }[];
     total: number;
     page: number;
     limit: number;
@@ -90,7 +90,7 @@ export function DataTable<T>({
                                 >
                                     {columns.map((col) => (
                                         <td key={col.key as string} className="px-6 py-4 text-foreground/80 group-hover:text-foreground font-medium transition-colors">
-                                            {col.render ? col.render(item) : (item[col.key] as React.ReactNode)}
+                                            {col.render ? col.render(item, rowIndex) : (item[col.key] as React.ReactNode)}
                                         </td>
                                     ))}
                                 </tr>
