@@ -104,7 +104,7 @@ export default function ServicesPage() {
         <AppLayout>
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
                 <div className="flex flex-col gap-1">
-                    <h2 className="text-3xl font-bold tracking-tight text-foreground">Service Management</h2>
+                    <h2 className="text-3xl font-bold tracking-tight text-primary">Service Management</h2>
                     <p className="text-muted-foreground">Manage individual service listings within categories.</p>
                 </div>
 

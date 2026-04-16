@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Hammer, Trophy, TrendingDown, IndianRupee, Filter, Download } from "lucide-react";
 import { cn } from "@/lib/utils";
+import clsx from "clsx";
 
 export default function WorkerPerformancePage() {
     const [data, setData] = useState<WorkerPerformance[]>([]);
@@ -36,17 +37,23 @@ export default function WorkerPerformancePage() {
         {
             key: "rank",
             label: "#",
-            render: (_: any, index: number) => (
-                <span className={cn(
-                    "font-bold w-6 h-6 flex items-center justify-center rounded-full text-[10px]",
-                    index === 0 ? "bg-amber-500 text-white" : 
-                    index === 1 ? "bg-slate-300 text-slate-700" :
-                    index === 2 ? "bg-amber-700 text-white" : "bg-muted text-muted-foreground"
-                )}>
+            render: (_: any, index = 0) => (
+                <span
+                    className={clsx(
+                        "font-bold w-6 h-6 flex items-center justify-center rounded-full text-[10px]",
+                        index === 0
+                        ? "bg-amber-500 text-white"
+                        : index === 1
+                        ? "bg-slate-300 text-slate-700"
+                        : index === 2
+                        ? "bg-amber-700 text-white"
+                        : "bg-primary text-primary-foreground"
+                    )}
+                    >
                     {index + 1}
                 </span>
-            )
-        },
+            ),
+        },        
         { 
             key: "worker", 
             label: "Professional",
@@ -106,7 +113,7 @@ export default function WorkerPerformancePage() {
             <div className="flex flex-col gap-8">
                 <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                     <div className="flex flex-col gap-1">
-                        <h2 className="text-3xl font-extrabold tracking-tight text-foreground flex items-center gap-3">
+                        <h2 className="text-3xl font-bold tracking-tight text-primary flex items-center gap-3">
                             <Trophy className="w-8 h-8 text-amber-500" />
                             Worker Leaderboard
                         </h2>
