@@ -1,5 +1,5 @@
 "use client"
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Search, 
   Filter, 
@@ -17,62 +17,69 @@ import {
 import { StatusBadge } from '../../components/ui/StatusBadge';
 import { JobDetailDrawer } from '../../components/jobs/JobDetailDrawer';
 import { AppLayout } from '@/components/layout/AppLayout';
+// import { Job } from '@/features/jobs/types';
 
-interface Job {
-  id: string;
-  customer: string;
-  service: string;
-  status: 'open' | 'assigned' | 'in_progress' | 'completed' | 'cancelled';
-  date: string;
-  price: string;
-  worker?: string;
-}
+// import React, { useEffect, useState, useCallback, useMemo } from "react";
+import { fetchJobs } from "@/features/jobs/api";
+import { Job, JobStatus, JobFilters } from "@/features/jobs/types";
+import { DataTable } from "@/components/DataTable";
+// import { AppLayout } from "@/components/layout/AppLayout";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+// import { Filter, Eye, Calendar, Search } from "lucide-react";
+import { getUser } from "@/lib/auth";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../components/ui/select";
+import { JobDetailsSheet } from "./components/JobDetailsSheet";
+import { cn } from "@/lib/utils";
+import { formatDate } from "@/lib/date-utils";
+import { Input } from "@/components/ui/input";
 
-const mockJobs: Job[] = [
-  {
-    id: 'JOB-001',
-    customer: 'John Doe',
-    service: 'Home Cleaning',
-    status: 'open',
-    date: '2024-01-15',
-    price: '$45'
-  },
-  {
-    id: 'JOB-002',
-    customer: 'Jane Smith',
-    service: 'Plumbing',
-    status: 'assigned',
-    date: '2024-01-15',
-    price: '$89',
-    worker: 'Mike Wilson'
-  },
-  {
-    id: 'JOB-003',
-    customer: 'Bob Johnson',
-    service: 'Electrical',
-    status: 'in_progress',
-    date: '2024-01-14',
-    price: '$120',
-    worker: 'Sarah Davis'
-  },
-  {
-    id: 'JOB-004',
-    customer: 'Alice Brown',
-    service: 'Painting',
-    status: 'completed',
-    date: '2024-01-13',
-    price: '$250',
-    worker: 'Tom Harris'
-  },
-  {
-    id: 'JOB-005',
-    customer: 'Charlie Wilson',
-    service: 'Gardening',
-    status: 'cancelled',
-    date: '2024-01-13',
-    price: '$35'
-  }
-];
+
+// const mockJobs: Job[] = [
+//   {
+//     id: 'JOB-001',
+//     customer: 'John Doe',
+//     service: 'Home Cleaning',
+//     status: 'open',
+//     date: '2024-01-15',
+//     price: '$45'
+//   },
+//   {
+//     id: 'JOB-002',
+//     customer: 'Jane Smith',
+//     service: 'Plumbing',
+//     status: 'assigned',
+//     date: '2024-01-15',
+//     price: '$89',
+//     worker: 'Mike Wilson'
+//   },
+//   {
+//     id: 'JOB-003',
+//     customer: 'Bob Johnson',
+//     service: 'Electrical',
+//     status: 'in_progress',
+//     date: '2024-01-14',
+//     price: '$120',
+//     worker: 'Sarah Davis'
+//   },
+//   {
+//     id: 'JOB-004',
+//     customer: 'Alice Brown',
+//     service: 'Painting',
+//     status: 'completed',
+//     date: '2024-01-13',
+//     price: '$250',
+//     worker: 'Tom Harris'
+//   },
+//   {
+//     id: 'JOB-005',
+//     customer: 'Charlie Wilson',
+//     service: 'Gardening',
+//     status: 'cancelled',
+//     date: '2024-01-13',
+//     price: '$35'
+//   }
+// ];
 
 export default function JobsManagement() {
   const [searchTerm, setSearchTerm] = useState('');
@@ -81,15 +88,44 @@ export default function JobsManagement() {
   const [selectedJob, setSelectedJob] = useState<Job | null>(null);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   
-  const filteredJobs = mockJobs.filter(job => {
-    const matchesSearch = job.customer.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         job.service.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         job.id.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesStatus = selectedStatus === 'all' || job.status === selectedStatus;
-    const matchesDate = !selectedDate || job.date === selectedDate;
-    
-    return matchesSearch && matchesStatus && matchesDate;
-  });
+  const [jobs, setJobs] = useState<Job[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const loadJobs = async () => {
+      try {
+        const result = await fetchJobs({});
+        console.log("API Response:", result);
+
+        setJobs(result.data);
+      } catch (error) {
+        console.error("Error fetching jobs:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadJobs();
+  }, []);
+
+  const filteredJobs = Array.isArray(jobs)
+  ? jobs.filter(job => {
+      const matchesSearch =
+        job.customerId?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        job.service?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        job.id?.toLowerCase().includes(searchTerm.toLowerCase());
+
+      const matchesStatus =
+        selectedStatus === 'all' || job.status === selectedStatus;
+
+      const matchesDate =
+        !selectedDate || job.scheduledAt === selectedDate;
+
+      return matchesSearch && matchesStatus && matchesDate;
+    })
+  : [];
+
+  // console.log("API Response:", data);
 
   const handleJobClick = (job: Job) => {
     setSelectedJob(job);
@@ -203,7 +239,7 @@ export default function JobsManagement() {
                         <div className="w-8 h-8 bg-[var(--color-muted)] rounded-full flex items-center justify-center">
                           <User size={16} className="text-[var(--color-text-secondary)]" />
                         </div>
-                        {job.customer}
+                        {job.customerId}
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-[var(--color-text)]">
@@ -218,14 +254,14 @@ export default function JobsManagement() {
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-[var(--color-text)]">
                       <div className="flex items-center gap-2">
                         <Calendar size={16} className="text-[var(--color-text-secondary)]" />
-                        {job.date}
+                        {job.scheduledAt}
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-[var(--color-text)]">
                       {job.price}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-[var(--color-text)]">
-                      {job.worker || '-'}
+                      {job.workerId || '-'}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium text-[var(--color-text)]">
                       <button
