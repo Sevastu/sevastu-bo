@@ -15,28 +15,7 @@ import {
 } from 'lucide-react';
 import { StatusBadge } from '../ui/StatusBadge';
 import { WorkerAssignmentPanel } from './WorkerAssignmentPanel';
-
-interface Job {
-  id: string;
-  customer: string;
-  service: string;
-  status: 'open' | 'assigned' | 'in_progress' | 'completed' | 'cancelled';
-  date: string;
-  price: string;
-  worker?: string;
-  customerInfo?: {
-    email: string;
-    phone: string;
-    address: string;
-  };
-  workerInfo?: {
-    name: string;
-    email: string;
-    phone: string;
-    rating: number;
-    experience: string;
-  };
-}
+import { Job } from '@/features/jobs/types';
 
 interface JobDetailDrawerProps {
   isOpen: boolean;
@@ -105,7 +84,7 @@ export const JobDetailDrawer: React.FC<JobDetailDrawerProps> = ({ isOpen, onClos
               </div>
               <div>
                 <div className="text-sm font-medium text-[var(--color-text-secondary)]">Date</div>
-                <div className="font-medium text-[var(--color-text)]">{job.date}</div>
+                <div className="font-medium text-[var(--color-text)]">{job.scheduledAt}</div>
               </div>
               <div>
                 <div className="text-sm font-medium text-[var(--color-text-secondary)]">Status</div>
@@ -149,7 +128,7 @@ export const JobDetailDrawer: React.FC<JobDetailDrawerProps> = ({ isOpen, onClos
                     <User size={24} className="text-[var(--color-text-secondary)]" />
                   </div>
                   <div>
-                    <div className="font-medium text-[var(--color-text)]">{job.customer}</div>
+                    <div className="font-medium text-[var(--color-text)]">{job.customerId}</div>
                     <div className="text-sm text-[var(--color-text-secondary)]">Customer</div>
                   </div>
                 </div>
@@ -172,7 +151,7 @@ export const JobDetailDrawer: React.FC<JobDetailDrawerProps> = ({ isOpen, onClos
           )}
 
           {/* Worker Info */}
-          {job.worker && (
+          {job.workerId && (
             <div>
               <h3 className="text-lg font-semibold text-[var(--color-text)] mb-4">Worker Information</h3>
               <div className="bg-[var(--color-muted)] rounded-lg p-4">
@@ -183,7 +162,7 @@ export const JobDetailDrawer: React.FC<JobDetailDrawerProps> = ({ isOpen, onClos
                       <User size={24} className="text-[var(--color-text-secondary)]" />
                     </div>
                     <div>
-                      <div className="font-medium text-[var(--color-text)]">{job.worker}</div>
+                      <div className="font-medium text-[var(--color-text)]">{job.workerId}</div>
                       <div className="text-sm text-[var(--color-text-secondary)]">Service Provider</div>
                     </div>
                   </div>
