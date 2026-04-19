@@ -137,10 +137,10 @@ export function AppLayout({ children }: AppLayoutProps) {
         <div className="min-h-screen bg-background text-foreground flex transition-colors duration-300">
             {/* Sidebar */}
             <aside className={cn(
-                "bg-card transition-all duration-300 flex flex-col shadow-sm z-20",
+                "fixed bg-card transition-all duration-300 flex flex-col h-screen top-0 left-0 bottom-0 overflow-y-auto z-50 scrollbar-thin scrollbar-thumb-muted scrollbar-track-transparent",
                 isSidebarOpen ? 'w-64' : 'w-20'
             )}>
-                <div className="h-16 flex items-center justify-between px-4">
+                <div className="bg-card flex items-center justify-between px-4 py-3.5">
                     <div className={cn(
                         "font-bold text-3xl tracking-tight text-primary transition-all",
                         isSidebarOpen ? 'opacity-100' : 'opacity-0 w-0 overflow-hidden'
@@ -202,7 +202,7 @@ export function AppLayout({ children }: AppLayoutProps) {
             </aside>
 
             {/* Main Content */}
-            <main className="flex-1 flex flex-col min-w-0 transition-all duration-300">
+            <main className="flex-1 flex flex-col min-w-0 pl-64 transition-all duration-300">
                 <header className="h-16 bg-card flex items-center justify-between px-8 shadow-sm z-10 sticky top-0">
                     <div className="flex items-center gap-4">
                         <h1 className="text-lg font-semibold text-foreground/90 capitalize tracking-tight">
@@ -225,7 +225,7 @@ export function AppLayout({ children }: AppLayoutProps) {
                     </div>
                 </header>
 
-                <div className="flex-1 p-8 overflow-y-auto bg-theme-bg scrollbar-thin scrollbar-thumb-muted">
+                <div className="flex-1 p-6 overflow-y-auto bg-theme-bg scrollbar-thin scrollbar-thumb-muted">
                     <div className="animate-in fade-in slide-in-from-bottom-2 duration-500">
                         {children}
                     </div>

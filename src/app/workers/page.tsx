@@ -232,8 +232,8 @@ export default function WorkersPage() {
             },
         },
         {
-            key: "actions",
-            label: "Actions",
+            // key: "actions",
+            // label: "Actions",
             render: (u: Record<string, unknown>) => {
                 // return (
                 //     <div className="flex items-center justify-end gap-2">
@@ -258,12 +258,12 @@ export default function WorkersPage() {
 
     return (
         <AppLayout>
-            <div className="p-6 bg-gray-50 min-h-screen">
+            <div className="p-6 bg-card min-h-screen rounded-lg">
                 {/* Header Section */}
                 <div className="mb-8">
                     <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 mb-6">
                         <div>
-                            <h1 className="text-2xl font-bold text-gray-900 mb-2">Worker Management</h1>
+                            <h1 className="text-2xl font-bold text-primary mb-2">Worker Management</h1>
                             <p className="text-gray-600">Manage and monitor service providers</p>
                         </div>
                         
@@ -281,7 +281,7 @@ export default function WorkersPage() {
                             placeholder="Search workers..."
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
-                            className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            className="bg-white w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                         />
                     </div>
                 </div>

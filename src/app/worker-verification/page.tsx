@@ -354,7 +354,7 @@ const WorkerVerification: React.FC = () => {
       <div className="space-y-6">
         {/* Header */}
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Worker-Verification</h1>
+          <h1 className="text-2xl font-bold text-primary">Worker-Verification</h1>
           <p className="text-gray-600">Review and verify worker documents and credentials</p>
         </div>
 
