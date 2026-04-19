@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { getToken, clearAuth } from './auth';
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://sevastu-be.onrender.com';
-// const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+// const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://sevastu-be.onrender.com';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
 
 /** Render and similar hosts often need 30–60s+ on cold start; 10s caused login timeouts. */
 const API_TIMEOUT_MS = Number(process.env.NEXT_PUBLIC_API_TIMEOUT_MS) || 60000;
