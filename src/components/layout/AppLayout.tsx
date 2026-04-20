@@ -137,22 +137,24 @@ export function AppLayout({ children }: AppLayoutProps) {
         <div className="min-h-screen bg-background text-foreground flex transition-colors duration-300">
             {/* Sidebar */}
             <aside className={cn(
-                "fixed bg-card transition-all duration-300 flex flex-col h-screen top-0 left-0 bottom-0 overflow-y-auto z-50 scrollbar-thin scrollbar-thumb-muted scrollbar-track-transparent",
+                "fixed bg-card transition-all duration-300 flex flex-col h-screen top-0 left-0 bottom-0 overflow-y-auto z-50 bg-theme-bg scrollbar-thin scrollbar-thumb-muted scrollbar-track-transparent",
                 isSidebarOpen ? 'w-64' : 'w-20'
-            )}>
-                <div className="bg-card flex items-center justify-between px-4 py-3.5">
-                    <div className={cn(
-                        "font-bold text-3xl tracking-tight text-primary transition-all",
-                        isSidebarOpen ? 'opacity-100' : 'opacity-0 w-0 overflow-hidden'
-                    )}>
-                        Sevastu
+            )}> 
+                <div className=" ">
+                    <div className="bg-card flex items-center justify-between px-4 py-3.5">
+                        <div className={cn(
+                            "font-bold text-3xl tracking-tight text-primary transition-all",
+                            isSidebarOpen ? 'opacity-100' : 'opacity-0 w-0 overflow-hidden'
+                        )}>
+                            Sevastu
+                        </div>
+                        <button
+                            onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+                            className="p-2 rounded-xl hover:bg-muted text-muted-foreground transition-all hover:text-primary active:scale-95"
+                        >
+                            <Menu className="w-5 h-5" />
+                        </button>
                     </div>
-                    <button
-                        onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-                        className="p-2 rounded-xl hover:bg-muted text-muted-foreground transition-all hover:text-primary active:scale-95"
-                    >
-                        <Menu className="w-5 h-5" />
-                    </button>
                 </div>
 
                 <nav className="flex-1 py-6 px-3 space-y-2">
@@ -203,7 +205,7 @@ export function AppLayout({ children }: AppLayoutProps) {
 
             {/* Main Content */}
             <main className="flex-1 flex flex-col min-w-0 pl-64 transition-all duration-300">
-                <header className="h-16 bg-card flex items-center justify-between px-8 shadow-sm z-10 sticky top-0">
+                <header className="h-16 bg-card flex items-center justify-between px-8 z-10 sticky top-0">
                     <div className="flex items-center gap-4">
                         <h1 className="text-lg font-semibold text-foreground/90 capitalize tracking-tight">
                             {pathname?.split('/')[1]?.replace(/-/g, ' ') || 'Dashboard'}
