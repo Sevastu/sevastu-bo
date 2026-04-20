@@ -2,7 +2,7 @@
 
 import { LanguageSwitch } from "./LanguageSwitch";
 import { DarkModeToggle } from "./DarkModeToggle";
-import logo from "@/assets/logo4.png";
+import logo from "@/assets/logo5.png";
 
 export function LoginNavbar() {
   return (
@@ -14,7 +14,7 @@ export function LoginNavbar() {
               {/* <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
               </svg> */}
-              <img src={logo.src} alt="Sevastu Logo" className="w-15 h-15" />
+              <img src={logo.src} alt="Sevastu Logo" className="w-12 h-12" />
           </div>
           <h1 className="text-3xl font-bold text-theme-primary">
             Sevastu

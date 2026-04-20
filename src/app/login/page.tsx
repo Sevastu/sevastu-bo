@@ -38,11 +38,11 @@ export default function LoginPage() {
             <LoginNavbar />
 
             {/* Main Content */}
-            <div className="flex-1 flex items-center justify-center px-6 py-12 bg-theme-bg">
-                <div className="w-full max-w-6xl bg-theme-card rounded-2xl shadow-theme-lg overflow-hidden transition-theme border-1 border-[var(--color-bg)]">
+            <div className="flex-1 flex items-center justify-center py-5 bg-theme-bg">
+                <div className="w-full max-w-5xl bg-theme-card rounded-sm shadow-theme-sm overflow-hidden transition-theme border-1 border-[var(--color-bg)]">
                     <div className="grid md:grid-cols-2">
                         {/* Left Section - Login Form */}
-                        <div className="p-8 lg:p-12">
+                        <div className="px-2 py-15">
                             <div className="max-w-sm mx-auto">
                                 <CardHeader className="space-y-1 p-0 mb-8">
                 
@@ -129,37 +129,38 @@ export default function LoginPage() {
                         </div>
 
                         {/* Right Section - Welcome Content */}
-                        <div className="bg-gradient-theme p-8 lg:p-12 flex items-center justify-center transition-theme">
-                            <div className="max-w-md text-center">
-                                <h2 className="text-3xl mb-8 font-bold text-theme-secondary">
-                                    Welcome to <span className="text-theme-primary">Sevastu</span> Backoffice
-                                </h2>
-                                <div className="mb-4">
-                                    <img 
-                                        src="https://images.pexels.com/photos/8961297/pexels-photo-8961297.jpeg" 
-                                        alt="Sevastu Dashboard" 
-                                        className="w-84 h-90 mx-auto rounded-lg object-cover shadow-[10px_10px_25px_rgba(0,0,0,1)]"
-                                    />
-                                </div>
-                                <p className="text-theme-secondary leading-relaxed">
-                                        Your comprehensive admin dashboard for managing and monitoring all aspects of your Sevastu platform. Access powerful tools and insights in one centralized location.
-                                </p>
-                                <div className="mt-8 flex justify-center space-x-8">
-                                    <div className="text-center">
-                                        <div className="text-2xl font-bold text-theme-primary">24/7</div>
-                                        <div className="text-sm text-theme-secondary">Support</div>
-                                    </div>
-                                    <div className="text-center">
-                                        <div className="text-2xl font-bold text-theme-primary">99.9%</div>
-                                        <div className="text-sm text-theme-secondary">Uptime</div>
-                                    </div>
-                                    <div className="text-center">
-                                        <div className="text-2xl font-bold text-theme-primary">Secure</div>
-                                        <div className="text-sm text-theme-secondary">Platform</div>
+                        {/* <div className="bg-gradient-theme p-8 lg:p-12 flex items-center justify-center transition-theme"> */}
+                            <div className="relative max-w-lg">
+                                <img 
+                                    src="https://plus.unsplash.com/premium_photo-1661778564677-e2f4ab3c2a3b?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
+                                    alt="Sevastu Dashboard" 
+                                    className="w-full h-150 opacity-75"
+                                />
+                                <div className="absolute inset-0 px-8 flex flex-col justify-end mb-6">
+                                    <h2 className="text-3xl font-bold text-white">
+                                        Connecting <span className="text-white">Skills</span> with needs, everywhere.
+                                    </h2>
+                                    
+                                    <p className="text-theme-secondary leading-relaxed">
+                                        Empowering service provider and customers through a seamless, trusted platform designed for community growth.
+                                    </p>
+                                    <div className="flex justify-start space-x-15">
+                                        <div className="text-center">
+                                            <div className="text-2xl font-bold text-theme-primary">24/7</div>
+                                            <div className="text-sm text-theme-secondary">Support</div>
+                                        </div>
+                                        <div className="text-center">
+                                            <div className="text-2xl font-bold text-theme-primary">99.9%</div>
+                                            <div className="text-sm text-theme-secondary">Uptime</div>
+                                        </div>
+                                        <div className="text-center">
+                                            <div className="text-2xl font-bold text-theme-primary">Secure</div>
+                                            <div className="text-sm text-theme-secondary">Platform</div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        {/* </div> */}
                     </div>
                 </div>
             </div>
