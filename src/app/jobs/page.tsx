@@ -102,7 +102,7 @@ export default function JobsPage() {
         },
         {
             key: "actions",
-            label: "",
+            label: "Action",
             render: (item: Job) => (
                 <Button 
                     size="sm" 
