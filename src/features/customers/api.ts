@@ -55,12 +55,12 @@ export const fetchCustomers = async (filters: CustomerFilters & { page?: number;
 };
 
 export const fetchCustomerById = async (id: string) => {
-    const res = await apiClient.get<Customer>(`/admin/customers/${id}`);
+    const res = await apiClient.get<Customer>(`/admin/users/${id}`);
     return res.data;
 };
 
 export const updateCustomerStatus = async (id: string, status: 'active' | 'inactive') => {
-    const res = await apiClient.patch<Customer>(`/admin/customers/${id}/status`, { status });
+    const res = await apiClient.patch<Customer>(`/admin/users/${id}/status`, { status });
     return res.data;
 };
 

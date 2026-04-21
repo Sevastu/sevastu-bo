@@ -1,13 +1,14 @@
 "use client";
 
 import React, { useEffect, useState, useMemo } from "react";
-import { Search, Plus, MoreVertical, MapPin, Phone, Calendar, TrendingUp, Users, UserCheck, DollarSign } from "lucide-react";
+import { Search, Plus, MoreVertical, MapPin, Phone, Calendar, TrendingUp, Users, UserCheck, DollarSign, Eye } from "lucide-react";
 import { fetchCustomers, fetchCustomerAnalytics, updateCustomerStatus } from "@/features/customers/api";
 import { DataTable } from "@/components/DataTable";
 import { AppLayout } from "@/components/layout/AppLayout";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { StatusBadge } from "./components/StatusBadge";
+import { CustomerProfileDrawer } from "./components/CustomerProfileDrawer";
 
 interface CustomerAnalytics {
     totalCustomers: number;
@@ -28,6 +29,8 @@ export default function CustomersPage() {
     const [viewStatus, setViewStatus] = useState<StatusFilter>('all');
     const [analytics, setAnalytics] = useState<CustomerAnalytics | null>(null);
     const [dateRange, setDateRange] = useState<{ from?: string; to?: string } | undefined>(undefined);
+    const [selectedCustomerId, setSelectedCustomerId] = useState<string | null>(null);
+    const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
     const loadCustomers = async () => {
         setLoading(true);
@@ -66,12 +69,25 @@ export default function CustomersPage() {
         }
     };
 
+    const handleRowClick = (customer: any) => {
+        setSelectedCustomerId(customer._id);
+        setIsDrawerOpen(true);
+    };
+
+    const handleDrawerClose = () => {
+        setIsDrawerOpen(false);
+        setSelectedCustomerId(null);
+    };
+
     const columns = useMemo(() => [
         {
             key: "name",
             label: "Name",
             render: (customer: any) => (
-                <div className="flex items-center gap-3">
+                <div 
+                    className="flex items-center gap-3 cursor-pointer hover:bg-gray-50 p-2 rounded-lg transition-colors"
+                    onClick={() => handleRowClick(customer)}
+                >
                     <div className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center">
                         {customer.avatarUrl ? (
                             <img 
@@ -133,9 +149,18 @@ export default function CustomersPage() {
             key: "actions",
             label: "Actions",
             render: (customer: any) => (
-                <button className="text-gray-400 hover:text-gray-600 transition-colors">
-                    <MoreVertical className="w-4 h-4" />
-                </button>
+                <div className="flex items-center space-x-2">
+                    <button 
+                        onClick={() => handleRowClick(customer)}
+                        className="text-blue-600 hover:text-blue-800 transition-colors p-1 rounded hover:bg-blue-50"
+                        title="View Customer Details"
+                    >
+                        <Eye className="w-4 h-4" />
+                    </button>
+                    <button className="text-gray-400 hover:text-gray-600 transition-colors p-1 rounded hover:bg-gray-50">
+                        <MoreVertical className="w-4 h-4" />
+                    </button>
+                </div>
             ),
         },
     ], []);
@@ -279,6 +304,13 @@ export default function CustomersPage() {
                     isLoading={loading}
                 />
             </div>
+            
+            {/* Customer Profile Drawer */}
+            <CustomerProfileDrawer
+                customerId={selectedCustomerId}
+                isOpen={isDrawerOpen}
+                onClose={handleDrawerClose}
+            />
         </AppLayout>
     );
 }
