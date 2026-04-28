@@ -119,7 +119,7 @@ export const JobDetailDrawer: React.FC<JobDetailDrawerProps> = ({ isOpen, onClos
           </div>
 
           {/* Customer Info */}
-          {job.customerInfo && (
+          {job.customerId && (
             <div>
               <h3 className="text-lg font-semibold text-[var(--color-text)] mb-4">Customer Information</h3>
               <div className="bg-[var(--color-muted)] rounded-lg p-4">
@@ -135,15 +135,15 @@ export const JobDetailDrawer: React.FC<JobDetailDrawerProps> = ({ isOpen, onClos
                 <div className="space-y-3">
                   <div className="flex items-center gap-3">
                     <Mail size={16} className="text-[var(--color-text-secondary)]" />
-                    <span className="text-sm text-[var(--color-text)]">{job.customerInfo?.email || 'customer@example.com'}</span>
+                    <span className="text-sm text-[var(--color-text)]">customer@example.com</span>
                   </div>
                   <div className="flex items-center gap-3">
                     <Phone size={16} className="text-[var(--color-text-secondary)]" />
-                    <span className="text-sm text-[var(--color-text)]">{job.customerInfo?.phone || '+1234567890'}</span>
+                    <span className="text-sm text-[var(--color-text)]">+1234567890</span>
                   </div>
                   <div className="flex items-center gap-3">
                     <MapPin size={16} className="text-[var(--color-text-secondary)]" />
-                    <span className="text-sm text-[var(--color-text)]">{job.customerInfo?.address || '123 Main St, City, State'}</span>
+                    <span className="text-sm text-[var(--color-text)]">{job.address || '123 Main St, City, State'}</span>
                   </div>
                 </div>
               </div>
@@ -170,7 +170,7 @@ export const JobDetailDrawer: React.FC<JobDetailDrawerProps> = ({ isOpen, onClos
                 <div className="space-y-3">
                   <div className="flex items-center gap-3">
                     <Star size={16} className="text-[var(--color-warning)]" />
-                    <span className="text-sm text-[var(--color-text-secondary)]">{job.workerInfo?.rating || 4.8}</span>
+                    <span className="text-sm text-[var(--color-text-secondary)]">4.8</span>
                   </div>
                   <div>
                     <div className="text-sm font-medium text-[var(--color-text-secondary)]">Rating</div>
@@ -179,7 +179,7 @@ export const JobDetailDrawer: React.FC<JobDetailDrawerProps> = ({ isOpen, onClos
                 <div className="space-y-3">
                   <div className="flex items-center gap-3">
                     <Mail size={16} className="text-[var(--color-text-secondary)]" />
-                    <span className="text-sm text-[var(--color-text)]">{job.workerInfo?.email || 'worker@example.com'}</span>
+                    <span className="text-sm text-[var(--color-text)]">worker@example.com</span>
                   </div>
                   <div className="text-sm text-[var(--color-text-secondary)]">Email</div>
                   </div>
