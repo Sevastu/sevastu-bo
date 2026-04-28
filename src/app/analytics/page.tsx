@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { DashboardLayout } from "@/components/layout/DashboardLayout";
+// import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { KPICard } from "@/components/ui/KPICard";
 import { SimpleLineChart } from "@/components/charts/SimpleLineChart";
 import { SimplePieChart } from "@/components/charts/SimplePieChart";
@@ -80,7 +80,7 @@ export default function AnalyticsPage() {
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">Analytics</h1>
+            <h1 className="text-2xl font-bold text-primary">Analytics</h1>
             <p className="text-gray-600">Comprehensive insights into your marketplace performance</p>
           </div>
           <div className="flex items-center gap-3">

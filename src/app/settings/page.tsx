@@ -100,7 +100,7 @@ export const Settings: React.FC = () => {
       <div className="space-y-6">
         {/* Header */}
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Settings</h1>
+          <h1 className="text-2xl font-bold text-primary">Settings</h1>
           <p className="text-gray-600">Manage your account and application preferences</p>
         </div>
 

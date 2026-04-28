@@ -1,8 +1,8 @@
 :root {
   /* Core Color Variables - Light Theme */
-  --color-bg: #e6f5fa;
-  --color-bg-secondary: #e1f4f8;
-  --color-card: #eef6fa;
+  --color-bg: #eff3f5;
+  --color-bg-secondary: #e7fcff;
+  --color-card: #f6fbfd;
   --color-text: #0f172a;
   --color-text-secondary: #000000c6;
   --color-text-muted: #073a7d;
@@ -62,7 +62,7 @@
   --color-text: #cfd6dc;
   --color-text-secondary: #b5b7b9;
   --color-text-muted: #94a3b8;
-  --color-primary: #20b7ba;
+  --color-primary: #044cb8;
   --color-primary-hover: #1391ad;
   --color-border: #334155;
   --color-border-hover: #475569;
