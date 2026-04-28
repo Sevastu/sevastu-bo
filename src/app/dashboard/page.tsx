@@ -11,6 +11,8 @@ import { KPICard } from "@/components/ui/KPICard";
 import { JobsChart } from "@/components/charts/JobsChart";
 import { SystemHealth } from "@/components/ui/SystemHealth";
 import { cn } from "@/lib/utils";
+import { DataTable } from "@/components/DataTable";
+import JobsPage from "../jobs/page";
 
 export default function DashboardPage() {
     const [user, setUser] = useState<User | null>(null);
@@ -83,7 +85,7 @@ export default function DashboardPage() {
         <div className="space-y-8">
             <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
                 <div className="flex flex-col gap-1">
-                    <h1 className="text-3xl font-bold tracking-tight text-foreground">Dashboard</h1>
+                    <h1 className="text-3xl font-bold tracking-tight text-primary">Dashboard</h1>
                     <p className="text-muted-foreground font-medium text-lg">Overview of your service marketplace operations</p>
                 </div>
                 <div className="flex gap-3">
@@ -97,21 +99,21 @@ export default function DashboardPage() {
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
                 <KPICard
                     title="Total Jobs"
-                    value="1,234"
+                    value={String((stats?.activeJobs ?? 0) + (stats?.completedToday ?? 0))}
                     change="+12%"
                     changeType="increase"
                     icon={<Briefcase size={20} />}
                 />
                 <KPICard
                     title="Active Jobs"
-                    value="89"
+                    value={String(stats?.activeJobs ?? 0)}
                     change="+5%"
                     changeType="increase"
                     icon={<Clock size={20}/>}
                 />
                 <KPICard
                     title="Completed Jobs"
-                    value="1,145"
+                    value={String(stats?.completedToday ?? 0)}
                     change="+18%"
                     changeType="increase"
                     icon={<CheckCircle size={20} />}

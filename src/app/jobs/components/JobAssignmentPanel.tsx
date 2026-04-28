@@ -24,9 +24,16 @@ export function JobAssignmentPanel({ jobId, currentWorkerId, jobStatus, onAssign
         const loadWorkers = async () => {
             try {
                 const data = await fetchBestWorkers(jobId);
-                setWorkers(data);
+                console.log("API Response:", data); // Debug log
+                if (Array.isArray(data)) {
+                    setWorkers(data);
+                } else {
+                    console.error("API response is not an array:", data);
+                    setWorkers([]);
+                }
             } catch (err) {
                 console.error("Failed to load best workers:", err);
+                setWorkers([]);
             } finally {
                 setLoading(false);
             }

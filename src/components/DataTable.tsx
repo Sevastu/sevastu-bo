@@ -39,7 +39,7 @@ export function DataTable<T>({
 
     return (
         <div className="bg-card rounded-xl shadow-md border border-theme-text overflow-hidden transition-all">
-            <div className="p-4 border-b border-border-theme-text flex justify-between items-center bg-card/50 backdrop-blur-sm">
+            {/* <div className="p-4 border-b border-border-theme-text flex justify-between items-center bg-card/50 backdrop-blur-sm">
                 <form onSubmit={handleSearch} className="relative w-72 group">
                     <Input
                         type="text"
@@ -50,7 +50,7 @@ export function DataTable<T>({
                     />
                     <Search className="w-4 h-4 text-muted-foreground absolute left-3 top-3 group-focus-within:text-primary transition-colors" />
                 </form>
-            </div>
+            </div> */}
 
             <div className="overflow-x-auto">
                 <table className="w-full text-sm text-left border-collapse">

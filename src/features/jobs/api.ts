@@ -48,8 +48,13 @@ export const updateJobStatus = async (id: string, status: JobStatus, context?: s
 };
 
 export const fetchBestWorkers = async (id: string) => {
-    const res = await apiClient.get<MatchedWorker[]>(`/admin/jobs/${id}/best-workers`);
-    return res.data;
+    const res = await apiClient.get(`/admin/jobs/${id}/best-workers`);
+    const body = res.data as {
+        success?: boolean;
+        data?: MatchedWorker[];
+    };
+    
+    return body.data || [];
 };
 
 export const reassignJob = async (id: string, workerId: string) => {
