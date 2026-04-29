@@ -133,34 +133,32 @@ export default function LoginPage() {
                         </div>
 
                         {/* Right Section - Welcome Content */}
-                        <div className="hidden lg:flex items-center justify-center bg-gradient-theme">
-                            <div className="relative w-full h-full max-w-3xl">
-                                <img 
-                                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuAmscXJPDSJcaM1n7wty3t4ZYR8ESRFLQAiJQ2QTPxqKnW-RScq56xrihNt5GRRQbQJRm-9SD3A8JuqjJlTDYOtNsHj8BE_8bsQxxdYJ4BXCS0WY_Aw8vUMidoAgodSg-YbGrhNtf6oKIme__5d16yq6tv0t5Ub9h2tx9GhfqvUmyzdWX9mGHhUFCDD4X3IQdPBQjfr0Mw-ffIZSOFA0gwFglcnRRyVblAMlPkK7lR0uCs7pGgL7l5C4xGVCPphfzOXMlkRLEW8pAyQ" 
-                                    alt="Sevastu Dashboard" 
-                                    className="w-full h-[32rem] lg:h-[50rem] object-cover opacity-75 overflow-hidden saturate-120"
-                                />
-                                <div className="absolute inset-0 px-8 lg:px-12 flex flex-col justify-end mb-6 lg:mb-8">
-                                    <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-white mb-2">
-                                        Connecting <span className="text-white">Skills</span> with needs, everywhere.
-                                    </h2>
-                                    
-                                    <p className="text-white/80 text-sm sm:text-base leading-relaxed mb-4">
-                                        Empowering service provider and customers through a seamless, trusted platform designed for community growth.
-                                    </p>
-                                    <div className="flex justify-start space-x-4 sm:space-x-6 lg:space-x-8">
-                                        <div className="text-center">
-                                            <div className="text-lg sm:text-xl lg:text-2xl font-bold text-primary/70">24/7</div>
-                                            <div className="text-xs sm:text-sm text-white/80">Support</div>
-                                        </div>
-                                        <div className="text-center">
-                                            <div className="text-lg sm:text-xl lg:text-2xl font-bold text-primary/70">99.9%</div>
-                                            <div className="text-xs sm:text-sm text-white/80">Uptime</div>
-                                        </div>
-                                        <div className="text-center">
-                                            <div className="text-lg sm:text-xl lg:text-2xl font-bold text-primary/70">Secure</div>
-                                            <div className="text-xs sm:text-sm text-white/80">Platform</div>
-                                        </div>
+                        <div className="relative w-full h-full bg-gradient-theme overflow-hidden">
+                            <img 
+                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuAmscXJPDSJcaM1n7wty3t4ZYR8ESRFLQAiJQ2QTPxqKnW-RScq56xrihNt5GRRQbQJRm-9SD3A8JuqjJlTDYOtNsHj8BE_8bsQxxdYJ4BXCS0WY_Aw8vUMidoAgodSg-YbGrhNtf6oKIme__5d16yq6tv0t5Ub9h2tx9GhfqvUmyzdWX9mGHhUFCDD4X3IQdPBQjfr0Mw-ffIZSOFA0gwFglcnRRyVblAMlPkK7lR0uCs7pGgL7l5C4xGVCPphfzOXMlkRLEW8pAyQ" 
+                                alt="Sevastu Dashboard" 
+                                className="w-full h-[40rem] md:h-[45rem] lg:h-[50rem] xl:h-[55rem] 2xl:h-[50rem] object-cover opacity-75 saturate-120"
+                            />
+                            <div className="absolute inset-0 px-8 lg:px-12 flex flex-col justify-end mb-6 lg:mb-8">
+                                <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-white mb-2">
+                                    Connecting <span className="text-white">Skills</span> with needs, everywhere.
+                                </h2>
+                                
+                                <p className="text-white/80 text-sm sm:text-base leading-relaxed mb-4">
+                                    Empowering service provider and customers through a seamless, trusted platform designed for community growth.
+                                </p>
+                                <div className="flex justify-start space-x-4 sm:space-x-6 lg:space-x-8">
+                                    <div className="text-center">
+                                        <div className="text-lg sm:text-xl lg:text-2xl font-bold text-primary/70">24/7</div>
+                                        <div className="text-xs sm:text-sm text-white/80">Support</div>
+                                    </div>
+                                    <div className="text-center">
+                                        <div className="text-lg sm:text-xl lg:text-2xl font-bold text-primary/70">99.9%</div>
+                                        <div className="text-xs sm:text-sm text-white/80">Uptime</div>
+                                    </div>
+                                    <div className="text-center">
+                                        <div className="text-lg sm:text-xl lg:text-2xl font-bold text-primary/70">Secure</div>
+                                        <div className="text-xs sm:text-sm text-white/80">Platform</div>
                                     </div>
                                 </div>
                             </div>
