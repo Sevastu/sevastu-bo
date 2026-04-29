@@ -45,10 +45,10 @@ export default function LoginPage() {
                         {/* Left Section - Login Form */}
                         <div className="flex items-center justify-center">
                             <div className="flex items-center lg:w-100 sm:w-100">
-                                <div className="w-full max-w-md mx-auto">
+                                <div className="w-full max-w-lg mx-auto">
                                     <CardHeader className="space-y-0 p-2 mb-4">
                                         <img src={logo.src} alt="Sevastu" className="w-20 h-20 mx-auto mb-[-4]" />
-                                        <CardTitle className="text-2xl sm:text-3xl font-bold text-theme-primary text-center">
+                                        <CardTitle className="text-2xl sm:text-4xl font-bold text-theme-primary text-center">
                                             {/* Login Into Administrative Dashboard */}
                                             Sevastu
                                         </CardTitle>
@@ -133,12 +133,12 @@ export default function LoginPage() {
                         </div>
 
                         {/* Right Section - Welcome Content */}
-                        <div className="hidden lg:flex items-center justify-center bg-gradient-theme p-0 sm:p-0 lg:p-0">
+                        <div className="hidden lg:flex items-center justify-center bg-gradient-theme p-0 sm:p-6 lg:p-0">
                             <div className="relative">
                                 <img 
                                     src="https://lh3.googleusercontent.com/aida-public/AB6AXuAmscXJPDSJcaM1n7wty3t4ZYR8ESRFLQAiJQ2QTPxqKnW-RScq56xrihNt5GRRQbQJRm-9SD3A8JuqjJlTDYOtNsHj8BE_8bsQxxdYJ4BXCS0WY_Aw8vUMidoAgodSg-YbGrhNtf6oKIme__5d16yq6tv0t5Ub9h2tx9GhfqvUmyzdWX9mGHhUFCDD4X3IQdPBQjfr0Mw-ffIZSOFA0gwFglcnRRyVblAMlPkK7lR0uCs7pGgL7l5C4xGVCPphfzOXMlkRLEW8pAyQ" 
                                     alt="Sevastu Dashboard" 
-                                    className="h-full sm:h-112 lg:h-180 lg:w-180 object-cover opacity-75 overflow-hidden saturate-120"
+                                    className="h-full sm:h-112 lg:h-200 lg:w-190 object-cover opacity-75 overflow-hidden saturate-120"
                                 />
                                 <div className="absolute inset-0 px-10 sm:px-10 lg:px-20 flex flex-col justify-end mb-8 sm:mb-15">
                                     <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-white mb-2">
