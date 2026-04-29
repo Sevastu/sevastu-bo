@@ -39,13 +39,13 @@ export default function LoginPage() {
             {/* <LoginNavbar /> */}
 
             {/* Main Content */}
-            <div className="flex-1 flex items-center justify-center sm:py-0 lg:py-0 bg-theme-bg">
-                <div className="h-full max-h-screen overflow-hidden transition-theme">
-                    <div className="grid md:grid-cols-1 lg:grid-cols-2">
+            <div className="flex-1 flex bg-theme-bg">
+                <div className="flex w-full h-full">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 w-full">
                         {/* Left Section - Login Form */}
-                        <div className="flex items-center justify-center">
-                            <div className="flex items-center lg:w-100 sm:w-100">
-                                <div className="w-full max-w-lg mx-auto">
+                        <div className="flex items-center justify-center p-4 sm:p-6 lg:p-8">
+                            <div className="w-full max-w-md sm:max-w-lg">
+                                {/* <Card> */}
                                     <CardHeader className="space-y-0 p-2 mb-4">
                                         <img src={logo.src} alt="Sevastu" className="w-20 h-20 mx-auto mb-[-4]" />
                                         <CardTitle className="text-2xl sm:text-4xl font-bold text-theme-primary text-center">
@@ -128,19 +128,19 @@ export default function LoginPage() {
                                             </Button>
                                         </form>
                                     </CardContent>
-                                </div>
+                                {/* </Card> */}
                             </div>
                         </div>
 
                         {/* Right Section - Welcome Content */}
-                        <div className="hidden lg:flex items-center justify-center bg-gradient-theme p-0 sm:p-6 lg:p-0">
-                            <div className="relative">
+                        <div className="hidden lg:flex items-center justify-center bg-gradient-theme">
+                            <div className="relative w-full h-full max-w-3xl">
                                 <img 
                                     src="https://lh3.googleusercontent.com/aida-public/AB6AXuAmscXJPDSJcaM1n7wty3t4ZYR8ESRFLQAiJQ2QTPxqKnW-RScq56xrihNt5GRRQbQJRm-9SD3A8JuqjJlTDYOtNsHj8BE_8bsQxxdYJ4BXCS0WY_Aw8vUMidoAgodSg-YbGrhNtf6oKIme__5d16yq6tv0t5Ub9h2tx9GhfqvUmyzdWX9mGHhUFCDD4X3IQdPBQjfr0Mw-ffIZSOFA0gwFglcnRRyVblAMlPkK7lR0uCs7pGgL7l5C4xGVCPphfzOXMlkRLEW8pAyQ" 
                                     alt="Sevastu Dashboard" 
-                                    className="h-full sm:h-112 lg:h-200 lg:w-190 object-cover opacity-75 overflow-hidden saturate-120"
+                                    className="w-full h-[32rem] lg:h-[50rem] object-cover opacity-75 overflow-hidden saturate-120"
                                 />
-                                <div className="absolute inset-0 px-10 sm:px-10 lg:px-20 flex flex-col justify-end mb-8 sm:mb-15">
+                                <div className="absolute inset-0 px-8 lg:px-12 flex flex-col justify-end mb-6 lg:mb-8">
                                     <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-white mb-2">
                                         Connecting <span className="text-white">Skills</span> with needs, everywhere.
                                     </h2>
@@ -165,7 +165,6 @@ export default function LoginPage() {
                                 </div>
                             </div>
                         </div>
-                        {/* </div> */}
                     </div>
                 </div>
             </div>
