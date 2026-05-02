@@ -18,6 +18,7 @@ export default function LoginPage() {
     const [error, setError] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const [rememberPassword, setRememberPassword] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -43,11 +44,11 @@ export default function LoginPage() {
                 <div className="flex w-full h-full">
                     <div className="grid grid-cols-1 lg:grid-cols-2 w-full">
                         {/* Left Section - Login Form */}
-                        <div className="flex items-center justify-center p-4 sm:p-6 lg:p-8">
-                            <div className="w-full max-w-md sm:max-w-lg">
+                        <div className="flex items-center justify-center p-12 sm:p-6 lg:p-8">
+                            <div className="w-full mb-8 max-w-md sm:max-w-md">
                                 {/* <Card> */}
-                                    <CardHeader className="space-y-0 p-2 mb-4">
-                                        <img src={logo.src} alt="Sevastu" className="w-20 h-20 mx-auto mb-[-4]" />
+                                    <CardHeader className="space-y-0 p-2 mb-2">
+                                        <img src={logo.src} alt="Sevastu" className="w-20 h-20 mx-auto mb-[-3]" />
                                         <CardTitle className="text-2xl sm:text-4xl font-bold text-theme-primary text-center">
                                             {/* Login Into Administrative Dashboard */}
                                             Sevastu
@@ -57,7 +58,7 @@ export default function LoginPage() {
                                         </CardDescription>
                                     </CardHeader>
 
-                                    <CardContent className="p-4 border-t-4 border-primary rounded-xl ">
+                                    <CardContent className="p-6 border-t-4 border-primary rounded-lg bg-white ">
                                         <form onSubmit={handleSubmit} className="space-y-6">
                                             <div className="space-y-2">
                                                 <Label htmlFor="email" className="text-sm font-semibold text-theme-secondary">
@@ -72,7 +73,7 @@ export default function LoginPage() {
                                                     value={email}
                                                     onChange={(e) => setEmail(e.target.value)}
                                                     required
-                                                    className="h-10 border border-theme-border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 input-theme transition-all"
+                                                    className="h-10"
                                                 />
                                             </div>
 
@@ -80,16 +81,34 @@ export default function LoginPage() {
                                                 <Label htmlFor="password" className="text-sm font-semibold text-theme-secondary">
                                                     PASSWORD
                                                 </Label>
-                                                <Input
-                                                    id="password"
-                                                    type="password"
-                                                    autoComplete="current-password"
-                                                    placeholder="••••••••"
-                                                    value={password}
-                                                    onChange={(e) => setPassword(e.target.value)}
-                                                    required
-                                                    className="h-10 border border-theme-border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 input-theme transition-all"
-                                                />
+                                                <div className="relative">
+                                                    <Input
+                                                        id="password"
+                                                        type={showPassword ? "text" : "password"}
+                                                        autoComplete="current-password"
+                                                        placeholder="••••••••"
+                                                        value={password}
+                                                        onChange={(e) => setPassword(e.target.value)}
+                                                        required
+                                                        className="h-10 pr-10"
+                                                    />
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => setShowPassword(!showPassword)}
+                                                        className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 focus:outline-none"
+                                                    >
+                                                        {showPassword ? (
+                                                            <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
+                                                            </svg>
+                                                        ) : (
+                                                            <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                                            </svg>
+                                                        )}
+                                                    </button>
+                                                </div>
                                             </div>
 
                                             {error && (
@@ -127,19 +146,29 @@ export default function LoginPage() {
                                                 {isLoading ? "Signing In..." : "Sign In"}
                                             </Button>
                                         </form>
+                                        <div className="mt-4 pt-2 flex items-center justify-center space-x-2">
+                                            <span className="text-[10px] uppercase font-bold tracking-widest text-on-surface-variant/70">AES-256 Encrypted</span>
+                                            <span className="material-symbols-outlined text-primary text-sm" style={{fontVariationSettings: "'FILL' 1"}}>verified_user</span>
+                                        </div>
                                     </CardContent>
+                                    <div className="mt-4 text-center">
+                                        <p className="text-sm text-on-surface-variant font-medium">
+                                            Need technical assistance? 
+                                            <a className="font-bold text-primary hover:underline underline-offset-4 transition-all" href="#">Contact Support</a>
+                                        </p>
+                                    </div>
                                 {/* </Card> */}
                             </div>
                         </div>
 
                         {/* Right Section - Welcome Content */}
-                        <div className="relative w-full h-full bg-gradient-theme overflow-hidden">
+                        <div className="relative w-full h-full bg-gradient-theme overflow-hidden hidden lg:flex">
                             <img 
                                 src="https://lh3.googleusercontent.com/aida-public/AB6AXuAmscXJPDSJcaM1n7wty3t4ZYR8ESRFLQAiJQ2QTPxqKnW-RScq56xrihNt5GRRQbQJRm-9SD3A8JuqjJlTDYOtNsHj8BE_8bsQxxdYJ4BXCS0WY_Aw8vUMidoAgodSg-YbGrhNtf6oKIme__5d16yq6tv0t5Ub9h2tx9GhfqvUmyzdWX9mGHhUFCDD4X3IQdPBQjfr0Mw-ffIZSOFA0gwFglcnRRyVblAMlPkK7lR0uCs7pGgL7l5C4xGVCPphfzOXMlkRLEW8pAyQ" 
                                 alt="Sevastu Dashboard" 
-                                className="w-full h-[40rem] md:h-[45rem] lg:h-[50rem] xl:h-[55rem] 2xl:h-[50rem] object-cover opacity-75 saturate-120"
+                                className="w-full h-[40rem] md:h-full lg:h-[50rem] xl:h-[45rem] 2xl:h-[80rem] object-cover saturate-100"
                             />
-                            <div className="absolute inset-0 px-8 lg:px-12 flex flex-col justify-end mb-6 lg:mb-8">
+                            <div className="absolute inset-0 bg-blue-600/20 px-8 lg:px-12 lg:py-12 flex flex-col justify-end mb-0 lg:mb-0">
                                 <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-white mb-2">
                                     Connecting <span className="text-white">Skills</span> with needs, everywhere.
                                 </h2>
@@ -149,16 +178,16 @@ export default function LoginPage() {
                                 </p>
                                 <div className="flex justify-start space-x-4 sm:space-x-6 lg:space-x-8">
                                     <div className="text-center">
-                                        <div className="text-lg sm:text-xl lg:text-2xl font-bold text-primary/70">24/7</div>
-                                        <div className="text-xs sm:text-sm text-white/80">Support</div>
+                                        <div className="text-lg sm:text-xl lg:text-2xl font-bold text-white">24/7</div>
+                                        <div className="text-xs sm:text-sm text-white">Support</div>
                                     </div>
                                     <div className="text-center">
-                                        <div className="text-lg sm:text-xl lg:text-2xl font-bold text-primary/70">99.9%</div>
-                                        <div className="text-xs sm:text-sm text-white/80">Uptime</div>
+                                        <div className="text-lg sm:text-xl lg:text-2xl font-bold text-white">99.9%</div>
+                                        <div className="text-xs sm:text-sm text-white">Uptime</div>
                                     </div>
                                     <div className="text-center">
-                                        <div className="text-lg sm:text-xl lg:text-2xl font-bold text-primary/70">Secure</div>
-                                        <div className="text-xs sm:text-sm text-white/80">Platform</div>
+                                        <div className="text-lg sm:text-xl lg:text-2xl font-bold text-white">Secure</div>
+                                        <div className="text-xs sm:text-sm text-white">Platform</div>
                                     </div>
                                 </div>
                             </div>
