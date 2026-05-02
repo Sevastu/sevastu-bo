@@ -35,17 +35,17 @@ export default function LoginPage() {
     };
 
     return (
-        <div className="min-h-screen flex flex-col bg-theme transition-theme">
+        <div className="min-h-screen flex flex-col bg-theme">
             {/* Navbar */}
             {/* <LoginNavbar /> */}
 
             {/* Main Content */}
-            <div className="flex-1 flex bg-theme-bg">
-                <div className="flex w-full h-full">
+            {/* <div className="flex-1 flex bg-theme-bg">
+                <div className="flex w-full h-full"> */}
                     <div className="grid grid-cols-1 lg:grid-cols-2 w-full">
                         {/* Left Section - Login Form */}
                         <div className="flex items-center justify-center p-12 sm:p-6 lg:p-8">
-                            <div className="w-full mb-8 max-w-md sm:max-w-md">
+                            <div className="w-full mb-8 max-w-md sm:max-w-md border border-theme-border rounded-lg">
                                 {/* <Card> */}
                                     <CardHeader className="space-y-0 p-2 mb-2">
                                         <img src={logo.src} alt="Sevastu" className="w-20 h-20 mx-auto mb-[-3]" />
@@ -166,7 +166,7 @@ export default function LoginPage() {
                             <img 
                                 src="https://lh3.googleusercontent.com/aida-public/AB6AXuAmscXJPDSJcaM1n7wty3t4ZYR8ESRFLQAiJQ2QTPxqKnW-RScq56xrihNt5GRRQbQJRm-9SD3A8JuqjJlTDYOtNsHj8BE_8bsQxxdYJ4BXCS0WY_Aw8vUMidoAgodSg-YbGrhNtf6oKIme__5d16yq6tv0t5Ub9h2tx9GhfqvUmyzdWX9mGHhUFCDD4X3IQdPBQjfr0Mw-ffIZSOFA0gwFglcnRRyVblAMlPkK7lR0uCs7pGgL7l5C4xGVCPphfzOXMlkRLEW8pAyQ" 
                                 alt="Sevastu Dashboard" 
-                                className="w-full h-[40rem] md:h-full lg:h-[50rem] xl:h-[45rem] 2xl:h-[80rem] object-cover saturate-100"
+                                className="w-full h-[40rem] md:h-full lg:h-[50rem] xl:h-[45rem] 2xl:h-[50rem] object-cover saturate-100"
                             />
                             <div className="absolute inset-0 bg-blue-600/20 px-8 lg:px-12 lg:py-12 flex flex-col justify-end mb-0 lg:mb-0">
                                 <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-white mb-2">
@@ -192,8 +192,8 @@ export default function LoginPage() {
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
+                    {/* </div> */}
+                {/* </div> */}
             </div>
 
             {/* Footer */}
