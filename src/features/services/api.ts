@@ -64,3 +64,25 @@ export const updateSubService = async (id: string, data: Partial<SubService>) =>
     const res = await apiClient.patch(`/sub-services/${id}`, data);
     return entityFromResponse<SubService>(res);
 };
+
+export const deleteCategory = async (id: string) => {
+    await apiClient.delete(`/categories/${id}`);
+};
+
+export const deleteService = async (id: string) => {
+    await apiClient.delete(`/services/${id}`);
+};
+
+export const deleteSubService = async (id: string) => {
+    await apiClient.delete(`/sub-services/${id}`);
+};
+
+/** Load full catalog hierarchy in parallel for tree UI. */
+export const fetchCatalogTree = async () => {
+    const [categories, services, subServices] = await Promise.all([
+        fetchCategories(),
+        fetchServices(),
+        fetchSubServices(),
+    ]);
+    return { categories, services, subServices };
+};

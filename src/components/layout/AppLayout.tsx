@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { getUser, clearAuth, User } from "@/lib/auth";
-import { LayoutDashboard, Users, Briefcase, FileText, Settings, LogOut, Menu, Loader2, UserCheck, Hammer, Layers, Trophy, PieChartIcon, ActivityIcon, User2Icon } from "lucide-react";
+import { LayoutDashboard, Users, Briefcase, FileText, Settings, LogOut, Menu, Loader2, UserCheck, Hammer, Layers, Trophy, PieChartIcon, ActivityIcon } from "lucide-react";
 import NextLink from "next/link";
 import { cn } from "@/lib/utils";
 import { GraphHelpers } from "next/dist/compiled/webpack/webpack";
@@ -116,9 +116,7 @@ export function AppLayout({ children }: AppLayoutProps) {
     const navItems = [
         { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard, roles: ["admin", "staff"] },
         { name: "Analytics", href: "/analytics", icon: ActivityIcon, roles: ["admin", "staff"] },
-        { name: "Categories", href: "/categories", icon: User2Icon, roles: ["admin", "staff"] },
-        { name: "Services", href: "/services", icon: Hammer, roles: ["admin", "staff"] },
-        { name: "Sub-Services", href: "/sub-services", icon: Layers, roles: ["admin", "staff"] },
+        { name: "Catalog", href: "/catalog", icon: Layers, roles: ["admin", "staff"] },
         { name: "Customers", href: "/customers", icon: UserCheck, roles: ["admin", "staff"] },
         { name: "Workers", href: "/workers", icon: Hammer, roles: ["admin", "staff"] },
         { name: "Worker-Verification", href: "/worker-verification", icon: Hammer, roles: ["admin", "staff"] },
