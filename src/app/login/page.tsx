@@ -73,7 +73,7 @@ export default function LoginPage() {
                                                     value={email}
                                                     onChange={(e) => setEmail(e.target.value)}
                                                     required
-                                                    className="h-10"
+                                                    className="py-4"
                                                 />
                                             </div>
 
@@ -90,7 +90,7 @@ export default function LoginPage() {
                                                         value={password}
                                                         onChange={(e) => setPassword(e.target.value)}
                                                         required
-                                                        className="h-10 pr-10"
+                                                        className="py-4"
                                                     />
                                                     <button
                                                         type="button"
