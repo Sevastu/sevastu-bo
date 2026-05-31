@@ -64,7 +64,7 @@ const SelectValue = ({ placeholder, className, ...rest }: { placeholder?: string
 const SelectContent = ({ className, children, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
     <div
         className={cn(
-            "select-content hidden absolute top-full left-0 z-50 min-w-[8rem] overflow-hidden rounded-md border bg-popover text-popover-foreground shadow-md animate-in fade-in-80 mt-1",
+            "select-content hidden absolute top-full left-0 z-50 min-w-[8rem] overflow-hidden rounded-md border bg-popover text-popover-foreground animate-in fade-in-80 mt-1",
             className
         )}
         {...props}

@@ -3,13 +3,40 @@
 import { useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { getUser, clearAuth, User } from "@/lib/auth";
-import { LayoutDashboard, Users, Briefcase, FileText, Settings, LogOut, Menu, Loader2, UserCheck, Hammer, Layers, Trophy, PieChartIcon, ActivityIcon } from "lucide-react";
+import {
+  LayoutDashboard,
+  Users,
+  Briefcase,
+  FileText,
+  Settings,
+  LogOut,
+  Menu,
+  Loader2,
+  UserCheck,
+  Hammer,
+  Layers,
+  Trophy,
+  PieChartIcon,
+  ActivityIcon,
+  User2Icon,
+  ChevronRight,
+  ChevronDown,
+} from "lucide-react";
 import NextLink from "next/link";
 import { cn } from "@/lib/utils";
 import { GraphHelpers } from "next/dist/compiled/webpack/webpack";
 import { LanguageSwitch } from "@/components/auth/LanguageSwitch";
 import { DarkModeToggle } from "@/components/auth/DarkModeToggle";
 import { Notification } from "@/components/ui/notification";
+
+interface NavItem {
+    name: string;
+    href?: string;
+    icon: any;
+    roles: string[];
+    isDropdown?: boolean;
+    children?: NavItem[];
+}
 
 interface AppLayoutProps {
     children: React.ReactNode;
@@ -22,6 +49,8 @@ export function AppLayout({ children }: AppLayoutProps) {
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
     const [mounted, setMounted] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
+    const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+    const [isMobile, setIsMobile] = useState(false);
 
     useEffect(() => {
         setMounted(true);
@@ -50,6 +79,45 @@ export function AppLayout({ children }: AppLayoutProps) {
 
         checkAuth();
     }, [pathname, router]);
+
+    // Mobile detection
+    useEffect(() => {
+        const handleResize = () => {
+            const mobile = window.innerWidth < 768;
+            setIsMobile(mobile);
+        };
+
+        handleResize();
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
+    // Outside click detection
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            const target = event.target as Element;
+            if (!target.closest('[data-dropdown]')) {
+                setOpenDropdown(null);
+            }
+        };
+
+        // Keyboard accessibility
+        const handleEscape = (event: KeyboardEvent) => {
+            if (event.key === 'Escape') {
+                setOpenDropdown(null);
+            }
+        };
+
+        if (openDropdown) {
+            document.addEventListener('mousedown', handleClickOutside);
+            document.addEventListener('keydown', handleEscape);
+        }
+
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+            document.removeEventListener('keydown', handleEscape);
+        };
+    }, [openDropdown]);
 
     const handleLogout = () => {
         clearAuth();
@@ -113,13 +181,31 @@ export function AppLayout({ children }: AppLayoutProps) {
         );
     }
 
-    const navItems = [
+    const navItems: NavItem[] = [
         { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard, roles: ["admin", "staff"] },
         { name: "Analytics", href: "/analytics", icon: ActivityIcon, roles: ["admin", "staff"] },
-        { name: "Catalog", href: "/catalog", icon: Layers, roles: ["admin", "staff"] },
-        { name: "Customers", href: "/customers", icon: UserCheck, roles: ["admin", "staff"] },
-        { name: "Workers", href: "/workers", icon: Hammer, roles: ["admin", "staff"] },
-        { name: "Worker-Verification", href: "/worker-verification", icon: Hammer, roles: ["admin", "staff"] },
+        { 
+            name: "Services", 
+            icon: Layers, 
+            roles: ["admin", "staff"],
+            isDropdown: true,
+            children: [
+                { name: "Categories", href: "/categories", icon: User2Icon, roles: ["admin", "staff"] },
+                { name: "Services", href: "/services", icon: Hammer, roles: ["admin", "staff"] },
+                { name: "Sub-Services", href: "/sub-services", icon: Layers, roles: ["admin", "staff"] }
+            ]
+        },
+        { 
+            name: "Users", 
+            icon: Users, 
+            roles: ["admin", "staff"],
+            isDropdown: true,
+            children: [
+                { name: "Customers", href: "/customers", icon: UserCheck, roles: ["admin", "staff"] },
+                { name: "Workers", href: "/workers", icon: Hammer, roles: ["admin", "staff"] },
+                { name: "Worker-Verification", href: "/worker-verification", icon: UserCheck, roles: ["admin", "staff"] }
+            ]
+        },
         { name: "Jobs", href: "/jobs", icon: Briefcase, roles: ["admin", "staff"] },
         { name: "Performance", href: "/performance", icon: Trophy, roles: ["admin"] },
         { name: "Leads", href: "/leads", icon: FileText, roles: ["admin", "staff"] },
@@ -135,8 +221,9 @@ export function AppLayout({ children }: AppLayoutProps) {
         <div className="min-h-screen bg-background text-foreground flex transition-colors duration-300">
             {/* Sidebar */}
             <aside className={cn(
-                "fixed bg-card transition-all duration-300 flex flex-col h-screen top-0 left-0 bottom-0 overflow-y-auto z-50 bg-theme-bg scrollbar-thin scrollbar-thumb-muted scrollbar-track-transparent",
-                isSidebarOpen ? 'w-64' : 'w-20'
+                "fixed transition-all duration-300 flex flex-col h-screen top-0 left-0 bottom-0 z-50",
+                "bg-card/95 backdrop-blur-sm border-r border-border/30",
+                isSidebarOpen ? 'w-60' : 'w-20'
             )}> 
                 <div className=" ">
                     <div className="bg-card flex items-center justify-between px-4 py-3.5">
@@ -158,15 +245,147 @@ export function AppLayout({ children }: AppLayoutProps) {
                 <nav className="flex-1 py-6 px-3 space-y-2">
                     {visibleNavItems.map((item) => {
                         const Icon = item.icon;
-                        const isActive = pathname?.startsWith(item.href) || false;
+                        
+                        if (item.isDropdown) {
+                            const isDropdownActive = item.children?.some(child => child.href && pathname?.startsWith(child.href)) || false;
+                            const isOpen = openDropdown === item.name;
+                            
+                            return (
+                                <div key={item.name} className="relative" data-dropdown>
+                                    <button
+                                        onClick={() => setOpenDropdown(isOpen ? null : item.name)}
+                                        className={cn(
+                                            "w-full flex items-center px-3 py-2.5 rounded-xl font-medium transition-all group relative",
+                                            "hover:scale-[1.02] active:scale-[0.98]",
+                                            isDropdownActive
+                                                ? "bg-gradient-to-r from-primary/10 to-primary/5 text-primary border border-primary/20"
+                                                : "text-muted-foreground hover:bg-primary/10 hover:text-foreground",
+                                            !isSidebarOpen && "justify-center"
+                                        )}
+                                    >
+                                        <Icon className={cn(
+                                            "w-5 h-5 transition-all duration-200",
+                                            isDropdownActive ? "text-primary" : "text-muted-foreground group-hover:text-foreground",
+                                            "group-hover:scale-110"
+                                        )} />
+                                        {isSidebarOpen && (
+                                            <>
+                                                <span className="ml-3 flex-1">{item.name}</span>
+                                                {isOpen ? (
+                                                    <ChevronDown className="w-4 h-4 transition-transform duration-200 text-primary" />
+                                                ) : (
+                                                    <ChevronRight className="w-4 h-4 transition-transform duration-200" />
+                                                )}
+                                                {isDropdownActive && <div className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1 w-1 h-6 bg-primary rounded-r-full" />}
+                                            </>
+                                        )}
+                                        {!isSidebarOpen && isDropdownActive && <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-6 bg-primary rounded-r-full" />}
+                                    </button>
+                                    
+                                    {/* Floating Dropdown (Desktop) */}
+                                    {!isMobile && isOpen && (
+                                        <div className={cn(
+                                            "absolute top-0 z-50 bg-card/95 backdrop-blur-xl rounded-xl border border-border/30 animate-in fade-in zoom-in-95 duration-200",
+                                            "min-w-[200px] max-w-[250px] overflow-hidden",
+                                            "dark:shadow-black/20 dark:border-border/50",
+                                            isSidebarOpen ? "left-full ml-2" : "left-full ml-1"
+                                        )}>
+                                            {/* Arrow indicator */}
+                                            <div className={cn(
+                                                "absolute top-3 w-0 h-0 border-solid",
+                                                isSidebarOpen ? "-left-2" : "-left-1",
+                                                "border-t-8 border-b-8 border-r-8 border-transparent border-r-card/98"
+                                            )} />
+                                            
+                                            {/* Dropdown Header */}
+                                            <div className="px-4 py-3 border-b border-border/20 bg-muted/50 dark:bg-muted/30">
+                                                <div className="flex items-center gap-2">
+                                                    <div className="w-6 h-6 rounded-lg bg-primary/10 flex items-center justify-center">
+                                                        <Icon className="w-3.5 h-3.5 text-primary" />
+                                                    </div>
+                                                    <span className="text-sm font-semibold text-foreground">{item.name}</span>
+                                                </div>
+                                            </div>
+                                            
+                                            {/* Dropdown Items */}
+                                            <div className="py-2">
+                                                {item.children?.map((child) => {
+                                                    const ChildIcon = child.icon;
+                                                    const isChildActive = child.href && pathname?.startsWith(child.href) || false;
+                                                    return (
+                                                        <NextLink
+                                                            key={child.href || child.name}
+                                                            href={child.href || ''}
+                                                            onClick={() => setOpenDropdown(null)}
+                                                            className={cn(
+                                                                "group flex items-center px-4 py-2.5 transition-all duration-200",
+                                                                "hover:scale-[1.01] active:scale-[0.99]",
+                                                                isChildActive
+                                                                    ? "bg-gradient-to-r from-primary/10 to-primary/5 text-primary border-l-2 border-primary/50 dark:border-primary/60"
+                                                                    : "text-muted-foreground hover:bg-muted/30 hover:text-foreground dark:hover:bg-muted/20"
+                                                            )}
+                                                        >
+                                                            <ChildIcon className={cn(
+                                                                "w-4 h-4 transition-all duration-200",
+                                                                isChildActive ? "text-primary" : "text-muted-foreground group-hover:text-foreground",
+                                                                "group-hover:scale-110"
+                                                            )} />
+                                                            <span className="ml-3 text-sm font-medium">{child.name}</span>
+                                                            {isChildActive && (
+                                                                <div className="ml-auto w-2 h-2 bg-primary rounded-full animate-pulse" />
+                                                            )}
+                                                        </NextLink>
+                                                    );
+                                                })}
+                                            </div>
+                                        </div>
+                                    )}
+                                    
+                                    {/* Mobile Accordion */}
+                                    {isMobile && isOpen && (
+                                        <div className="ml-4 space-y-1 animate-in slide-in-from-top-2 duration-200">
+                                            {item.children?.map((child) => {
+                                                const ChildIcon = child.icon;
+                                                const isChildActive = child.href && pathname?.startsWith(child.href) || false;
+                                                return (
+                                                    <NextLink
+                                                        key={child.href || child.name}
+                                                        href={child.href || ''}
+                                                        onClick={() => setOpenDropdown(null)}
+                                                        className={cn(
+                                                            "group relative flex items-center px-3 py-2 rounded-lg font-medium transition-all duration-200",
+                                                            "hover:scale-[1.01] active:scale-[0.99]",
+                                                            isChildActive
+                                                                ? "bg-gradient-to-r from-primary/10 to-transparent text-primary border-l-2 border-primary"
+                                                                : "text-muted-foreground hover:bg-muted/50 hover:text-foreground hover:border-l-2 hover:border-primary/30"
+                                                        )}
+                                                    >
+                                                        <ChildIcon className={cn(
+                                                            "w-4 h-4 transition-all duration-200",
+                                                            isChildActive ? "text-primary" : "text-muted-foreground group-hover:text-foreground",
+                                                            "group-hover:scale-110"
+                                                        )} />
+                                                        <span className="ml-2 text-sm">{child.name}</span>
+                                                        {isChildActive && <div className="absolute left-[-6px] top-1/2 -translate-y-1/2 w-0.5 h-4 bg-primary rounded-r-full" />}
+                                                    </NextLink>
+                                                );
+                                            })}
+                                        </div>
+                                    )}
+                                </div>
+                            );
+                        }
+                        
+                        const isActive = item.href && pathname?.startsWith(item.href) || false;
                         return (
                             <NextLink
-                                key={item.href}
-                                href={item.href}
+                                key={item.href || item.name}
+                                href={item.href || ''}
                                 className={cn(
                                     "flex items-center px-3 py-2.5 rounded-xl font-medium transition-all group relative",
+                                    "hover:scale-[1.02] active:scale-[0.98]",
                                     isActive
-                                        ? "bg-primary/10 text-primary shadow-[0_0_0_1px_rgba(var(--primary-color),0.1)]"
+                                        ? "bg-primary/10 text-primary border border-primary/20"
                                         : "text-muted-foreground hover:bg-primary/10 hover:text-foreground",
                                     !isSidebarOpen && "justify-center"
                                 )}
@@ -202,8 +421,11 @@ export function AppLayout({ children }: AppLayoutProps) {
             </aside>
 
             {/* Main Content */}
-            <main className="flex-1 flex flex-col min-w-0 pl-64 transition-all duration-300">
-                <header className="h-16 bg-card flex items-center justify-between px-8 z-10 sticky top-0">
+            <main className={cn(
+                "flex-1 flex flex-col min-w-0 transition-all duration-300",
+                isSidebarOpen ? 'ml-60' : 'ml-20'
+            )}>
+                <header className="h-16 bg-card/95 backdrop-blur-sm border-b border-border/30 flex items-center justify-between px-8 z-10 sticky top-0 dark:bg-card/90 dark:border-border/20">
                     <div className="flex items-center gap-4">
                         <h1 className="text-lg font-semibold text-foreground/90 capitalize tracking-tight">
                             {pathname?.split('/')[1]?.replace(/-/g, ' ') || 'Dashboard'}
@@ -213,19 +435,19 @@ export function AppLayout({ children }: AppLayoutProps) {
                         <LanguageSwitch />
                         <Notification />
                         <DarkModeToggle />
-                        <div className="flex items-center gap-3 pr-6">
+                        <div className="flex items-center gap-3 pr-6 border-l border-border/20 pl-6">
                             <div className="flex flex-col items-end">
                                 <span className="text-sm font-semibold text-foreground leading-tight">{user?.name || "User"}</span>
-                                <span className="text-[10px] text-muted-foreground uppercase font-bold tracking-widest">{user?.role || "admin"}</span>
+                                <span className="text-[10px] text-muted-foreground/70 uppercase font-bold tracking-widest">{user?.role || "admin"}</span>
                             </div>
-                            <div className="h-9 w-9 rounded-xl bg-primary/10 flex items-center justify-center text-primary font-bold shadow-inner transition-transform hover:rotate-3">
+                            <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-primary/20 to-primary/5 dark:from-primary/30 dark:to-primary/10 flex items-center justify-center text-primary font-bold transition-all hover:scale-105 hover:rotate-3 border border-primary/20">
                                 {(user?.name || "User").charAt(0).toUpperCase()}
                             </div>
                         </div>
                     </div>
                 </header>
 
-                <div className="flex-1 p-6 overflow-y-auto bg-theme-bg scrollbar-thin scrollbar-thumb-muted">
+                <div className="flex-1 p-6 overflow-y-auto bg-gradient-to-br from-background via-background to-muted/10 dark:from-background dark:via-background dark:to-muted/5 scrollbar-thin scrollbar-thumb-muted/50 dark:scrollbar-thumb-muted/30">
                     <div className="animate-in fade-in slide-in-from-bottom-2 duration-500">
                         {children}
                     </div>

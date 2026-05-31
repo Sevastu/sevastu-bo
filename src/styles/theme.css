@@ -31,10 +31,6 @@
   --color-gradient-from: #ebf8ff;
   --color-gradient-to: #ccf3f6;
   
-  /* Shadow Colors */
-  --color-shadow: rgba(0, 0, 0, 0.1);
-  --color-shadow-lg: rgba(0, 0, 0, 0.15);
-  
   /* Theme tokens used by Tailwind */
   --background: var(--color-bg);
   --foreground: var(--color-text);
@@ -86,7 +82,4 @@
   --color-gradient-from: #242323;
   --color-gradient-to: #000000;
   
-  /* Shadow Colors - Dark versions */
-  --color-shadow: rgba(36, 36, 36, 0.3);
-  --color-shadow-lg: rgba(48, 48, 48, 0.5);
 }

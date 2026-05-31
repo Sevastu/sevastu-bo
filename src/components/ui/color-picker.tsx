@@ -13,7 +13,7 @@ interface ColorPickerProps {
 export function ColorPicker({ label, value, onChange }: ColorPickerProps) {
   return (
     <div className="flex items-center gap-4 p-3 border rounded-lg bg-card hover:border-primary transition-colors group">
-      <div className="relative w-10 h-10 rounded-md overflow-hidden border shadow-sm shrink-0">
+      <div className="relative w-10 h-10 rounded-md overflow-hidden border shrink-0">
         <input
           type="color"
           value={value}
