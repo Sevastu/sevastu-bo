@@ -106,7 +106,7 @@ export const Settings: React.FC = () => {
 
         <div className="flex gap-6">
           {/* Sidebar */}
-          <div className="w-64 bg-white rounded-xl shadow-sm border border-gray-200 p-4">
+          <div className="w-64 bg-white rounded-xl border border-gray-200 p-4">
             <nav className="space-y-1">
               {settingsTabs.map((tab) => (
                 <button
@@ -129,7 +129,7 @@ export const Settings: React.FC = () => {
           <div className="flex-1">
             {/* Appearance Tab */}
             {activeTab === 'appearance' && (
-              <div className="bg-[var(--color-card)] rounded-xl shadow-sm border border-[var(--color-border)] p-6 space-y-8">
+              <div className="bg-[var(--color-card)] rounded-xl border border-[var(--color-border)] p-6 space-y-8">
                 <div>
                   <h2 className="text-xl font-semibold text-[var(--color-text)] mb-6">Appearance Settings</h2>
                   <p className="text-[var(--color-text-secondary)]">Customize how application looks and feels</p>

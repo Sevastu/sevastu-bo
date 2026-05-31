@@ -22,7 +22,7 @@ const SheetContent = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLD
     <div
       ref={ref}
       className={cn(
-        "relative h-screen w-full sm:max-w-xl bg-card border-l border-border shadow-2xl animate-in slide-in-from-right duration-300 flex flex-col",
+        "relative h-screen w-full sm:max-w-xl bg-card border-l border-border animate-in slide-in-from-right duration-300 flex flex-col",
         className
       )}
       {...props}

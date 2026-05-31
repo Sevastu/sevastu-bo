@@ -33,7 +33,7 @@ export function Notification() {
 
       {/* Dropdown */}
       {open && (
-        <div className="absolute right-0 mt-2 w-72 bg-[var(--color-card)] border border-[var(--color-border)] rounded-xl shadow-lg z-50">
+        <div className="absolute right-0 mt-2 w-72 bg-[var(--color-card)] border border-[var(--color-border)] rounded-xl z-50">
           
           {/* Header */}
           <div className="p-3 border-b border-[var(--color-border)] font-semibold text-[var(--color-text)]">

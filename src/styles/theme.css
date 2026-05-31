@@ -1,39 +1,35 @@
 :root {
   /* Core Color Variables - Light Theme */
-  --color-bg: #eff3f5;
-  --color-bg-secondary: #e7fcff;
-  --color-card: #f6fbfd;
-  --color-text: #0f172a;
-  --color-text-secondary: #000000c6;
-  --color-text-muted: #073a7d;
-  --color-primary: #044cb8;
+  --color-bg: #F8FAFC;
+  --color-bg-secondary: #e7e9f0;
+  --color-card: #FFFFFF;
+  --color-text:#0F172A;
+  --color-text-secondary: #64748B;
+  --color-text-muted: #94A3B8;
+  --color-primary: #1E40AF;
   /* #7a32df */
-  --color-primary-hover: #2b3be4;
-  --color-border: #e8e1ed;
+  --color-primary-hover: #2563EB;
+  --color-border: #e0d2ea;
   --color-border-hover: #000000;
   --color-input: #dcd8e6;
   --color-focus: #7d2cc4;
   --color-focus-ring: rgba(59, 130, 246, 0.2);
   
   /* State Colors */
-  --color-success: #22c55e;
-  --color-warning: #f59e0b;
-  --color-error: #ef4444;
+  --color-success: #10B981;
+  --color-warning: #F97316;
+  --color-error: #EF4444;
   --color-destructive: var(--color-error);
   
   /* Component Colors */
   --color-muted: #cfe3fa;
   --color-muted-foreground: #424044;
-  --color-accent: #a3bfd5;
+  --color-accent: #F59E0B;
   --color-accent-foreground: #0f172a;
   
   /* Gradient Colors #e0f2fe */
   --color-gradient-from: #ebf8ff;
   --color-gradient-to: #ccf3f6;
-  
-  /* Shadow Colors */
-  --color-shadow: rgba(0, 0, 0, 0.1);
-  --color-shadow-lg: rgba(0, 0, 0, 0.15);
   
   /* Theme tokens used by Tailwind */
   --background: var(--color-bg);
@@ -86,7 +82,4 @@
   --color-gradient-from: #242323;
   --color-gradient-to: #000000;
   
-  /* Shadow Colors - Dark versions */
-  --color-shadow: rgba(36, 36, 36, 0.3);
-  --color-shadow-lg: rgba(48, 48, 48, 0.5);
 }

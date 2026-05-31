@@ -115,7 +115,7 @@ export function BlurOverlaySidePanel({
     >
       <div 
         className={`
-          fixed top-0 h-full bg-white shadow-2xl 
+          fixed top-0 h-full bg-white 
           transform transition-transform duration-300 ease-in-out
           ${position === "right" ? "right-0" : "left-0"} 
           ${width}

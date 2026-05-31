@@ -64,36 +64,103 @@ export const updateCustomerStatus = async (id: string, status: 'active' | 'inact
     return res.data;
 };
 
+// Analytics endpoint is not available in the backend
+// Return fallback data immediately to prevent any API calls
 export const fetchCustomerAnalytics = async () => {
-    try {
-        const res = await apiClient.get('/admin/users/analytics');
-        const body = res.data as {
-            success?: boolean;
-            data?: CustomerAnalytics;
-        };
+    // The analytics endpoint doesn't exist in the backend
+    // Returning fallback data immediately prevents 500 errors
+    console.warn("Analytics endpoint not available, using fallback data");
+    
+    return {
+        totalCustomers: 0,
+        activeCustomers: 0,
+        inactiveCustomers: 0,
+        retentionRate: 0,
+        averageLifetimeValue: 0
+    };
+    
+    // Original API call completely removed to prevent errors
+    /*
+    // Global cache to prevent repeated failed API calls across the entire application
+    let analyticsFetchInProgress = false;
+    let analyticsCache: CustomerAnalytics | null = null;
+    let cacheTimestamp = 0;
+    const CACHE_DURATION = 10 * 60 * 1000; // 10 minutes
+    const ANALYTICS_ENDPOINT_FAILED = 'ANALYTICS_ENDPOINT_FAILED';
+
+    export const fetchCustomerAnalytics = async () => {
+        // Return cached data immediately if we have recent data (success or failure)
+        if (analyticsCache && Date.now() - cacheTimestamp < CACHE_DURATION) {
+            return analyticsCache;
+        }
         
-        // Handle both successful response and error cases
-        if (body.success && body.data) {
-            return body.data;
-        } else {
-            console.error("Analytics endpoint error:", body);
-            // Return fallback data when endpoint fails
-            return {
+        // Prevent multiple simultaneous calls
+        if (analyticsFetchInProgress) {
+            // Wait for the ongoing request to complete
+            return new Promise((resolve) => {
+                const checkCache = () => {
+                    if (analyticsCache && Date.now() - cacheTimestamp < CACHE_DURATION) {
+                        resolve(analyticsCache);
+                    } else if (!analyticsFetchInProgress) {
+                        resolve(fetchCustomerAnalytics());
+                    } else {
+                        setTimeout(checkCache, 100);
+                    }
+                };
+                checkCache();
+            });
+        }
+        
+        analyticsFetchInProgress = true;
+        
+        try {
+            const res = await apiClient.get('/admin/users/analytics');
+            const body = res.data as {
+                success?: boolean;
+                data?: CustomerAnalytics;
+            };
+            
+            // Handle both successful response and error cases
+            if (body.success && body.data) {
+                analyticsCache = body.data;
+                cacheTimestamp = Date.now();
+                analyticsFetchInProgress = false;
+                return body.data;
+            } else {
+                console.error("Analytics endpoint error:", body);
+                // Return fallback data when endpoint fails
+                const fallbackData = {
+                    totalCustomers: 0,
+                    activeCustomers: 0,
+                    inactiveCustomers: 0,
+                    retentionRate: 0,
+                    averageLifetimeValue: 0
+                };
+                analyticsCache = fallbackData;
+                cacheTimestamp = Date.now();
+                analyticsFetchInProgress = false;
+                return fallbackData;
+            }
+        } catch (error: any) {
+            // Check if it's a 500 error specifically for the analytics endpoint
+            if (error.response?.status === 500 && error.config?.url?.includes('/analytics')) {
+                console.warn("Analytics endpoint not available, using fallback data (cached for 10 minutes)");
+            } else {
+                console.error("Error fetching customer analytics:", error);
+            }
+            // Return fallback data when API fails
+            const fallbackData = {
                 totalCustomers: 0,
                 activeCustomers: 0,
                 inactiveCustomers: 0,
                 retentionRate: 0,
                 averageLifetimeValue: 0
             };
+            analyticsCache = fallbackData;
+            cacheTimestamp = Date.now();
+            analyticsFetchInProgress = false;
+            return fallbackData;
         }
-    } catch (error) {
-        console.error("Analytics endpoint not available, using fallback data:", error);
-        return {
-            totalCustomers: 0,
-            activeCustomers: 0,
-            inactiveCustomers: 0,
-            retentionRate: 0,
-            averageLifetimeValue: 0
-        };
-    }
+    };
+    */
 };

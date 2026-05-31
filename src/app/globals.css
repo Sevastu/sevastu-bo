@@ -120,7 +120,8 @@
 
 @utility focus-ring-theme {
   &:focus {
-    box-shadow: 0 0 0 3px var(--color-focus-ring);
+    outline: 2px solid var(--color-focus);
+    outline-offset: 2px;
   }
 }
 
@@ -135,13 +136,6 @@
   background: linear-gradient(to bottom right, var(--color-gradient-from), var(--color-gradient-to));
 }
 
-@utility shadow-theme {
-  box-shadow: 0 1px 3px 0 var(--color-shadow);
-}
-
-@utility shadow-theme-lg {
-  box-shadow: 0 10px 15px -3px var(--color-shadow-lg), 0 4px 6px -2px var(--color-shadow-lg);
-}
 
 @utility input-theme {
   background-color: var(--color-input);
@@ -149,12 +143,13 @@
   color: var(--color-text);
   &:focus {
     border-color: var(--color-focus);
-    box-shadow: 0 0 0 3px var(--color-focus-ring);
+    outline: 2px solid var(--color-focus);
+    outline-offset: 2px;
   }
 }
 
 @utility transition-theme {
-  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
 }
 
 /* Base styles */

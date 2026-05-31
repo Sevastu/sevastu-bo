@@ -35,17 +35,17 @@ export default function LoginPage() {
     };
 
     return (
-        <div className="min-h-screen flex flex-col bg-theme">
+        <div className="min-h-screen flex flex-col bg-theme items-center justify-center">
             {/* Navbar */}
             {/* <LoginNavbar /> */}
 
             {/* Main Content */}
             {/* <div className="flex-1 flex bg-theme-bg">
                 <div className="flex w-full h-full"> */}
-                    <div className="grid grid-cols-1 lg:grid-cols-2 w-full">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 w-full items-center justify-center">
                         {/* Left Section - Login Form */}
-                        <div className="flex items-center justify-center p-12 sm:p-6 lg:p-8">
-                            <div className="w-full mb-8 max-w-md sm:max-w-md border border-theme-border rounded-lg">
+                        <div className="flex items-center justify-center p-4 sm:p-4 lg:p-8">
+                            <div className="w-full mb-8 max-w-md sm:max-w-md">
                                 {/* <Card> */}
                                     <CardHeader className="space-y-0 p-2 mb-2">
                                         <img src={logo.src} alt="Sevastu" className="w-20 h-20 mx-auto mb-[-3]" />
@@ -73,7 +73,7 @@ export default function LoginPage() {
                                                     value={email}
                                                     onChange={(e) => setEmail(e.target.value)}
                                                     required
-                                                    className="h-10"
+                                                    className="py-4"
                                                 />
                                             </div>
 
@@ -90,7 +90,7 @@ export default function LoginPage() {
                                                         value={password}
                                                         onChange={(e) => setPassword(e.target.value)}
                                                         required
-                                                        className="h-10 pr-10"
+                                                        className="py-4"
                                                     />
                                                     <button
                                                         type="button"
