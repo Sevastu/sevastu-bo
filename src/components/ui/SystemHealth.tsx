@@ -37,7 +37,7 @@ const HealthItem: React.FC<HealthItemProps> = ({ label, value, status, icon }) =
 
 export const SystemHealth: React.FC = () => {
   return (
-    <div className="bg-[var(--color-card)] rounded-xl shadow-sm border border-[var(--color-border)] p-6">
+    <div className="bg-[var(--color-card)] rounded-xl border border-[var(--color-border)] p-6">
       <div className="mb-6">
         <h2 className="text-lg font-semibold text-[var(--color-text)]">System Health</h2>
         <p className="text-sm text-[var(--color-text-secondary)]">Real-time operational metrics</p>

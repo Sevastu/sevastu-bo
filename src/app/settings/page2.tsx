@@ -62,7 +62,7 @@ export default function SettingsPage() {
                         className={cn(
                             "px-4 py-2 text-sm font-medium rounded-lg transition-all",
                             activeTab === 'security' 
-                                ? "bg-card text-primary shadow-sm" 
+                                ? "bg-card text-primary" 
                                 : "text-muted-foreground hover:text-foreground"
                         )}
                     >
@@ -73,7 +73,7 @@ export default function SettingsPage() {
                         className={cn(
                             "px-4 py-2 text-sm font-medium rounded-lg transition-all",
                             activeTab === 'appearance' 
-                                ? "bg-card text-primary shadow-sm" 
+                                ? "bg-card text-primary" 
                                 : "text-muted-foreground hover:text-foreground"
                         )}
                     >
@@ -82,7 +82,7 @@ export default function SettingsPage() {
                 </div>
 
                 {activeTab === 'security' && (
-                    <Card className="max-w-2xl border-none shadow-md">
+                    <Card className="max-w-2xl border-none">
                         <CardHeader>
                             <CardTitle className="flex items-center gap-2">
                                 <ShieldCheck className="w-5 h-5 text-primary" />
@@ -135,7 +135,7 @@ export default function SettingsPage() {
 
                 {activeTab === 'appearance' && (
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <Card className="border-none shadow-md md:col-span-2">
+                        <Card className="border-none md:col-span-2">
                             <CardHeader className="flex flex-row items-center justify-between">
                                 <div className="space-y-1">
                                     <CardTitle className="flex items-center gap-2">

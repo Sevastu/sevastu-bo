@@ -131,7 +131,7 @@ export default function WorkerVerificationDetail() {
     <AppLayout>
       <div className="p-6 bg-gray-50 min-h-screen">
         {/* Profile Header */}
-        <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
+        <div className="bg-white rounded-lg p-6 mb-6">
           <div className="flex items-start space-x-6">
             <div className="w-24 h-24 rounded-full bg-gray-200 flex items-center justify-center">
               {workerData.profile.photoUrl ? (
@@ -183,7 +183,7 @@ export default function WorkerVerificationDetail() {
           {/* Profile Information */}
           <div className="lg:col-span-2 space-y-6">
             {/* Basic Information */}
-            <div className="bg-white rounded-lg shadow-sm p-6">
+            <div className="bg-white rounded-lg p-6">
               <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
                 <Shield className="w-5 h-5 mr-2" />
                 Profile Information
@@ -222,7 +222,7 @@ export default function WorkerVerificationDetail() {
             </div>
 
             {/* Professional Summary */}
-            <div className="bg-white rounded-lg shadow-sm p-6">
+            <div className="bg-white rounded-lg p-6">
               <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
                 <Briefcase className="w-5 h-5 mr-2" />
                 Professional Summary
@@ -233,7 +233,7 @@ export default function WorkerVerificationDetail() {
             </div>
 
             {/* Skills & Expertise */}
-            <div className="bg-white rounded-lg shadow-sm p-6">
+            <div className="bg-white rounded-lg p-6">
               <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
                 <Award className="w-5 h-5 mr-2" />
                 Skills & Expertise
@@ -254,7 +254,7 @@ export default function WorkerVerificationDetail() {
           {/* Verification Status */}
           <div className="space-y-6">
             {/* Verification Score */}
-            <div className="bg-white rounded-lg shadow-sm p-6">
+            <div className="bg-white rounded-lg p-6">
               <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
                 <CheckCircle className="w-5 h-5 mr-2" />
                 Verification Status
@@ -290,7 +290,7 @@ export default function WorkerVerificationDetail() {
             </div>
 
             {/* Documents */}
-            <div className="bg-white rounded-lg shadow-sm p-6">
+            <div className="bg-white rounded-lg p-6">
               <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
                 <FileText className="w-5 h-5 mr-2" />
                 Verification Documents
