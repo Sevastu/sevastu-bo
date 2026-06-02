@@ -197,7 +197,7 @@ export default function LoginPage() {
             </div>
 
             {/* Footer */}
-            <LoginFooter />
+            {/* <LoginFooter /> */}
         </div>
     );
 }

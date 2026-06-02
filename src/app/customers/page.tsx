@@ -34,10 +34,37 @@ export default function CustomersPage() {
 
     const loadCustomers = async () => {
         setLoading(true);
+
         try {
-            const result = await fetchCustomers({ search, status: viewStatus === 'all' ? undefined : viewStatus, page, limit: 10, dateRange });
+            const result = await fetchCustomers({
+                search,
+                status: viewStatus === 'all' ? undefined : viewStatus,
+                page,
+                limit: 10,
+                dateRange
+            });
+
+            console.log("========== CUSTOMER DATA ==========");
+            console.log(result.data);
+
+            if (result.data?.length > 0) {
+                console.log("========== FIRST CUSTOMER ==========");
+                console.log(result.data[0]);
+
+                Object.entries(result.data[0]).forEach(([key, value]) => {
+                    console.log(
+                        key,
+                        "=>",
+                        value,
+                        "TYPE:",
+                        typeof value
+                    );
+                });
+            }
+
             setData(result.data);
             setTotal(result.pagination?.total || 0);
+
         } catch (error) {
             console.error("Error fetching customers:", error);
         } finally {
@@ -84,14 +111,14 @@ export default function CustomersPage() {
             key: "name",
             label: "Name",
             render: (customer: any) => (
-                <div 
+                <div
                     className="flex items-center gap-3 cursor-pointer hover:bg-gray-50 p-2 rounded-lg transition-colors"
                     onClick={() => handleRowClick(customer)}
                 >
                     <div className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center">
                         {customer.avatarUrl ? (
-                            <img 
-                                src={customer.avatarUrl} 
+                            <img
+                                src={customer.avatarUrl}
                                 alt={customer.name}
                                 className="w-10 h-10 rounded-full object-cover"
                             />
@@ -123,12 +150,18 @@ export default function CustomersPage() {
         {
             key: "location",
             label: "Location",
-            render: (customer: any) => (
-                <div className="flex items-center text-sm text-gray-600">
-                    <MapPin className="w-4 h-4 mr-2" />
-                    {customer.location || '—'}
-                </div>
-            ),
+            render: (customer: any) => {
+                const location = customer.location;
+
+                return (
+                    <div className="flex items-center text-sm text-gray-600">
+                        <MapPin className="w-4 h-4 mr-2" />
+                        {location?.coordinates
+                            ? `${location.coordinates[1]}, ${location.coordinates[0]}`
+                            : "—"}
+                    </div>
+                );
+            },
         },
         {
             key: "status",
@@ -150,7 +183,7 @@ export default function CustomersPage() {
             label: "Actions",
             render: (customer: any) => (
                 <div className="flex items-center space-x-2">
-                    <button 
+                    <button
                         onClick={() => handleRowClick(customer)}
                         className="text-blue-600 hover:text-blue-800 transition-colors p-1 rounded hover:bg-blue-50"
                         title="View Customer Details"
@@ -167,7 +200,7 @@ export default function CustomersPage() {
 
     return (
         <AppLayout>
-            <div className="p-6 bg-card rounded-xl min-h-screen">
+            <div className="min-h-screen">
                 {/* Header Section */}
                 <div className="mb-8">
                     <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 mb-6">
@@ -195,7 +228,7 @@ export default function CustomersPage() {
                                 />
                             </div>
                         </div>
-                        
+
                         <div className="flex gap-2 flex-wrap">
                             <Button
                                 variant={viewStatus === 'all' ? 'default' : 'outline'}
@@ -304,7 +337,7 @@ export default function CustomersPage() {
                     isLoading={loading}
                 />
             </div>
-            
+
             {/* Customer Profile Drawer */}
             <CustomerProfileDrawer
                 customerId={selectedCustomerId}

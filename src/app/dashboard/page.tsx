@@ -142,7 +142,7 @@ export default function DashboardPage() {
             {/* Recent Activity */}
             <Card className="shadow-2xl border-none ring-1 ring-border/50 rounded-3xl p-6 bg-card">
                 <div className="flex items-center justify-between mb-6">
-                    <h3 className="text-xl font-black tracking-tight flex items-center gap-2">
+                    <h3 className="text-lg font-black tracking-tight flex items-center gap-2">
                         <Briefcase className="w-5 h-5 text-primary" />
                         Recent Activity
                     </h3>

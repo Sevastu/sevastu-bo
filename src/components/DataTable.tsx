@@ -96,6 +96,7 @@ export function DataTable<T>({
                                 </tr>
                             ))
                         )}
+
                     </tbody>
                 </table>
             </div>
