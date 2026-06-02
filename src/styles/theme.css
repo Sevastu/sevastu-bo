@@ -1,14 +1,17 @@
 :root {
   /* Core Color Variables - Light Theme */
-  --color-bg: #F8FAFC;
-  --color-bg-secondary: #e7e9f0;
-  --color-card: #FFFFFF;
+  --color-bg: #f1f6ff;
+  /* #f4f7fe */
+  --color-bg-secondary: #EEF4FF;
+  --color-card: #f7fafd;
+  --color-primary: #2563EB;
+  /* --color-card: #FFFFFF;
+  --color-primary: #2563EB; */
+  --color-primary-hover: #1D4ED8;
   --color-text:#0F172A;
   --color-text-secondary: #64748B;
   --color-text-muted: #94A3B8;
-  --color-primary: #1E40AF;
   /* #7a32df */
-  --color-primary-hover: #2563EB;
   --color-border: #e0d2ea;
   --color-border-hover: #000000;
   --color-input: #dcd8e6;
@@ -33,6 +36,7 @@
   
   /* Theme tokens used by Tailwind */
   --background: var(--color-bg);
+  --background-secondary: var(--color-bg-secondary);
   --foreground: var(--color-text);
   --card: var(--color-card);
   --border: var(--color-border);
