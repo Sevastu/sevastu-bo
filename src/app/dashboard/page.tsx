@@ -140,26 +140,26 @@ export default function DashboardPage() {
             </div>
 
             {/* Recent Activity */}
-            <Card className="shadow-2xl border-none ring-1 ring-border/50 rounded-3xl p-6 bg-card">
+            <Card className="rounded-sm p-6 bg-card">
                 <div className="flex items-center justify-between mb-6">
-                    <h3 className="text-lg font-black tracking-tight flex items-center gap-2">
+                    <h3 className="text-lg font-semibold tracking-tight flex items-center gap-2">
                         <Briefcase className="w-5 h-5 text-primary" />
                         Recent Activity
                     </h3>
-                    <Button variant="outline" className="rounded-2xl border-border/50 bg-card hover:bg-muted font-bold h-10 shadow-sm">
+                    <Button variant="outline" className="rounded-2xl bg-card hover:bg-muted font-bold h-10 shadow-sm">
                         View All
                     </Button>
                 </div>
                 
                 <div className="space-y-4">
                     {[1, 2, 3, 4].map((item) => (
-                        <div key={item} className="flex items-center gap-4 p-4 bg-muted/50 rounded-xl border border-border/30 hover:bg-muted transition-colors">
-                            <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
+                        <div key={item} className="flex items-center gap-4 p-4 bg-muted/50 rounded-lg hover:bg-muted transition-colors">
+                            <div className="w-10 h-10 bg-muted rounded-full flex items-center justify-center">
                                 <Briefcase className="w-5 h-5 text-primary" />
                             </div>
                             <div className="flex-1">
-                                <div className="font-bold text-foreground">New job assigned</div>
-                                <div className="text-sm text-muted-foreground">Home Cleaning - John Doe</div>
+                                <div className="text-foreground">New job assigned</div>
+                                <div className="text-sm text-orange-500/100">Home Cleaning - John Doe</div>
                             </div>
                             <div className="text-sm text-muted-foreground font-medium">{item * 2} min ago</div>
                         </div>

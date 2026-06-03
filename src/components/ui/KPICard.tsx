@@ -17,7 +17,7 @@ export const KPICard: React.FC<KPICardProps> = ({
   icon
 }) => {
   return (
-    <div className="bg-[var(--color-card)] border border-[var(--color-border)] rounded-xl p-6 transition-all">
+    <div className="bg-[var(--color-card)] rounded-lg p-6 transition-all">
       
       <div className="flex items-center justify-between">
         
