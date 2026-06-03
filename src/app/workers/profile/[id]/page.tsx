@@ -67,7 +67,7 @@ export default function WorkerVerificationDetail() {
 
   const getStatusBadge = (status: string) => {
     const baseClasses = "px-3 py-1 rounded-full text-xs font-medium";
-    
+
     switch (status) {
       case 'verified':
       case 'APPROVED':
@@ -88,7 +88,7 @@ export default function WorkerVerificationDetail() {
     const stars = [];
     const fullStars = Math.floor(rating);
     const hasHalfStar = rating % 1 !== 0;
-    
+
     for (let i = 0; i < 5; i++) {
       if (i < fullStars) {
         stars.push(<Star key={i} className="w-5 h-5 fill-yellow-400 text-yellow-400" />);
@@ -98,7 +98,7 @@ export default function WorkerVerificationDetail() {
         stars.push(<Star key={i} className="w-5 h-5 text-gray-300" />);
       }
     }
-    
+
     return (
       <div className="flex items-center gap-1">
         {stars}
@@ -129,14 +129,14 @@ export default function WorkerVerificationDetail() {
 
   return (
     <AppLayout>
-      <div className="p-6 bg-gray-50 min-h-screen">
+      <div className="bg-gray-50 min-h-screen bg-gradient-to-br from-background via-background to-muted/10">
         {/* Profile Header */}
         <div className="bg-white rounded-lg p-6 mb-6">
           <div className="flex items-start space-x-6">
             <div className="w-24 h-24 rounded-full bg-gray-200 flex items-center justify-center">
               {workerData.profile.photoUrl ? (
-                <img 
-                  src={workerData.profile.photoUrl} 
+                <img
+                  src={workerData.profile.photoUrl}
                   alt={workerData.profile.name}
                   className="w-24 h-24 rounded-full object-cover"
                 />
@@ -146,7 +146,7 @@ export default function WorkerVerificationDetail() {
                 </span>
               )}
             </div>
-            
+
             <div className="flex-1">
               <div className="flex items-center justify-between mb-4">
                 <div>
@@ -160,7 +160,7 @@ export default function WorkerVerificationDetail() {
                   {getStatusBadge(workerData.profile.profileStatus)}
                 </div>
               </div>
-              
+
               <div className="grid grid-cols-3 gap-4 mt-4">
                 <div className="text-center">
                   <div className="text-2xl font-bold text-blue-600">{workerData.profile.totalJobs}</div>
@@ -188,7 +188,7 @@ export default function WorkerVerificationDetail() {
                 <Shield className="w-5 h-5 mr-2" />
                 Profile Information
               </h2>
-              
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label className="text-sm font-medium text-gray-700">Email</label>
@@ -240,7 +240,7 @@ export default function WorkerVerificationDetail() {
               </h2>
               <div className="flex flex-wrap gap-2">
                 {workerData.profile.skills.map((skill, index) => (
-                  <span 
+                  <span
                     key={index}
                     className="px-3 py-2 bg-blue-100 text-blue-800 text-sm rounded-full font-medium"
                   >
@@ -259,13 +259,13 @@ export default function WorkerVerificationDetail() {
                 <CheckCircle className="w-5 h-5 mr-2" />
                 Verification Status
               </h2>
-              
+
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
                   <span className="text-sm font-medium text-gray-700">Profile Status</span>
                   {getStatusBadge(workerData.profile.profileStatus)}
                 </div>
-                
+
                 <div className="flex items-center justify-between">
                   <span className="text-sm font-medium text-gray-700">KYC Status</span>
                   <div className="flex items-center">
@@ -279,7 +279,7 @@ export default function WorkerVerificationDetail() {
                     <span className="ml-2 capitalize">{workerData.kyc?.status || 'Not Submitted'}</span>
                   </div>
                 </div>
-                
+
                 <div className="flex items-center justify-between">
                   <span className="text-sm font-medium text-gray-700">Rating Score</span>
                   <div className="flex items-center">
@@ -295,7 +295,7 @@ export default function WorkerVerificationDetail() {
                 <FileText className="w-5 h-5 mr-2" />
                 Verification Documents
               </h2>
-              
+
               {workerData.kyc ? (
                 <div className="space-y-4">
                   <div className="border border-gray-200 rounded-lg p-4">
@@ -318,7 +318,7 @@ export default function WorkerVerificationDetail() {
                         <span className="ml-2 capitalize text-sm">{workerData.kyc.status}</span>
                       </div>
                     </div>
-                    
+
                     {workerData.kyc.rejectionReason && (
                       <div className="mt-3 p-3 bg-red-50 rounded border border-red-200">
                         <p className="text-sm text-red-800">
@@ -326,7 +326,7 @@ export default function WorkerVerificationDetail() {
                         </p>
                       </div>
                     )}
-                    
+
                     <div className="flex space-x-3 mt-4">
                       <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
                         View Front Document

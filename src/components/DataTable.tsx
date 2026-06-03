@@ -38,24 +38,12 @@ export function DataTable<T>({
     const totalPages = Math.ceil(total / limit) || 1;
 
     return (
-        <div className="bg-card rounded-xl shadow-md border border-theme-text overflow-hidden transition-all">
-            {/* <div className="p-4 border-b border-border-theme-text flex justify-between items-center bg-card/50 backdrop-blur-sm">
-                <form onSubmit={handleSearch} className="relative w-72 group">
-                    <Input
-                        type="text"
-                        placeholder="Search records..."
-                        value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
-                        className="pl-10 h-10 bg-muted/50 border-none focus-visible:ring-primary/30 transition-all rounded-lg"
-                    />
-                    <Search className="w-4 h-4 text-muted-foreground absolute left-3 top-3 group-focus-within:text-primary transition-colors" />
-                </form>
-            </div> */}
+        <div className="bg-card rounded-sm overflow-hidden transition-all">
 
             <div className="overflow-x-auto">
                 <table className="w-full text-sm text-left border-collapse">
                     <thead>
-                        <tr className="text-xs text-muted-foreground uppercase tracking-wider bg-muted/30 border-b border-theme-text">
+                        <tr className="text-xs text-muted-foreground uppercase tracking-wider bg-primary/10">
                             {columns.map((col) => (
                                 <th key={col.key as string} className="px-6 py-4 font-semibold">
                                     {col.label}
@@ -63,7 +51,7 @@ export function DataTable<T>({
                             ))}
                         </tr>
                     </thead>
-                    <tbody className="divide-y divide-border/20">
+                    <tbody className="divide-y divide-border/80">
                         {isLoading ? (
                             <tr>
                                 <td colSpan={columns.length} className="px-6 py-12 text-center">
@@ -86,7 +74,7 @@ export function DataTable<T>({
                             rows.map((item, rowIndex) => (
                                 <tr 
                                     key={rowIndex} 
-                                    className="hover:bg-primary/5 transition-colors group cursor-default"
+                                    className="hover:bg-primary/4 transition-colors group cursor-default"
                                 >
                                     {columns.map((col) => (
                                         <td key={col.key as string} className="px-6 py-4 text-foreground/80 group-hover:text-foreground font-medium transition-colors">
@@ -101,12 +89,12 @@ export function DataTable<T>({
                 </table>
             </div>
 
-            <div className="p-4 border-t border-theme-text bg-card/50 flex items-center justify-between">
+            <div className="p-4 bg-card flex items-center justify-between">
                 <div className="flex items-center gap-2">
                     <span className="text-sm font-medium text-muted-foreground">
-                        Page <span className="text-foreground">{page}</span> of <span className="text-foreground">{totalPages}</span>
+                        Page <span className="text-muted-foreground">{page}</span> of <span className="text-muted-foreground">{totalPages}</span>
                     </span>
-                    <span className="text-xs text-muted-foreground/60 px-2 py-0.5 bg-muted rounded-full">
+                    <span className="text-xs text-muted-foreground/80 px-2 py-0.5 bg-primary/10 rounded-full">
                         {total} total records
                     </span>
                 </div>

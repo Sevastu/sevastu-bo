@@ -224,7 +224,7 @@ export default function CustomersPage() {
                                     placeholder="Search customers..."
                                     value={search}
                                     onChange={(e) => setSearch(e.target.value)}
-                                    className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full"
+                                    className="pl-10 pr-4 py-2 border border-gray-300 rounded-sm w-full bg-card"
                                 />
                             </div>
                         </div>
@@ -262,7 +262,7 @@ export default function CustomersPage() {
                                 type="date"
                                 value={dateRange?.from || ''}
                                 onChange={(e) => setDateRange(prev => ({ ...prev, from: e.target.value }))}
-                                className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                className="px-3 py-2 border border-gray-300 rounded-sm bg-card"
                             />
                         </div>
                         <div className="flex items-center gap-2">
@@ -271,7 +271,7 @@ export default function CustomersPage() {
                                 type="date"
                                 value={dateRange?.to || ''}
                                 onChange={(e) => setDateRange(prev => ({ ...prev, to: e.target.value }))}
-                                className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                className="px-3 py-2 border border-gray-300 rounded-sm bg-card"
                             />
                         </div>
                         <Button
@@ -287,7 +287,7 @@ export default function CustomersPage() {
                 {/* Analytics Cards */}
                 {analytics && (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                        <div className="bg-white rounded-lg p-6 border border-gray-200">
+                        <div className="bg-card rounded-sm p-6">
                             <div className="flex items-center justify-between">
                                 <h3 className="text-lg font-semibold text-gray-900">Active Now</h3>
                                 <Users className="w-5 h-5 text-blue-500" />
@@ -296,7 +296,7 @@ export default function CustomersPage() {
                             <p className="text-sm text-gray-600">Currently active</p>
                         </div>
 
-                        <div className="bg-white rounded-lg p-6 border border-gray-200">
+                        <div className="bg-card rounded-sm p-6">
                             <div className="flex items-center justify-between">
                                 <h3 className="text-lg font-semibold text-gray-900">Retention Rate</h3>
                                 <TrendingUp className="w-5 h-5 text-green-500" />
@@ -305,7 +305,7 @@ export default function CustomersPage() {
                             <p className="text-sm text-gray-600">Monthly retention</p>
                         </div>
 
-                        <div className="bg-white rounded-lg p-6 border border-gray-200">
+                        <div className="bg-card rounded-sm p-6">
                             <div className="flex items-center justify-between">
                                 <h3 className="text-lg font-semibold text-gray-900">Avg. Lifetime Value</h3>
                                 <DollarSign className="w-5 h-5 text-purple-500" />
@@ -314,7 +314,7 @@ export default function CustomersPage() {
                             <p className="text-sm text-gray-600">Per customer</p>
                         </div>
 
-                        <div className="bg-white rounded-lg p-6 border border-gray-200">
+                        <div className="bg-card rounded-sm p-6">
                             <div className="flex items-center justify-between">
                                 <h3 className="text-lg font-semibold text-gray-900">Total Customers</h3>
                                 <UserCheck className="w-5 h-5 text-gray-500" />

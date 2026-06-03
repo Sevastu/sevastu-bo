@@ -245,6 +245,18 @@ export function AppLayout({ children }: AppLayoutProps) {
         ? navItems.filter((item) => item.roles.includes(user.role))
         : navItems.filter((item) => item.roles.includes('admin')); // Default to admin items if no user
 
+    const getPageTitle = () => {
+        if (pathname?.startsWith("/workers/profile/")) {
+            return "Worker Profile";
+        }
+
+        if (pathname?.startsWith("/worker-verification/")) {
+            return "Worker Verification";
+        }
+
+        return pathname?.split("/")[1]?.replace(/-/g, " ") || "Dashboard";
+    };
+
     return (
         <div className="min-h-screen bg-background flex">
             {/* Sidebar */}
@@ -258,7 +270,7 @@ export function AppLayout({ children }: AppLayoutProps) {
                 <aside
                     className={cn(
                         "fixed top-0 left-0 z-50 h-screen overflow-y-auto",
-                        "w-72 bg-card",
+                        "w-62 bg-card",
                         "transition-transform duration-300",
                         isSidebarOpen
                             ? "translate-x-0"
@@ -303,10 +315,10 @@ export function AppLayout({ children }: AppLayoutProps) {
                                         <button
                                             onClick={() => setOpenDropdown(isOpen ? null : item.name)}
                                             className={cn(
-                                                "w-full flex items-center px-3 py-2.5 rounded-xl font-medium transition-all group relative",
+                                                "w-full flex items-center px-3 py-2.5 rounded-sm font-medium transition-all group relative",
                                                 "hover:scale-[1.02] active:scale-[0.98]",
                                                 isDropdownActive
-                                                    ? "bg-primary text-primary-foreground shadow-sm"
+                                                    ? "bg-primary text-primary-foreground shadow-lg shadow-blue-500/30"
                                                     : "text-muted-foreground hover:bg-primary/10 hover:text-foreground",
                                             )}
                                         >
@@ -319,10 +331,7 @@ export function AppLayout({ children }: AppLayoutProps) {
                                                         isOpen && "rotate-90"
                                                     )}
                                                 />
-                                                {isDropdownActive && <div className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1 w-1 h-6 bg-primary rounded-r-full" />}
                                             </>
-
-                                            {isDropdownActive && <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-6 bg-primary rounded-r-full" />}
                                         </button>
 
                                         {/* Floating Dropdown (Desktop) */}
@@ -338,7 +347,7 @@ export function AppLayout({ children }: AppLayoutProps) {
                                                             key={child.href}
                                                             href={child.href || ""}
                                                             className={cn(
-                                                                "flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-all",
+                                                                "flex items-center gap-3 px-3 py-2 rounded-sm text-sm transition-all",
                                                                 isChildActive
                                                                     ? "bg-primary/10 text-primary"
                                                                     : "text-muted-foreground hover:bg-muted hover:text-foreground"
@@ -351,38 +360,6 @@ export function AppLayout({ children }: AppLayoutProps) {
                                                 })}
                                             </div>
                                         )}
-
-                                        {/* Mobile Accordion */}
-                                        {/* {isMobile && isOpen && (
-                                            <div className="ml-4 space-y-1 animate-in slide-in-from-top-2 duration-200">
-                                                {item.children?.map((child) => {
-                                                    const ChildIcon = child.icon;
-                                                    const isChildActive = child.href && pathname?.startsWith(child.href) || false;
-                                                    return (
-                                                        <NextLink
-                                                            key={child.href || child.name}
-                                                            href={child.href || ''}
-                                                            onClick={() => setOpenDropdown(null)}
-                                                            className={cn(
-                                                                "group relative flex items-center px-3 py-2 rounded-lg font-medium transition-all duration-200",
-                                                                "hover:scale-[1.01] active:scale-[0.99]",
-                                                                isChildActive
-                                                                    ? "bg-gradient-to-r from-primary/10 to-transparent text-primary border-l-2 border-primary"
-                                                                    : "text-muted-foreground hover:bg-muted/50 hover:text-foreground hover:border-l-2 hover:border-primary/30"
-                                                            )}
-                                                        >
-                                                            <ChildIcon className={cn(
-                                                                "w-4 h-4 transition-all duration-200",
-                                                                isChildActive ? "text-primary" : "text-muted-foreground group-hover:text-foreground",
-                                                                "group-hover:scale-110"
-                                                            )} />
-                                                            <span className="ml-2 text-sm">{child.name}</span>
-                                                            {isChildActive && <div className="absolute left-[-6px] top-1/2 -translate-y-1/2 w-0.5 h-4 bg-primary rounded-r-full" />}
-                                                        </NextLink>
-                                                    );
-                                                })}
-                                            </div>
-                                        )} */}
                                     </div>
                                 );
                             }
@@ -396,7 +373,7 @@ export function AppLayout({ children }: AppLayoutProps) {
                                         "flex items-center px-3 py-2.5 rounded-xl font-medium transition-all group relative",
                                         "hover:scale-[1.02] active:scale-[0.98]",
                                         isActive
-                                            ? "bg-primary text-primary-foreground shadow-sm rounded-sm"
+                                            ? "bg-primary text-primary-foreground shadow-lg shadow-blue-500/30 rounded-sm"
                                             : "text-muted-foreground hover:bg-primary/10 hover:text-foreground",
                                         // !isSidebarOpen && "justify-center"
                                     )}
@@ -431,38 +408,44 @@ export function AppLayout({ children }: AppLayoutProps) {
                 </aside>
 
                 {/* Main Content */}
-                <main className="flex-1 flex flex-col min-w-0 border-l border-border lg:ml-72">
-                    <header className="sticky top-0 z-40 h-16 bg-card flex items-center justify-between px-6">
-                        <div className="flex items-center gap-4">
+                <main className="flex-1 flex flex-col min-w-0 border-l border-border lg:ml-62">
+                    <header className="sticky top-0 z-40 h-16 bg-card px-4 lg:px-6">
+                        <div className="flex h-full items-center justify-between gap-2">
 
-                            {/* Mobile Menu */}
-                            <button
-                                onClick={() => setIsSidebarOpen(true)}
-                                className="lg:hidden p-2 rounded-lg hover:bg-muted"
-                            >
-                                <Menu className="w-5 h-5" />
-                            </button>
+                            {/* Left Side */}
+                            <div className="flex items-center gap-3 min-w-0">
+                                <button
+                                    onClick={() => setIsSidebarOpen(true)}
+                                    className="lg:hidden p-2 rounded-lg hover:bg-muted shrink-0"
+                                >
+                                    <Menu className="w-5 h-5" />
+                                </button>
 
-                            <h1 className="text-xl font-semibold capitalize">
-                                {pathname?.split("/")[1]?.replace(/-/g, " ") || "Dashboard"}
-                            </h1>
-                        </div>
+                                <h1 className="text-lg lg:text-xl font-semibold truncate">
+                                    {getPageTitle()}
+                                </h1>
+                            </div>
 
-                        <div className="flex items-center gap-4">
-                            <LanguageSwitch />
-                            <Notification />
-                            <DarkModeToggle />
+                            {/* Right Side */}
+                            <div className="flex items-center gap-2 lg:gap-4 shrink-0">
+                                {/* <LanguageSwitch /> */}
+                                <Notification />
+                                <DarkModeToggle />
 
-                            <div className="flex items-center gap-3 border-l-2 pl-4">
-                                <div className="text-right">
-                                    <p className="font-medium text-sm">{user?.name}</p>
-                                    <p className="text-xs text-muted-foreground">{user?.role}</p>
-                                </div>
+                                <div className="flex items-center gap-2 border-l pl-2 lg:pl-4">
+                                    <div className="hidden md:block text-right">
+                                        <p className="font-medium text-sm">{user?.name}</p>
+                                        <p className="text-xs text-muted-foreground">
+                                            {user?.role}
+                                        </p>
+                                    </div>
 
-                                <div className="h-10 w-10 rounded-full bg-primary text-white flex items-center justify-center font-semibold">
-                                    {user?.name?.charAt(0).toUpperCase()}
+                                    <div className="h-9 w-9 lg:h-10 lg:w-10 rounded-full bg-primary text-white flex items-center justify-center font-semibold shrink-0">
+                                        {user?.name?.charAt(0).toUpperCase()}
+                                    </div>
                                 </div>
                             </div>
+
                         </div>
                     </header>
 
