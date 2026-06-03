@@ -47,7 +47,7 @@ export const SimpleBarChart: React.FC<SimpleBarChartProps> = ({ data }) => {
                 y={y}
                 width={barWidth}
                 height={barHeight}
-                fill="#3b82f6"
+                fill="orange"
                 className="hover:opacity-80 transition-opacity cursor-pointer"
               />
               <text
