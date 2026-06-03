@@ -29,7 +29,7 @@ export function CatalogItemMenu({ disabled, actions, onAction }: CatalogItemMenu
     return (
         <Dropdown
             trigger={
-                <Button type="button" variant="ghost" size="icon-sm" className="shrink-0">
+                <Button type="button" variant="ghost" size="icon" className="shrink-0">
                     <MoreHorizontal className="h-4 w-4" />
                     <span className="sr-only">Actions</span>
                 </Button>
