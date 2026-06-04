@@ -44,24 +44,6 @@ export default function CustomersPage() {
                 dateRange
             });
 
-            console.log("========== CUSTOMER DATA ==========");
-            console.log(result.data);
-
-            if (result.data?.length > 0) {
-                console.log("========== FIRST CUSTOMER ==========");
-                console.log(result.data[0]);
-
-                Object.entries(result.data[0]).forEach(([key, value]) => {
-                    console.log(
-                        key,
-                        "=>",
-                        value,
-                        "TYPE:",
-                        typeof value
-                    );
-                });
-            }
-
             setData(result.data);
             setTotal(result.pagination?.total || 0);
 

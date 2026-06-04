@@ -254,7 +254,11 @@ export function AppLayout({ children }: AppLayoutProps) {
             return "Worker Verification";
         }
 
-        return pathname?.split("/")[1]?.replace(/-/g, " ") || "Dashboard";
+        const title = pathname?.split("/")[1]?.replace(/-/g, " ");
+
+        return title
+            ? title.charAt(0).toUpperCase() + title.slice(1)
+            : "Dashboard";
     };
 
     return (
@@ -409,7 +413,7 @@ export function AppLayout({ children }: AppLayoutProps) {
 
                 {/* Main Content */}
                 <main className="flex-1 flex flex-col min-w-0 border-l border-border lg:ml-62">
-                    <header className="sticky top-0 z-40 h-16 bg-card px-4 lg:px-6">
+                    <header className="sticky top-0 z-40 h-16 bg-card px-4 lg:px-4 mx-4 rounded-[50px] mt-4 shadow-lg border border-blue-500">
                         <div className="flex h-full items-center justify-between gap-2">
 
                             {/* Left Side */}
@@ -421,8 +425,8 @@ export function AppLayout({ children }: AppLayoutProps) {
                                     <Menu className="w-5 h-5" />
                                 </button>
 
-                                <h1 className="text-lg lg:text-xl font-semibold truncate">
-                                    {getPageTitle()}
+                                <h1 className="text-lg lg:text-xl font-semibold truncate text-primary">
+                                    {`${getPageTitle()}`}
                                 </h1>
                             </div>
 
@@ -450,7 +454,7 @@ export function AppLayout({ children }: AppLayoutProps) {
                     </header>
 
                     <div className="flex-1 p-0 overflow-y-auto bg-gradient-to-br from-background via-background to-muted/10 dark:from-background dark:via-background dark:to-muted/5 scrollbar-thin scrollbar-thumb-muted/50 dark:scrollbar-thumb-muted/30">
-                        <div className="animate-in fade-in slide-in-from-bottom-2 duration-500 p-4">
+                        <div className="animate-in fade-in slide-in-from-bottom-2 duration-500 px-8 py-4">
                             {children}
                         </div>
                     </div>

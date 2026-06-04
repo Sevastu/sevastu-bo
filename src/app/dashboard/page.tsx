@@ -85,8 +85,8 @@ export default function DashboardPage() {
         <div className="space-y-8">
             <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
                 <div className="flex flex-col gap-1">
-                    <h1 className="text-3xl font-bold tracking-tight text-primary">Dashboard</h1>
-                    <p className="text-muted-foreground font-medium text-lg">Overview of your service marketplace operations</p>
+                    <h1 className="mt-2 text-3xl font-bold tracking-tight text-muted-foreground">Marketplace Overview</h1>
+                    <p className="text-gray-500 text-lg">Overview of your service marketplace operations</p>
                 </div>
                 <div className="flex gap-3">
                     <Button variant="outline" className="rounded-2xl border-border/50 bg-card hover:bg-muted font-bold h-12 shadow-sm" onClick={loadData}>

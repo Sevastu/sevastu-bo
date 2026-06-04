@@ -1,12 +1,12 @@
 "use client"
-import React, { useState } from 'react';
-import { 
-  User, 
-  Mail, 
-  Phone, 
-  MapPin, 
-  Calendar, 
-  Star, 
+import React, { useState, useEffect } from 'react';
+import {
+  User,
+  Mail,
+  Phone,
+  MapPin,
+  Calendar,
+  Star,
   Award,
   FileText,
   CheckCircle,
@@ -15,11 +15,14 @@ import {
   Download,
   Search,
   Filter,
-  X
+  X,
+  Loader2
 } from 'lucide-react';
 // import { DashboardLayout } from '../../components/layout/DashboardLayout';
 import { VerificationStatusBadge } from '../../components/ui/VerificationStatusBadge';
 import { AppLayout } from '@/components/layout/AppLayout';
+import { fetchWorkers, approveWorker, rejectWorker, fetchWorkerDetails, fetchPrivateSignedUrl } from '@/features/workers/api';
+import { WorkerProfileStatus } from '@/lib/enums';
 
 interface Worker {
   id: string;
@@ -31,70 +34,17 @@ interface Worker {
   rating: number;
   experience: string;
   services: string[];
-  verificationStatus: 'pending' | 'approved' | 'rejected';
+  verificationStatus: WorkerProfileStatus;
   documents: {
     aadhaar: string;
     pan: string;
-    experience: string;
+    experience?: string;
   };
 }
 
-const mockWorkers: Worker[] = [
-  {
-    id: 'WKR-001',
-    name: 'Rajesh Kumar',
-    email: 'rajesh.kumar@example.com',
-    phone: '+91 9876543210',
-    address: '123 Main St, Mumbai, Maharashtra 400001',
-    registrationDate: '2024-01-10',
-    rating: 4.8,
-    experience: '5 years',
-    services: ['Home Cleaning', 'Plumbing'],
-    verificationStatus: 'pending',
-    documents: {
-      aadhaar: '/documents/aadhaar_001.pdf',
-      pan: '/documents/pan_001.pdf',
-      experience: '/documents/exp_001.pdf'
-    }
-  },
-  {
-    id: 'WKR-002',
-    name: 'Priya Sharma',
-    email: 'priya.sharma@example.com',
-    phone: '+91 9876543211',
-    address: '456 Park Ave, Delhi, Delhi 110001',
-    registrationDate: '2024-01-08',
-    rating: 4.9,
-    experience: '7 years',
-    services: ['Electrical', 'Painting'],
-    verificationStatus: 'approved',
-    documents: {
-      aadhaar: '/documents/aadhaar_002.pdf',
-      pan: '/documents/pan_002.pdf',
-      experience: '/documents/exp_002.pdf'
-    }
-  },
-  {
-    id: 'WKR-003',
-    name: 'Amit Patel',
-    email: 'amit.patel@example.com',
-    phone: '+91 9876543212',
-    address: '789 Market Rd, Ahmedabad, Gujarat 380001',
-    registrationDate: '2024-01-05',
-    rating: 4.6,
-    experience: '3 years',
-    services: ['Gardening', 'Moving'],
-    verificationStatus: 'rejected',
-    documents: {
-      aadhaar: '/documents/aadhaar_003.pdf',
-      pan: '/documents/pan_003.pdf',
-      experience: '/documents/exp_003.pdf'
-    }
-  }
-];
 
-const WorkerVerificationCard: React.FC<{ 
-  worker: Worker; 
+const WorkerVerificationCard: React.FC<{
+  worker: Worker;
   onApprove: (id: string) => void;
   onReject: (id: string) => void;
   onViewDocuments: (worker: Worker) => void;
@@ -190,7 +140,7 @@ const WorkerVerificationCard: React.FC<{
       </div>
 
       {/* Actions */}
-      {worker.verificationStatus === 'pending' && (
+      {worker.verificationStatus === WorkerProfileStatus.KYC_PENDING && (
         <div className="flex gap-3">
           <button
             onClick={() => onViewDocuments(worker)}
@@ -223,38 +173,61 @@ const DocumentPreviewModal: React.FC<{
   worker: Worker | null;
   isOpen: boolean;
   onClose: () => void;
-}> = ({ worker, isOpen, onClose }) => {
-  if (!isOpen || !worker) return null;
+  onApprove: (id: string) => void;
+  documentUrls: {
+    front: string;
+    back: string;
+  };
+}> = ({
+  worker,
+  isOpen,
+  onClose,
+  onApprove,
+  documentUrls,
+}) => {
+    if (!isOpen || !worker) return null;
 
-  return (
-    <div className="fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center p-4">
-      <div className="bg-[var(--color-card)] rounded-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
-        {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-[var(--color-border)]">
-          <div>
-            <h2 className="text-xl font-semibold text-[var(--color-text)]">Document Verification</h2>
-            <p className="text-sm text-[var(--color-text-secondary)]">{worker.name} - {worker.id}</p>
-          </div>
-          <button
-            onClick={onClose}
-            className="p-2 text-[var(--color-text-muted)] hover:text-[var(--color-text-secondary)] hover:bg-[var(--color-muted)] rounded-lg transition-colors"
-          >
-            <X size={20} />
-          </button>
-        </div>
-
-        {/* Documents */}
-        <div className="p-6 space-y-6">
-          {/* Aadhaar Card */}
-          <div className="border border-[var(--color-border)] rounded-lg p-4">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-medium text-[var(--color-text)]">Aadhaar Card</h3>
-              <button className="flex items-center gap-2 text-[var(--color-primary)] hover:text-[var(--color-primary)]">
-                <Download size={16} />
-                Download
-              </button>
+    return (
+      <div className="fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center p-4">
+        <div className="bg-[var(--color-card)] rounded-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+          {/* Header */}
+          <div className="flex items-center justify-between p-6 border-b border-[var(--color-border)]">
+            <div>
+              <h2 className="text-xl font-semibold text-[var(--color-text)]">Document Verification</h2>
+              <p className="text-sm text-[var(--color-text-secondary)]">{worker.name} - {worker.id}</p>
             </div>
-            <div className="bg-[var(--color-muted)] rounded-lg h-64 flex items-center justify-center">
+            <button
+              onClick={onClose}
+              className="p-2 text-[var(--color-text-muted)] hover:text-[var(--color-text-secondary)] hover:bg-[var(--color-muted)] rounded-lg transition-colors"
+            >
+              <X size={20} />
+            </button>
+          </div>
+
+          {/* Documents */}
+          <div className="p-6 space-y-6">
+            {/* Aadhaar Card */}
+            <div className="border border-[var(--color-border)] rounded-lg p-4">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-lg font-medium text-[var(--color-text)]">Aadhaar Card</h3>
+                <button className="flex items-center gap-2 text-[var(--color-primary)] hover:text-[var(--color-primary)]">
+                  <Download size={16} />
+                  Download
+                </button>
+              </div>
+              <div className="bg-[var(--color-muted)] rounded-lg h-64 overflow-hidden">
+                {documentUrls.front ? (
+                  <img
+                    src={documentUrls.front}
+                    alt="Front Document"
+                    className="w-full h-full object-contain"
+                  />
+                ) : (
+                  <div className="h-full flex items-center justify-center text-gray-400">
+                    No Document Available
+                  </div>
+                )}
+              </div>
               <div className="text-center">
                 <FileText size={48} className="text-[var(--color-text-muted)] mx-auto mb-2" />
                 <p className="text-[var(--color-text-muted)]">Aadhaar Card Preview</p>
@@ -298,57 +271,162 @@ const DocumentPreviewModal: React.FC<{
               </div>
             </div>
           </div>
-        </div>
+          {/* </div> */}
 
-        {/* Actions */}
-        <div className="border-t border-[var(--color-border)] p-6">
-          <div className="flex gap-3">
-            <button
-              onClick={onClose}
-              className="flex-1 bg-[var(--color-muted)] text-[var(--color-text)] px-4 py-2 rounded-lg hover:bg-[var(--color-muted)] transition-colors font-medium"
-            >
-              Close
-            </button>
-            <button className="flex-1 bg-[var(--color-success)] text-white px-4 py-2 rounded-lg hover:bg-[var(--color-success)] transition-colors font-medium">
-              Approve Worker
-            </button>
+          {/* Actions */}
+          <div className="border-t border-[var(--color-border)] p-6">
+            <div className="flex gap-3">
+              <button
+                onClick={onClose}
+                className="flex-1 bg-[var(--color-muted)] text-[var(--color-text)] px-4 py-2 rounded-lg hover:bg-[var(--color-muted)] transition-colors font-medium"
+              >
+                Close
+              </button>
+              <button className="flex-1 bg-[var(--color-success)] text-white px-4 py-2 rounded-lg hover:bg-[var(--color-success)] transition-colors font-medium">
+                Approve Worker
+              </button>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
-  );
-};
+      </div >
+    );
+  };
 
-const WorkerVerification: React.FC = () => {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [selectedStatus, setSelectedStatus] = useState('all');
-  const [selectedWorker, setSelectedWorker] = useState<Worker | null>(null);
-  const [isDocumentModalOpen, setIsDocumentModalOpen] = useState(false);
+  const WorkerVerification: React.FC = () => {
+    const [searchTerm, setSearchTerm] = useState('');
+    const [selectedStatus, setSelectedStatus] = useState<WorkerProfileStatus | 'all'>('all');
+    const [selectedWorker, setSelectedWorker] = useState<Worker | null>(null);
+    const [documentUrls, setDocumentUrls] = useState({
+      front: '',
+      back: '',
+    });
+    const [isDocumentModalOpen, setIsDocumentModalOpen] = useState(false);
+    const [workers, setWorkers] = useState<Worker[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+    const [rejectReason, setRejectReason] = useState('');
+    const [showRejectModal, setShowRejectModal] = useState(false);
+    const [selectedWorkerForReject, setSelectedWorkerForReject] = useState<string | null>(null);
 
-  const filteredWorkers = mockWorkers.filter(worker => {
+  useEffect(() => {
+    loadWorkers();
+  }, []);
+
+  const loadWorkers = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const data = await fetchWorkers();
+      const mappedWorkers: Worker[] = data.map((item: any) => ({
+        id: item.id || item.userId || '',
+        name: item.name || item.fullName || '',
+        email: item.email || '',
+        phone: item.phone || item.phoneNumber || '',
+        address: item.address || '',
+        registrationDate: item.registrationDate || item.createdAt || '',
+        rating: item.rating || 0,
+        experience: item.experience || '',
+        services: item.skills || [],
+        verificationStatus:
+          item.profileStatus ||
+          item.verificationStatus ||
+          WorkerProfileStatus.KYC_PENDING,
+        documents: {
+          aadhaar: item.idProof?.frontKey || '',
+          pan: item.idProof?.backKey || '',
+          experience: ''
+        }
+      }));
+      setWorkers(mappedWorkers);
+    } catch (err) {
+      setError('Failed to load workers');
+      console.error('Error loading workers:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const filteredWorkers = workers.filter(worker => {
     const matchesSearch = worker.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         worker.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         worker.id.toLowerCase().includes(searchTerm.toLowerCase());
+      worker.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      worker.id.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesStatus = selectedStatus === 'all' || worker.verificationStatus === selectedStatus;
-    
+
     return matchesSearch && matchesStatus;
   });
 
-  const handleApprove = (workerId: string) => {
-    console.log('Approving worker:', workerId);
-    // TODO: Implement approval logic
+  const handleApprove = async (workerId: string) => {
+    try {
+      await approveWorker(workerId);
+      await loadWorkers();
+    } catch (err) {
+      console.error('Error approving worker:', err);
+      setError('Failed to approve worker');
+    }
   };
 
-  const handleReject = (workerId: string) => {
-    console.log('Rejecting worker:', workerId);
-    // TODO: Implement rejection logic
+  const handleReject = async (workerId: string) => {
+    setSelectedWorkerForReject(workerId);
+    setShowRejectModal(true);
   };
 
-  const handleViewDocuments = (worker: Worker) => {
-    setSelectedWorker(worker);
-    setIsDocumentModalOpen(true);
+  const confirmReject = async () => {
+    if (!selectedWorkerForReject || !rejectReason.trim()) {
+      setError('Please provide a rejection reason');
+      return;
+    }
+    try {
+      await rejectWorker(selectedWorkerForReject, rejectReason);
+      setShowRejectModal(false);
+      setRejectReason('');
+      setSelectedWorkerForReject(null);
+      await loadWorkers();
+    } catch (err) {
+      console.error('Error rejecting worker:', err);
+      setError('Failed to reject worker');
+    }
   };
 
+  const handleViewDocuments = async (worker: Worker) => {
+    try {
+      let frontUrl = '';
+      let backUrl = '';
+
+      if (worker.documents.aadhaar) {
+        const res = await fetchPrivateSignedUrl(
+          worker.documents.aadhaar
+        );
+
+        frontUrl = res.url;
+      }
+
+      if (worker.documents.pan) {
+        const res = await fetchPrivateSignedUrl(
+          worker.documents.pan
+        );
+
+        backUrl = res.url;
+      }
+
+      setDocumentUrls({
+        front: frontUrl,
+        back: backUrl,
+      });
+
+      setSelectedWorker(worker);
+      setIsDocumentModalOpen(true);
+    } catch (error) {
+      console.error(error);
+
+      setDocumentUrls({
+        front: '',
+        back: '',
+      });
+
+      setSelectedWorker(worker);
+      setIsDocumentModalOpen(true);
+    }
+  };
   return (
     <AppLayout>
       <div className="space-y-6">
@@ -379,13 +457,15 @@ const WorkerVerification: React.FC = () => {
             <div className="lg:w-48">
               <select
                 value={selectedStatus}
-                onChange={(e) => setSelectedStatus(e.target.value)}
+                onChange={(e) => setSelectedStatus(e.target.value as WorkerProfileStatus | 'all')}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               >
                 <option value="all">All Status</option>
-                <option value="pending">Pending</option>
-                <option value="approved">Approved</option>
-                <option value="rejected">Rejected</option>
+                <option value={WorkerProfileStatus.UNDER_REVIEW}>Under Review</option>
+                <option value={WorkerProfileStatus.VERIFIED}>Verified</option>
+                <option value={WorkerProfileStatus.REJECTED}>Rejected</option>
+                <option value={WorkerProfileStatus.KYC_PENDING}>KYC Pending</option>
+                <option value={WorkerProfileStatus.DRAFT}>Draft</option>
               </select>
             </div>
 
@@ -398,24 +478,74 @@ const WorkerVerification: React.FC = () => {
         </div>
 
         {/* Worker Cards */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {filteredWorkers.map((worker) => (
-            <WorkerVerificationCard
-              key={worker.id}
-              worker={worker}
-              onApprove={handleApprove}
-              onReject={handleReject}
-              onViewDocuments={handleViewDocuments}
-            />
-          ))}
-        </div>
+        {loading ? (
+          <div className="flex items-center justify-center py-12">
+            <Loader2 className="animate-spin text-gray-400 w-8 h-8" />
+          </div>
+        ) : error ? (
+          <div className="bg-red-50 border border-red-200 rounded-lg p-4 text-red-600">
+            {error}
+          </div>
+        ) : filteredWorkers.length === 0 ? (
+          <div className="text-center py-12 text-gray-500">
+            No workers found matching the criteria
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {filteredWorkers.map((worker) => (
+              <WorkerVerificationCard
+                key={worker.id}
+                worker={worker}
+                onApprove={handleApprove}
+                onReject={handleReject}
+                onViewDocuments={handleViewDocuments}
+              />
+            ))}
+          </div>
+        )}
 
         {/* Document Preview Modal */}
         <DocumentPreviewModal
           worker={selectedWorker}
           isOpen={isDocumentModalOpen}
           onClose={() => setIsDocumentModalOpen(false)}
+          onApprove={handleApprove}
+          documentUrls={documentUrls}
         />
+
+        {/* Reject Confirmation Modal */}
+        {showRejectModal && (
+          <div className="fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center p-4">
+            <div className="bg-white rounded-xl max-w-md w-full p-6">
+              <h2 className="text-xl font-semibold mb-4">Reject Worker</h2>
+              <textarea
+                value={rejectReason}
+                onChange={(e) => setRejectReason(e.target.value)}
+                placeholder="Please provide a reason for rejection..."
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent mb-4"
+                rows={4}
+              />
+              <div className="flex gap-3">
+                <button
+                  onClick={() => {
+                    setShowRejectModal(false);
+                    setRejectReason('');
+                    setSelectedWorkerForReject(null);
+                  }}
+                  className="flex-1 bg-gray-100 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-200 transition-colors font-medium"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={confirmReject}
+                  className="flex-1 bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition-colors font-medium"
+                >
+                  Confirm Reject
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </AppLayout>
   );
