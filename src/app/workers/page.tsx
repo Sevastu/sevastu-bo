@@ -281,13 +281,13 @@ export default function WorkersPage() {
                             placeholder="Search workers..."
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
-                            className="bg-white w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            className="bg-card w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                         />
                     </div>
                 </div>
 
                 {/* Status Tabs */}
-                <div className="flex gap-1 mb-6 bg-white p-1 rounded-lg border border-gray-200 w-fit">
+                <div className="flex gap-1 mb-6 bg-transparent p-1 rounded-lg w-fit">
                     {[
                         { key: 'all', label: 'All Workers' },
                         { key: 'verified', label: 'Verified' },
@@ -300,7 +300,7 @@ export default function WorkersPage() {
                             className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
                                 viewStatus === tab.key
                                     ? 'bg-blue-600 text-white'
-                                    : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
+                                    : 'text-gray-600 hover:text-gray-900 hover:bg-gray-200'
                             }`}
                         >
                             {tab.label}
@@ -310,7 +310,7 @@ export default function WorkersPage() {
 
                 {/* Stats Cards */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                    <div className="bg-white rounded-lg p-6 border border-gray-200">
+                    <div className="bg-card rounded-lg p-6">
                         <h3 className="text-lg font-semibold text-gray-900 mb-2">Credentialing Status</h3>
                         <div className="space-y-3">
                             <div className="flex justify-between items-center">
@@ -334,13 +334,13 @@ export default function WorkersPage() {
                         </div>
                     </div>
 
-                    <div className="bg-white rounded-lg p-6 border border-gray-200">
+                    <div className="bg-card rounded-lg p-6 ">
                         <h3 className="text-lg font-semibold text-gray-900 mb-2">Monthly Growth</h3>
                         <div className="text-2xl font-bold text-blue-600">+12.5%</div>
                         <p className="text-sm text-gray-600">23 new workers this month</p>
                     </div>
 
-                    <div className="bg-white rounded-lg p-6 border border-gray-200">
+                    <div className="bg-card rounded-lg p-6">
                         <h3 className="text-lg font-semibold text-gray-900 mb-2">Active Workers</h3>
                         <div className="text-2xl font-bold text-gray-900">
                             {data.filter(w => (w as any).isAvailable).length}
@@ -350,10 +350,10 @@ export default function WorkersPage() {
                 </div>
 
                 {/* Data Table */}
-                <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
+                <div className="bg-transparent rounded-sm overflow-hidden">
                     <div className="overflow-x-auto">
                         <table className="w-full">
-                            <thead className="bg-gray-50 border-b border-gray-200">
+                            <thead className="bg-muted/50">
                                 <tr>
                                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                         Worker Name
@@ -375,7 +375,7 @@ export default function WorkersPage() {
                                     </th>
                                 </tr>
                             </thead>
-                            <tbody className="bg-white divide-y divide-gray-200">
+                            <tbody className=" divide-y-0">
                                 {loading ? (
                                     <tr>
                                         <td colSpan={6} className="px-6 py-12 text-center text-gray-500">
@@ -392,7 +392,7 @@ export default function WorkersPage() {
                                     data.map((worker) => (
                                         <tr 
                                             key={resolveWorkerUserId(worker)}
-                                            className="hover:bg-gray-50 transition-colors cursor-pointer"
+                                            className="bg-card shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1"
                                             onClick={() => openWorkerDetails(worker)}
                                         >
                                             <td className="px-6 py-4 whitespace-nowrap">
@@ -445,7 +445,7 @@ export default function WorkersPage() {
                                             <td className="px-6 py-4 whitespace-nowrap">
                                                 <StarRating rating={(worker as any).rating || 0} />
                                             </td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                            <td className="px-6 py-4 whitespace-nowrap">
                                                 <div className="flex items-center justify-end gap-2">
                                                     {/* <button className="text-gray-400 hover:text-gray-600 transition-colors">
                                                         <Edit className="w-4 h-4" />

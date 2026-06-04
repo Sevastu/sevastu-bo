@@ -17,10 +17,12 @@ export const KPICard: React.FC<KPICardProps> = ({
   icon
 }) => {
   return (
-    <div className="bg-[var(--color-card)] rounded-lg p-6 transition-all">
-      
+    <div className="bg-[var(--color-card)] rounded-lg p-6 transition-all duration-300
+  hover:-translate-y-1
+  hover:shadow-lg">
+
       <div className="flex items-center justify-between">
-        
+
         <div className="flex-1">
           <p className="text-sm text-[var(--color-text-secondary)] mb-1">
             {title}
@@ -30,11 +32,10 @@ export const KPICard: React.FC<KPICardProps> = ({
             {value}
           </h2>
 
-          <div className={`flex items-center gap-1 text-sm font-medium ${
-            changeType === 'increase'
+          <div className={`flex items-center gap-1 text-sm font-medium ${changeType === 'increase'
               ? 'text-[var(--color-success)]'
               : 'text-[var(--color-error)]'
-          }`}>
+            }`}>
             {changeType === 'increase' ? (
               <TrendingUp size={16} />
             ) : (
