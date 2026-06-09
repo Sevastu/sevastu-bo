@@ -51,6 +51,7 @@ export function AppLayout({ children }: AppLayoutProps) {
     const [isLoading, setIsLoading] = useState(true);
     const [openDropdown, setOpenDropdown] = useState<string | null>(null);
     const [isMobile, setIsMobile] = useState(false);
+    const [hoverTimeout, setHoverTimeout] = useState<NodeJS.Timeout | null>(null);
 
     useEffect(() => {
         setMounted(true);
@@ -260,7 +261,6 @@ export function AppLayout({ children }: AppLayoutProps) {
             ? title.charAt(0).toUpperCase() + title.slice(1)
             : "Dashboard";
     };
-
     return (
         <div className="min-h-screen bg-background flex">
             {/* Sidebar */}
@@ -313,13 +313,34 @@ export function AppLayout({ children }: AppLayoutProps) {
                             if (item.isDropdown) {
                                 const isDropdownActive = item.children?.some(child => child.href && pathname?.startsWith(child.href)) || false;
                                 const isOpen = openDropdown === item.name;
-
+                               
                                 return (
-                                    <div key={item.name} className="relative" data-dropdown>
+                                    <div key={item.name}
+                                        className="relative"
+                                        data-dropdown
+                                        onMouseEnter={() => {
+                                            if (hoverTimeout) clearTimeout(hoverTimeout);
+
+                                            const timeout = setTimeout(() => {
+                                                setOpenDropdown(item.name);
+                                            }, 200); // Open after 150ms
+
+                                            setHoverTimeout(timeout);
+                                        }}
+                                        onMouseLeave={() => {
+                                            if (hoverTimeout) clearTimeout(hoverTimeout);
+
+                                            const timeout = setTimeout(() => {
+                                                setOpenDropdown(null);
+                                            }, 300); // Close after 250ms
+
+                                            setHoverTimeout(timeout);
+                                        }}
+                                    >
                                         <button
-                                            onClick={() => setOpenDropdown(isOpen ? null : item.name)}
+                                            // onClick={() => setOpenDropdown(isOpen ? null : item.name)}
                                             className={cn(
-                                                "w-full flex items-center px-3 py-2.5 rounded-sm font-medium transition-all group relative",
+                                                "w-full flex text-start items-center px-3 py-2.5 rounded-sm font-medium transition-all group relative",
                                                 "hover:scale-[1.02] active:scale-[0.98]",
                                                 isDropdownActive
                                                     ? "bg-primary text-primary-foreground shadow-lg shadow-blue-500/30"
@@ -412,8 +433,8 @@ export function AppLayout({ children }: AppLayoutProps) {
                 </aside>
 
                 {/* Main Content */}
-                <main className="flex-1 flex flex-col min-w-0 border-l border-border lg:ml-62">
-                    <header className="sticky top-0 z-40 h-16 bg-card px-4 lg:px-4 mx-4 rounded-[50px] mt-4 shadow-lg border border-blue-500">
+                <main className="flex-1 flex flex-col min-w-0 lg:ml-62">
+                    <header className="sticky top-0 z-40 h-16 bg-card px-4 lg:px-4 mx-4 rounded-[50px] mt-4 shadow-lg border border-primary">
                         <div className="flex h-full items-center justify-between gap-2">
 
                             {/* Left Side */}
