@@ -23,6 +23,7 @@ import {
     ChevronDown,
 } from "lucide-react";
 import NextLink from "next/link";
+import { useRef } from "react";
 import { cn } from "@/lib/utils";
 // import { GraphHelpers } from "next/dist/compiled/webpack/webpack";
 import { LanguageSwitch } from "@/components/auth/LanguageSwitch";
@@ -51,7 +52,8 @@ export function AppLayout({ children }: AppLayoutProps) {
     const [isLoading, setIsLoading] = useState(true);
     const [openDropdown, setOpenDropdown] = useState<string | null>(null);
     const [isMobile, setIsMobile] = useState(false);
-    const [hoverTimeout, setHoverTimeout] = useState<NodeJS.Timeout | null>(null);
+    const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+    const [manuallyClosed, setManuallyClosed] = useState<string | null>(null);
 
     useEffect(() => {
         setMounted(true);
@@ -85,18 +87,16 @@ export function AppLayout({ children }: AppLayoutProps) {
     useEffect(() => {
         const handleResize = () => {
             const mobile = window.innerWidth < 1024;
-
             setIsMobile(mobile);
-
             if (!mobile) {
                 setIsSidebarOpen(true);
+            } else {
+                setIsSidebarOpen(false);
             }
         };
 
         handleResize();
-
         window.addEventListener("resize", handleResize);
-
         return () => window.removeEventListener("resize", handleResize);
     }, []);
 
@@ -313,51 +313,82 @@ export function AppLayout({ children }: AppLayoutProps) {
                             if (item.isDropdown) {
                                 const isDropdownActive = item.children?.some(child => child.href && pathname?.startsWith(child.href)) || false;
                                 const isOpen = openDropdown === item.name;
-                               
+
                                 return (
                                     <div key={item.name}
                                         className="relative"
                                         data-dropdown
-                                        onMouseEnter={() => {
-                                            if (hoverTimeout) clearTimeout(hoverTimeout);
+                                        onClick={(e) => {
+                                            e.stopPropagation();
 
-                                            const timeout = setTimeout(() => {
+                                            if (isOpen) {
+                                                setOpenDropdown(null);
+                                                setManuallyClosed(item.name);
+                                            } else {
                                                 setOpenDropdown(item.name);
-                                            }, 200); // Open after 150ms
+                                                setManuallyClosed(null);
+                                            }
+                                        }}
+                                        onMouseEnter={() => {
+                                            if (isMobile) return;
 
-                                            setHoverTimeout(timeout);
+                                            if (manuallyClosed === item.name) return;
+
+                                            if (hoverTimeoutRef.current) {
+                                                clearTimeout(hoverTimeoutRef.current);
+                                            }
+
+                                            hoverTimeoutRef.current = setTimeout(() => {
+                                                setOpenDropdown(item.name);
+                                            }, 200);
                                         }}
                                         onMouseLeave={() => {
-                                            if (hoverTimeout) clearTimeout(hoverTimeout);
+                                            if (isMobile) return;
 
-                                            const timeout = setTimeout(() => {
+                                            setManuallyClosed(null);
+                                            
+                                            if (hoverTimeoutRef.current) {
+                                                clearTimeout(hoverTimeoutRef.current);
+                                            }
+
+                                            hoverTimeoutRef.current = setTimeout(() => {
                                                 setOpenDropdown(null);
-                                            }, 300); // Close after 250ms
-
-                                            setHoverTimeout(timeout);
+                                            }, 300);
                                         }}
                                     >
-                                        <button
-                                            // onClick={() => setOpenDropdown(isOpen ? null : item.name)}
-                                            className={cn(
-                                                "w-full flex text-start items-center px-3 py-2.5 rounded-sm font-medium transition-all group relative",
-                                                "hover:scale-[1.02] active:scale-[0.98]",
-                                                isDropdownActive
-                                                    ? "bg-primary text-primary-foreground shadow-lg shadow-blue-500/30"
-                                                    : "text-muted-foreground hover:bg-primary/10 hover:text-foreground",
-                                            )}
-                                        >
-                                            <>
-                                                <Icon className="w-5 h-5 shrink-0" />
-                                                <span className="ml-3 flex-1">{item.name}</span>
+                                        <div className={cn("flex font-medium text-muted-foreground items-center w-full px-3 py-2.5 rounded-sm transition-all group relative",
+                                        "hover:scale-[1.02] active:scale-[0.98]",
+                                        isDropdownActive
+                                                ? "bg-primary text-white shadow-lg shadow-primary/20"
+                                                : "text-muted-foreground hover:bg-primary/10 hover:text-primary"
+                                            )}>
+                                            <Icon className="w-5 h-5 shrink-0" />
+
+                                            <span className="ml-3 flex-1 text-left">
+                                                {item.name}
+                                            </span>
+
+                                            <button
+                                                type="button"
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+
+                                                    if (isOpen) {
+                                                        setOpenDropdown(null);
+                                                    } else {
+                                                        setOpenDropdown(item.name);
+                                                    }
+                                                }}
+                                                className="p-1 rounded hover:bg-black/5 dark:hover:bg-white/5"
+                                            >
                                                 <ChevronRight
                                                     className={cn(
-                                                        "w-4 h-4 transition-transform duration-200",
+                                                        "w-4 h-4 transition-transform duration-300",
                                                         isOpen && "rotate-90"
                                                     )}
                                                 />
-                                            </>
-                                        </button>
+                                            </button>
+                                        </div>
 
                                         {/* Floating Dropdown (Desktop) */}
                                         {isOpen && (
@@ -366,7 +397,6 @@ export function AppLayout({ children }: AppLayoutProps) {
                                                     const ChildIcon = child.icon;
                                                     const isChildActive =
                                                         child.href && pathname?.startsWith(child.href);
-
                                                     return (
                                                         <NextLink
                                                             key={child.href}
@@ -375,7 +405,7 @@ export function AppLayout({ children }: AppLayoutProps) {
                                                                 "flex items-center gap-3 px-3 py-2 rounded-sm text-sm transition-all",
                                                                 isChildActive
                                                                     ? "bg-primary/10 text-primary"
-                                                                    : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                                                                    : "text-muted-foreground hover:bg-primary/10 hover:text-foreground"
                                                             )}
                                                         >
                                                             <ChildIcon className="w-4 h-4" />
@@ -395,11 +425,11 @@ export function AppLayout({ children }: AppLayoutProps) {
                                     key={item.href || item.name}
                                     href={item.href || ''}
                                     className={cn(
-                                        "flex items-center px-3 py-2.5 rounded-xl font-medium transition-all group relative",
-                                        "hover:scale-[1.02] active:scale-[0.98]",
+                                        "flex items-center px-3 py-2.5 rounded-sm font-medium transition-all group relative",
+                                        "hover:scale-[1.01] active:scale-[0.70]",
                                         isActive
                                             ? "bg-primary text-primary-foreground shadow-lg shadow-blue-500/30 rounded-sm"
-                                            : "text-muted-foreground hover:bg-primary/10 hover:text-foreground",
+                                            : "text-muted-foreground hover:bg-primary/10 hover:text-forground",
                                         // !isSidebarOpen && "justify-center"
                                     )}
                                 >
@@ -408,7 +438,7 @@ export function AppLayout({ children }: AppLayoutProps) {
                                             "w-5 h-5 transition-transform group-hover:scale-110",
                                             isActive
                                                 ? "text-primary-foreground"
-                                                : "text-muted-foreground group-hover:text-foreground"
+                                                : "text-muted-foreground group-hover:text-forground"
                                         )}
                                     />
                                     <span className="ml-3 flex-1">
