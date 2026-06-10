@@ -64,8 +64,8 @@ export default function LeadsPage() {
     return (
         <AppLayout>
             <div className="flex flex-col gap-1 mb-8">
-                <h2 className="text-3xl font-bold tracking-tight text-primary">Leads Management</h2>
-                <p className="text-muted-foreground">Track and manage potential business leads and communication states.</p>
+                <h2 className="mt-2 text-3xl font-bold tracking-tight text-muted-foreground">Leads Management</h2>
+                <p className="text-gray-500 text-lg">Track and manage potential business leads and communication states.</p>
             </div>
             <DataTable
                 data={data}

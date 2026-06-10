@@ -113,11 +113,11 @@ export default function WorkerPerformancePage() {
             <div className="flex flex-col gap-8">
                 <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                     <div className="flex flex-col gap-1">
-                        <h2 className="text-3xl font-bold tracking-tight text-primary flex items-center gap-3">
-                            <Trophy className="w-8 h-8 text-amber-500" />
+                        <h2 className="mt-2 flex items-center gap-2 text-3xl font-bold tracking-tight text-muted-foreground">
+                            {/* <Trophy className="w-7 h-7 text-amber-500" /> */}
                             Worker Leaderboard
                         </h2>
-                        <p className="text-muted-foreground text-sm font-medium">Rankings based on completion volume and customer success rates.</p>
+                        <p className="text-gray-500 text-lg">Rankings based on completion volume and customer success rates.</p>
                     </div>
                     <div className="flex gap-2">
                         <Button variant="outline" className="rounded-xl gap-2 font-bold border-border/50 shadow-none">

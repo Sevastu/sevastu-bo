@@ -263,8 +263,8 @@ export default function WorkersPage() {
                 <div className="mb-8">
                     <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 mb-6">
                         <div>
-                            <h1 className="text-3xl font-bold text-primary mb-2">Worker Management</h1>
-                            <p className="text-gray-600">Manage and monitor service providers</p>
+                            <h1 className="mt-2 flex items-center gap-2 text-3xl font-bold tracking-tight text-muted-foreground">Worker Management</h1>
+                            <p className="text-gray-500 text-lg">Manage and monitor service providers</p>
                         </div>
                         
                         <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2">

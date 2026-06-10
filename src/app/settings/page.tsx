@@ -100,13 +100,13 @@ export const Settings: React.FC = () => {
       <div className="space-y-6">
         {/* Header */}
         <div>
-          <h1 className="text-2xl font-bold text-primary">Settings</h1>
-          <p className="text-gray-600">Manage your account and application preferences</p>
+          <h1 className="mt-2 text-3xl font-bold tracking-tight text-muted-foreground">Settings</h1>
+          <p className="text-gray-500 text-lg">Manage your account and application preferences</p>
         </div>
 
         <div className="flex gap-6">
           {/* Sidebar */}
-          <div className="w-64 bg-white rounded-xl border border-gray-200 p-4">
+          <div className="w-64 bg-card rounded-md p-4">
             <nav className="space-y-1">
               {settingsTabs.map((tab) => (
                 <button
@@ -129,15 +129,15 @@ export const Settings: React.FC = () => {
           <div className="flex-1">
             {/* Appearance Tab */}
             {activeTab === 'appearance' && (
-              <div className="bg-[var(--color-card)] rounded-xl border border-[var(--color-border)] p-6 space-y-8">
+              <div className="bg-card rounded-md p-4">
                 <div>
-                  <h2 className="text-xl font-semibold text-[var(--color-text)] mb-6">Appearance Settings</h2>
-                  <p className="text-[var(--color-text-secondary)]">Customize how application looks and feels</p>
+                  <h2 className="text-2xl font-semibold tracking-tight text-muted-foreground">Appearance Settings</h2>
+                  <p className="ttext-gray-500 text-md">Customize how application looks and feels</p>
                 </div>
 
                 {/* Theme Selection */}
                 <div>
-                  <h3 className="text-lg font-medium text-[var(--color-text)] mb-4">Theme</h3>
+                  <h3 className="text-lg font-medium text-[var(--color-text)] mt-2">Theme</h3>
                   <div className="grid grid-cols-3 gap-4">
                     {[
                       { value: 'light', label: 'Light', icon: <Sun size={20} />, description: 'Clean and bright interface' },
@@ -147,10 +147,10 @@ export const Settings: React.FC = () => {
                       <button
                         key={theme.value}
                         onClick={() => setAppearance(prev => ({ ...prev, theme: theme.value as any }))}
-                        className={`p-4 rounded-lg border-2 transition-all ${
+                        className={`p-4 rounded-md shadow-sm border-2 hover:border-primary transition-all ${
                           appearance.theme === theme.value
-                            ? 'border-[var(--color-primary)] bg-[var(--color-primary)]/10'
-                            : 'border-[var(--color-border)] hover:border-[var(--color-border)]'
+                            ? 'border-primary bg-primary/10'
+                            : 'border-none hover:shadow-lg hover:'
                         }`}
                       >
                         <div className="flex flex-col items-center gap-2">
@@ -169,13 +169,13 @@ export const Settings: React.FC = () => {
 
                 {/* Accent Color */}
                 <div>
-                  <h3 className="text-lg font-medium text-[var(--color-text)] mb-4">Accent Color</h3>
+                  <h3 className="text-lg font-medium text-[var(--color-text)] mt-2">Accent Color</h3>
                   <div className="grid grid-cols-6 gap-3">
                     {accentColors.map((color) => (
                       <button
                         key={color.value}
                         onClick={() => setAppearance(prev => ({ ...prev, accentColor: color.value }))}
-                        className={`p-4 rounded-lg border-2 transition-all ${
+                        className={`p-4 rounded-lg shadow-sm transition-all mt-2 ${
                           appearance.accentColor === color.value
                             ? 'border-[var(--color-text)] scale-110'
                             : 'border-[var(--color-border)] hover:border-[var(--color-border)]'
@@ -197,13 +197,13 @@ export const Settings: React.FC = () => {
 
                 {/* Font Size */}
                 <div>
-                  <h3 className="text-lg font-medium text-[var(--color-text)] mb-4">Font Size</h3>
+                  <h3 className="text-lg font-medium text-[var(--color-text)] mt-4">Font Size</h3>
                   <div className="space-y-3">
                     {fontSizes.map((size) => (
                       <button
                         key={size.value}
                         onClick={() => setAppearance(prev => ({ ...prev, fontSize: size.value as any }))}
-                        className={`w-full p-4 rounded-lg border-2 transition-all ${
+                        className={`w-full p-4 rounded-sm shadow-sm hover:shadow-md hover:cursor-pointer hover:bg-primary/10 transition-all${
                           appearance.fontSize === size.value
                             ? 'border-[var(--color-primary)] bg-[var(--color-primary)]/10'
                             : 'border-[var(--color-border)] hover:border-[var(--color-border)]'
