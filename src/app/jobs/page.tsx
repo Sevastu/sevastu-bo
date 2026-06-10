@@ -124,8 +124,8 @@ export default function JobsPage() {
             <div className="flex flex-col gap-8">
                 <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                     <div className="flex flex-col gap-1">
-                        <h2 className="text-3xl font-bold tracking-tight text-primary">Job Management</h2>
-                        <p className="text-muted-foreground text-sm font-medium">Monitor and control all service requests across the network.</p>
+                        <h2 className="mt-2 text-3xl font-bold tracking-tight text-muted-foreground">Job Management</h2>
+                        <p className="text-gray-500 text-lg">Monitor and control all service requests across the network.</p>
                     </div>
                 </div>
 
