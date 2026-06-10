@@ -16,17 +16,17 @@ import {
     Hammer,
     Layers,
     Trophy,
-    PieChartIcon,
+    // PieChartIcon,
     ActivityIcon,
     User2Icon,
     ChevronRight,
-    ChevronDown,
+    // ChevronDown,
 } from "lucide-react";
 import NextLink from "next/link";
 import { useRef } from "react";
 import { cn } from "@/lib/utils";
 // import { GraphHelpers } from "next/dist/compiled/webpack/webpack";
-import { LanguageSwitch } from "@/components/auth/LanguageSwitch";
+// import { LanguageSwitch } from "@/components/auth/LanguageSwitch";
 import { DarkModeToggle } from "@/components/auth/DarkModeToggle";
 import { Notification } from "@/components/ui/notification";
 

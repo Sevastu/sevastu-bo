@@ -28,7 +28,7 @@ interface Worker {
   name: string;
   photoUrl: string;
   email: string;
-  phone: string;
+  phoneNumber: string;
   address: string;
   registrationDate: string;
   rating: number;
@@ -91,7 +91,7 @@ const WorkerVerificationCard: React.FC<{
           </div>
           <div className="flex items-center gap-2 text-sm text-[var(--color-text-secondary)]">
             <Phone size={14} />
-            {worker.phone}
+            {worker.phoneNumber}
           </div>
         </div>
         <div className="space-y-2">
@@ -431,6 +431,9 @@ const WorkerVerification: React.FC = () => {
   }, []);
 
   const loadWorkers = async () => {
+    // const data = await fetchWorkers();
+
+    // console.log("Workers API Response:", data);
     try {
       setLoading(true);
       setError(null);
@@ -440,7 +443,7 @@ const WorkerVerification: React.FC = () => {
         name: item.name || item.fullName || '',
         photoUrl: item.photoUrl || '',
         email: item.email || '',
-        phone: item.phone || item.phoneNumber || '',
+        phoneNumber: item.phone || item.phoneNumber || '',
         address: item.address || '',
         registrationDate: item.registrationDate || item.createdAt || '',
         rating: item.rating || 0,
@@ -597,8 +600,8 @@ const WorkerVerification: React.FC = () => {
       <div className="space-y-6">
         {/* Header */}
         <div>
-          <h1 className="text-2xl font-bold text-primary">Worker-Verification</h1>
-          <p className="text-gray-600">Review and verify worker documents and credentials</p>
+          <h1 className="mt-2 flex items-center gap-2 text-3xl font-bold tracking-tight text-muted-foreground">Worker-Verification</h1>
+          <p className="text-gray-500 text-lg">Review and verify worker documents and credentials</p>
         </div>
 
         {/* Filters */}

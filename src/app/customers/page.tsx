@@ -187,8 +187,8 @@ export default function CustomersPage() {
                 <div className="mb-8">
                     <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 mb-6">
                         <div>
-                            <h1 className="text-3xl font-bold text-primary">Customers</h1>
-                            <p className="text-gray-600 mt-2">Manage and monitor your user base activity...</p>
+                            <h1 className="mt-2 flex items-center gap-2 text-3xl font-bold tracking-tight text-muted-foreground">Customers</h1>
+                            <p className="text-gray-500 text-lg">Manage and monitor your user base activity...</p>
                         </div>
                         <Button className="bg-blue-600 hover:bg-blue-700 text-white">
                             <Plus className="w-4 h-4 mr-2" />

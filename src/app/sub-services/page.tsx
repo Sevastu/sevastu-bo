@@ -43,12 +43,12 @@ export default function SubServicesPage() {
         const name = prompt("Enter sub-service name:");
         const basePrice = Number(prompt("Enter base price (INR):"));
         const priceType = prompt("Price type ('fixed' or 'range'):") as 'fixed' | 'range' || 'fixed';
-        
+
         if (!name || isNaN(basePrice) || selectedService === "all") {
-             if (selectedService === "all") alert("Please select a service first.");
-             return;
+            if (selectedService === "all") alert("Please select a service first.");
+            return;
         }
-        
+
         try {
             await createSubService({ name, basePrice, priceType, serviceId: selectedService });
             loadData();
@@ -59,13 +59,13 @@ export default function SubServicesPage() {
 
     const columns: any[] = [
         { key: "name", label: "Name" },
-        { 
-            key: "serviceId", 
+        {
+            key: "serviceId",
             label: "Parent Service",
             render: (item: SubService) => typeof item.serviceId === 'string' ? item.serviceId : (item.serviceId as Service).name
         },
-        { 
-            key: "basePrice", 
+        {
+            key: "basePrice",
             label: "Base Price",
             render: (item: SubService) => (
                 <div className="flex items-center font-semibold text-primary">
@@ -97,9 +97,9 @@ export default function SubServicesPage() {
             label: "Actions",
             render: (item: SubService) => (
                 <div className="flex gap-2">
-                    <Button 
-                        size="sm" 
-                        variant="ghost" 
+                    <Button
+                        size="sm"
+                        variant="ghost"
                         disabled={!isAdmin}
                         onClick={() => {
                             const newName = prompt("New name:", item.name);
@@ -117,8 +117,8 @@ export default function SubServicesPage() {
         <AppLayout>
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
                 <div className="flex flex-col gap-1">
-                    <h2 className="text-3xl font-bold tracking-tight text-primary">Sub-Service Management</h2>
-                    <p className="text-muted-foreground">Manage granular service offerings and pricing models.</p>
+                    <h2 className="mt-2 flex items-center gap-2 text-3xl font-bold tracking-tight text-muted-foreground">Sub-Service Management</h2>
+                    <p className="text-gray-500 text-lg">Manage granular service offerings and pricing models.</p>
                 </div>
 
                 <div className="flex flex-col md:flex-row gap-4 items-center w-full md:w-auto">
@@ -138,8 +138,8 @@ export default function SubServicesPage() {
                     </div>
 
                     {isAdmin && (
-                        <Button 
-                            onClick={handleCreate} 
+                        <Button
+                            onClick={handleCreate}
                             disabled={selectedService === "all"}
                             className="gap-2 shrink-0"
                         >
@@ -148,7 +148,7 @@ export default function SubServicesPage() {
                     )}
                 </div>
             </div>
-            
+
             <DataTable
                 data={data}
                 columns={columns}
@@ -156,8 +156,8 @@ export default function SubServicesPage() {
                 total={data.length}
                 page={1}
                 limit={100}
-                onPageChange={() => {}}
-                onSearch={() => {}}
+                onPageChange={() => { }}
+                onSearch={() => { }}
             />
         </AppLayout>
     );
