@@ -404,8 +404,8 @@ export function AppLayout({ children }: AppLayoutProps) {
                                                             className={cn(
                                                                 "flex items-center gap-3 px-3 py-2 rounded-sm text-sm transition-all",
                                                                 isChildActive
-                                                                    ? "bg-primary/10 text-primary"
-                                                                    : "text-muted-foreground hover:bg-primary/10 hover:text-foreground"
+                                                                    ? "bg-primary/10 text-primary shadow-md"
+                                                                    : "text-muted-foreground hover:bg-primary/10 hover:text-foreground hover:shadow-md"
                                                             )}
                                                         >
                                                             <ChildIcon className="w-4 h-4" />
@@ -426,9 +426,9 @@ export function AppLayout({ children }: AppLayoutProps) {
                                     href={item.href || ''}
                                     className={cn(
                                         "flex items-center px-3 py-2.5 rounded-sm font-medium transition-all group relative",
-                                        "hover:scale-[1.01] active:scale-[0.70]",
+                                        "hover:scale-[1.02] active:scale-[0.98]",
                                         isActive
-                                            ? "bg-primary text-primary-foreground shadow-lg shadow-blue-500/30 rounded-sm"
+                                            ? "bg-primary text-primary-foreground shadow-lg shadow-primary/30 rounded-sm"
                                             : "text-muted-foreground hover:bg-primary/10 hover:text-forground",
                                         // !isSidebarOpen && "justify-center"
                                     )}
