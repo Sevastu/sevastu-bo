@@ -3,8 +3,8 @@
 import React, { useEffect, useState } from "react";
 import { X, MapPin, Briefcase, FileText, DollarSign, CheckCircle, XCircle, Ban } from "lucide-react";
 import { fetchWorkerDetails, approveWorker, rejectWorker } from "@/features/workers/api";
-import { WorkerProfileStatus } from "@/lib/enums";
-import { BlurOverlaySidePanel } from "@/components/ui/BlurOverlay";
+// import { WorkerProfileStatus } from "@/lib/enums";
+// import { BlurOverlaySidePanel } from "@/components/ui/BlurOverlay";
 
 interface WorkerDetailsDrawerProps {
   isOpen: boolean;
@@ -139,7 +139,7 @@ export function WorkerDetailsDrawer({ isOpen, onClose, workerId, onWorkerUpdate 
     <>
       {/* Improved Blurred Backdrop */}
       <div 
-        className="fixed inset-0 z-40 transition-all duration-300 ease-in-out"
+        className="fixed inset-0 z-50 transition-all duration-300 ease-in-out"
         style={{
           backgroundColor: 'rgba(0, 0, 0, 0.3)',
           WebkitBackdropFilter: 'blur(8px)',
