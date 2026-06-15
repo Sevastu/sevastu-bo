@@ -8,7 +8,7 @@ import {
     deleteCategory,
     deleteService,
     deleteSubService,
-    fetchCatalogTree,
+    fetchCatalogOverview,
     updateCategory,
     updateService,
     updateSubService,
@@ -42,7 +42,7 @@ export function useCatalog() {
         setLoading(true);
         setError(null);
         try {
-            const data = await fetchCatalogTree();
+            const data = await fetchCatalogOverview();
             setCategories(data.categories);
             setServices(data.services);
             setSubServices(data.subServices);
@@ -77,7 +77,7 @@ export function useCatalog() {
             name: values.name.trim(),
             description: values.description.trim() || undefined,
             isActive: values.isActive,
-            ...(editing ? {} : { icon: "Layers" }),
+            iconUrl: values.iconUrl ?? editing?.iconUrl,
         };
         if (editing) {
             await updateCategory(editing._id, payload);
@@ -93,7 +93,7 @@ export function useCatalog() {
             description: values.description.trim() || undefined,
             categoryId: values.categoryId,
             isActive: values.isActive,
-            image: editing?.image ?? DEFAULT_SERVICE_IMAGE,
+            imageUrl: values.imageUrl ?? editing?.imageUrl ?? DEFAULT_SERVICE_IMAGE,
         };
         if (editing) {
             await updateService(editing._id, payload);

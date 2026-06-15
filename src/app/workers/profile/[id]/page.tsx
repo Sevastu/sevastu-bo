@@ -44,6 +44,7 @@ interface WorkerProfileData {
 export default function WorkerVerificationDetail() {
   const params = useParams();
   const workerId = params?.id as string;
+  if (!workerId) return;
   const [workerData, setWorkerData] = useState<WorkerProfileData | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -129,7 +130,7 @@ export default function WorkerVerificationDetail() {
 
   return (
     <AppLayout>
-      <div className="bg-gray-50 min-h-screen bg-gradient-to-br from-background via-background to-muted/10">
+      <div className="bg-gray-50 min-h-screen px-4 bg-gradient-to-br from-background via-background to-muted/10">
         {/* Profile Header */}
         <div className="bg-white rounded-lg p-6 mb-6">
           <div className="flex items-start space-x-6">
@@ -161,7 +162,7 @@ export default function WorkerVerificationDetail() {
                 </div>
               </div>
 
-              <div className="grid grid-cols-3 gap-4 mt-4">
+              <div className="grid  grid-cols-1 sm:grid-cols-3 gap-4 mt-4">
                 <div className="text-center">
                   <div className="text-2xl font-bold text-blue-600">{workerData.profile.totalJobs}</div>
                   <div className="text-sm text-gray-600">Total Jobs</div>
@@ -192,7 +193,7 @@ export default function WorkerVerificationDetail() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label className="text-sm font-medium text-gray-700">Email</label>
-                  <div className="text-gray-900">{workerData.profile.email}</div>
+                  <div className="text-gray-900">{workerData.profile.email || "Not Provided"}</div>
                 </div>
                 <div>
                   <label className="text-sm font-medium text-gray-700">Phone</label>
@@ -200,7 +201,7 @@ export default function WorkerVerificationDetail() {
                 </div>
                 <div>
                   <label className="text-sm font-medium text-gray-700">Address</label>
-                  <div className="text-gray-900">{workerData.profile.address}</div>
+                  <div className="text-gray-900">{workerData.profile.address || "Not Available"}</div>
                 </div>
                 <div>
                   <label className="text-sm font-medium text-gray-700">Pincode</label>

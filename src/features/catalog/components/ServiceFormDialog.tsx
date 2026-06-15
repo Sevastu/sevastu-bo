@@ -22,6 +22,7 @@ import {
 } from "@/components/ui/select";
 import type { Category, Service, ServiceFormValues } from "@/features/services/types";
 import { ActiveStatusField } from "./ActiveStatusField";
+import { ImageUpload } from "./ImageUpload";
 import { Loader2 } from "lucide-react";
 
 interface ServiceFormDialogProps {
@@ -37,6 +38,7 @@ const emptyValues: ServiceFormValues = {
     categoryId: "",
     name: "",
     description: "",
+    imageUrl: "",
     isActive: true,
 };
 
@@ -65,6 +67,7 @@ export function ServiceFormDialog({
                 categoryId,
                 name: service.name,
                 description: service.description ?? "",
+                imageUrl: service.imageUrl ?? "",
                 isActive: service.isActive,
             });
         } else {
@@ -148,6 +151,14 @@ export function ServiceFormDialog({
                                 }
                                 placeholder="Brief description for admins"
                                 rows={3}
+                            />
+                        </div>
+                        <div className="space-y-2">
+                            <Label>Service Image</Label>
+                            <ImageUpload 
+                                value={values.imageUrl} 
+                                onChange={(url) => setValues(v => ({ ...v, imageUrl: url }))} 
+                                label="Upload Image"
                             />
                         </div>
                         <ActiveStatusField

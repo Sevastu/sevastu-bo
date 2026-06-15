@@ -15,6 +15,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import type { Category, CategoryFormValues } from "@/features/services/types";
 import { ActiveStatusField } from "./ActiveStatusField";
+import { ImageUpload } from "./ImageUpload";
 import { Loader2 } from "lucide-react";
 
 interface CategoryFormDialogProps {
@@ -27,6 +28,7 @@ interface CategoryFormDialogProps {
 const emptyValues: CategoryFormValues = {
     name: "",
     description: "",
+    iconUrl: "",
     isActive: true,
 };
 
@@ -48,6 +50,7 @@ export function CategoryFormDialog({
             setValues({
                 name: category.name,
                 description: category.description ?? "",
+                iconUrl: category.iconUrl ?? "",
                 isActive: category.isActive,
             });
         } else {
@@ -105,6 +108,14 @@ export function CategoryFormDialog({
                                 }
                                 placeholder="Brief description for admins"
                                 rows={3}
+                            />
+                        </div>
+                        <div className="space-y-2">
+                            <Label>Category Icon</Label>
+                            <ImageUpload 
+                                value={values.iconUrl} 
+                                onChange={(url) => setValues(v => ({ ...v, iconUrl: url }))} 
+                                label="Upload Icon"
                             />
                         </div>
                         <ActiveStatusField
