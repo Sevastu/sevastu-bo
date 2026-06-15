@@ -77,12 +77,63 @@ export const deleteSubService = async (id: string) => {
     await apiClient.delete(`/sub-services/${id}`);
 };
 
-/** Load full catalog hierarchy in parallel for tree UI. */
+/** Load full catalog hierarchy from optimized admin endpoint. */
 export const fetchCatalogTree = async () => {
-    const [categories, services, subServices] = await Promise.all([
-        fetchCategories(),
-        fetchServices(),
-        fetchSubServices(),
-    ]);
-    return { categories, services, subServices };
+    const res = await apiClient.get('/admin/catalog/tree');
+    return listFromResponse<any>(res);
+};
+
+/** Load catalog overview with counts. */
+export const fetchCatalogOverview = async () => {
+    const res = await apiClient.get('/admin/catalog/overview');
+    return entityFromResponse<{
+        categories: number;
+        services: number;
+        subServices: number;
+        activeItems: number;
+        inactiveItems: number;
+    }>(res);
+};
+
+export const fetchCatalogStats = async () => {
+    const res = await apiClient.get('/admin/catalog/stats');
+    return entityFromResponse<{
+        categoryCount: number;
+        serviceCount: number;
+        subServiceCount: number;
+        activeCount: number;
+        inactiveCount: number;
+    }>(res);
+};
+
+/** Search across catalog entities. */
+export const searchCatalog = async (query: string) => {
+    const res = await apiClient.get('/admin/catalog/search', { params: { q: query } });
+    return res.data;
+};
+
+/** Centralized reordering endpoint. */
+export const reorderCatalog = async (entityType: 'category' | 'service' | 'subService', orderedIds: string[]) => {
+    const res = await apiClient.patch('/admin/catalog/reorder', { entityType, orderedIds });
+    return res.data;
+};
+
+/** Cascade status changes. */
+export const cascadeCategoryStatus = async (categoryId: string, isActive: boolean) => {
+    const res = await apiClient.patch(`/admin/catalog/category/${categoryId}/cascade-status`, { isActive });
+    return res.data;
+};
+
+export const cascadeServiceStatus = async (serviceId: string, isActive: boolean) => {
+    const res = await apiClient.patch(`/admin/catalog/service/${serviceId}/cascade-status`, { isActive });
+    return res.data;
+};
+
+export const uploadCatalogAsset = async (file: File): Promise<{ url: string }> => {
+    const formData = new FormData();
+    formData.append('file', file);
+    const res = await apiClient.post('/upload', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+    });
+    return entityFromResponse<{ url: string }>(res);
 };
