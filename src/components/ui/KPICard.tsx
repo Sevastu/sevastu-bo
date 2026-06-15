@@ -33,8 +33,8 @@ export const KPICard: React.FC<KPICardProps> = ({
           </h2>
 
           <div className={`flex items-center gap-1 text-sm font-medium ${changeType === 'increase'
-              ? 'text-[var(--color-success)]'
-              : 'text-[var(--color-error)]'
+            ? 'text-[var(--color-success)]'
+            : 'text-[var(--color-error)]'
             }`}>
             {changeType === 'increase' ? (
               <TrendingUp size={16} />

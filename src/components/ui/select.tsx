@@ -50,13 +50,13 @@ const SelectTrigger = React.forwardRef<HTMLButtonElement, React.ButtonHTMLAttrib
 );
 SelectTrigger.displayName = "SelectTrigger";
 
-const SelectValue = ({ placeholder, className, ...rest }: { placeholder?: string; className?: string } & React.HTMLAttributes<HTMLSpanElement>) => {
+const SelectValue = ({ placeholder, className, children, ...rest }: { placeholder?: string; className?: string; children?: React.ReactNode } & React.HTMLAttributes<HTMLSpanElement>) => {
     const ctx = React.useContext(SelectContext);
     const v = ctx?.value ?? "";
     const usePlaceholder = placeholder && (v === "" || v === "all");
     return (
         <span className={className} {...rest}>
-            {usePlaceholder ? placeholder : v || placeholder}
+            {children ? children : (usePlaceholder ? placeholder : v || placeholder)}
         </span>
     );
 };
