@@ -83,15 +83,13 @@ export const fetchCatalogTree = async () => {
     return listFromResponse<any>(res);
 };
 
-/** Load catalog overview with counts. */
+/** Load catalog overview with flat arrays. */
 export const fetchCatalogOverview = async () => {
     const res = await apiClient.get('/admin/catalog/overview');
     return entityFromResponse<{
-        categories: number;
-        services: number;
-        subServices: number;
-        activeItems: number;
-        inactiveItems: number;
+        categories: Category[];
+        services: Service[];
+        subServices: SubService[];
     }>(res);
 };
 
