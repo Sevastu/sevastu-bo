@@ -9,11 +9,13 @@ import {
     fetchPrivateSignedUrl,
     fetchWorkerDetails,
     rejectWorker,
+    triggerWorkerOcr,
     type WorkerDetails,
     type WorkerKyc,
+    type WorkerOcr,
 } from "@/features/workers/api";
 import { WorkerProfileStatus } from "@/lib/enums";
-import { Loader2, X } from "lucide-react";
+import { Loader2, X, Fingerprint, AlertCircle, CheckCircle, RefreshCw } from "lucide-react";
 
 function SignedIdImage({ objectKey, label }: { objectKey: string | undefined; label: string }) {
     const [url, setUrl] = useState<string | null>(null);
@@ -106,15 +108,19 @@ export function WorkerReviewSheet({
 }: WorkerReviewSheetProps) {
     const [profile, setProfile] = useState<Record<string, unknown> | null>(null);
     const [kyc, setKyc] = useState<WorkerKyc | null>(null);
+    const [ocr, setOcr] = useState<WorkerOcr | null>(null);
     const [loading, setLoading] = useState(false);
     const [rejectReason, setRejectReason] = useState("");
+    const [rejectReasonType, setRejectReasonType] = useState("");
     const [approveLoading, setApproveLoading] = useState(false);
     const [rejectLoading, setRejectLoading] = useState(false);
+    const [ocrTriggerLoading, setOcrTriggerLoading] = useState(false);
 
     useEffect(() => {
         if (!open || !workerUserId) {
             setProfile(null);
             setKyc(null);
+            setOcr(null);
             return;
         }
         let cancelled = false;
@@ -125,11 +131,13 @@ export function WorkerReviewSheet({
                 if (!cancelled) {
                     setProfile((details.profile as Record<string, unknown>) ?? null);
                     setKyc(details.kyc ?? null);
+                    setOcr(details.ocr ?? null);
                 }
             } catch {
                 if (!cancelled) {
                     setProfile(null);
                     setKyc(null);
+                    setOcr(null);
                 }
             } finally {
                 if (!cancelled) setLoading(false);
@@ -162,14 +170,32 @@ export function WorkerReviewSheet({
         if (!workerUserId || !rejectReason.trim()) return;
         setRejectLoading(true);
         try {
-            await rejectWorker(workerUserId, rejectReason.trim());
+            await rejectWorker(workerUserId, rejectReason.trim(), rejectReasonType || undefined);
             onAfterChange?.();
             onOpenChange(false);
             setRejectReason("");
+            setRejectReasonType("");
         } catch (e) {
             console.error(e);
         } finally {
             setRejectLoading(false);
+        }
+    };
+
+    const handleTriggerOcr = async () => {
+        if (!workerUserId) return;
+        setOcrTriggerLoading(true);
+        try {
+            await triggerWorkerOcr(workerUserId);
+            // Refresh worker details to get updated OCR data
+            const details: WorkerDetails = await fetchWorkerDetails(workerUserId);
+            setProfile((details.profile as Record<string, unknown>) ?? null);
+            setKyc(details.kyc ?? null);
+            setOcr(details.ocr ?? null);
+        } catch (e) {
+            console.error(e);
+        } finally {
+            setOcrTriggerLoading(false);
         }
     };
 
@@ -251,6 +277,103 @@ export function WorkerReviewSheet({
                                 </div>
                             </div>
 
+                            {/* OCR Data Panel */}
+                            {ocr && (
+                                <div className="rounded-lg border border-blue-200 bg-blue-50 p-4 dark:border-blue-900 dark:bg-blue-950/40">
+                                    <div className="flex items-center justify-between mb-3">
+                                        <div className="flex items-center gap-2">
+                                            <Fingerprint className="h-4 w-4 text-blue-600" />
+                                            <p className="text-sm font-medium text-foreground">OCR Analysis</p>
+                                        </div>
+                                        <Button
+                                            type="button"
+                                            variant="outline"
+                                            size="sm"
+                                            onClick={handleTriggerOcr}
+                                            disabled={ocrTriggerLoading || anyAction}
+                                            className="h-7 text-xs"
+                                        >
+                                            {ocrTriggerLoading ? (
+                                                <Loader2 className="mr-1 h-3 w-3 animate-spin" />
+                                            ) : (
+                                                <RefreshCw className="mr-1 h-3 w-3" />
+                                            )}
+                                            Re-run OCR
+                                        </Button>
+                                    </div>
+                                    <div className="grid grid-cols-2 gap-3 text-sm">
+                                        <div>
+                                            <p className="text-muted-foreground text-xs">Extracted Name</p>
+                                            <p className="font-medium">{ocr.extractedName || 'N/A'}</p>
+                                        </div>
+                                        <div>
+                                            <p className="text-muted-foreground text-xs">Name Match</p>
+                                            <div className="flex items-center gap-1">
+                                                {ocr.nameMatch !== undefined ? (
+                                                    ocr.nameMatch ? (
+                                                        <CheckCircle className="h-3 w-3 text-green-600" />
+                                                    ) : (
+                                                        <AlertCircle className="h-3 w-3 text-amber-600" />
+                                                    )
+                                                ) : null}
+                                                <p className="font-medium">{ocr.nameMatch !== undefined ? (ocr.nameMatch ? 'Yes' : 'No') : 'N/A'}</p>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <p className="text-muted-foreground text-xs">DOB</p>
+                                            <p className="font-medium">{ocr.extractedDob || 'N/A'}</p>
+                                        </div>
+                                        <div>
+                                            <p className="text-muted-foreground text-xs">Aadhaar Last 4</p>
+                                            <p className="font-medium">{ocr.aadhaarLast4 || 'N/A'}</p>
+                                        </div>
+                                        <div>
+                                            <p className="text-muted-foreground text-xs">Confidence</p>
+                                            <p className="font-medium">{ocr.confidence !== undefined ? `${Math.round(ocr.confidence * 100)}%` : 'N/A'}</p>
+                                        </div>
+                                        <div>
+                                            <p className="text-muted-foreground text-xs">Status</p>
+                                            <p className={`font-medium ${
+                                                ocr.status === 'COMPLETED' ? 'text-green-600' :
+                                                ocr.status === 'FAILED' ? 'text-red-600' :
+                                                ocr.status === 'PROCESSING' ? 'text-blue-600' :
+                                                'text-gray-600'
+                                            }`}>{ocr.status}</p>
+                                        </div>
+                                    </div>
+                                    {ocr.errorMessage && (
+                                        <p className="mt-2 text-xs text-destructive">Error: {ocr.errorMessage}</p>
+                                    )}
+                                </div>
+                            )}
+
+                            {!ocr && idProof?.frontKey && idProof?.backKey && (
+                                <div className="rounded-lg border border-amber-200 bg-amber-50 p-4 dark:border-amber-900 dark:bg-amber-950/40">
+                                    <div className="flex items-center justify-between">
+                                        <div className="flex items-center gap-2">
+                                            <Fingerprint className="h-4 w-4 text-amber-600" />
+                                            <p className="text-sm font-medium text-foreground">OCR Analysis</p>
+                                        </div>
+                                        <Button
+                                            type="button"
+                                            variant="outline"
+                                            size="sm"
+                                            onClick={handleTriggerOcr}
+                                            disabled={ocrTriggerLoading || anyAction}
+                                            className="h-7 text-xs"
+                                        >
+                                            {ocrTriggerLoading ? (
+                                                <Loader2 className="mr-1 h-3 w-3 animate-spin" />
+                                            ) : (
+                                                <RefreshCw className="mr-1 h-3 w-3" />
+                                            )}
+                                            Run OCR
+                                        </Button>
+                                    </div>
+                                    <p className="mt-2 text-xs text-muted-foreground">OCR has not been run on this worker's documents.</p>
+                                </div>
+                            )}
+
                             {showActions && (
                                 <div className="space-y-4 border-t pt-4">
                                     <div className="flex flex-wrap gap-2">
@@ -260,11 +383,27 @@ export function WorkerReviewSheet({
                                         </Button>
                                     </div>
                                     <div className="space-y-2">
-                                        <Label htmlFor="reject-reason">Rejection reason</Label>
+                                        <Label htmlFor="reject-reason-type">Rejection reason</Label>
+                                        <select
+                                            id="reject-reason-type"
+                                            className="border-input bg-background ring-offset-background placeholder:text-muted-foreground focus-visible:ring-ring flex w-full rounded-lg border px-3 py-2 text-sm focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
+                                            value={rejectReasonType}
+                                            disabled={anyAction}
+                                            onChange={(e) => setRejectReasonType(e.target.value)}
+                                        >
+                                            <option value="">Select a reason</option>
+                                            <option value="DOCUMENT_BLURRY">Document Blurry</option>
+                                            <option value="DOCUMENT_MISMATCH">Document Mismatch</option>
+                                            <option value="INCOMPLETE_PROFILE">Incomplete Profile</option>
+                                            <option value="INVALID_DOCUMENT">Invalid Document</option>
+                                            <option value="DUPLICATE_ACCOUNT">Duplicate Account</option>
+                                            <option value="OTHER">Other</option>
+                                        </select>
+                                        <Label htmlFor="reject-reason">Additional notes</Label>
                                         <textarea
                                             id="reject-reason"
                                             className="border-input bg-background ring-offset-background placeholder:text-muted-foreground focus-visible:ring-ring flex min-h-[80px] w-full rounded-lg border px-3 py-2 text-sm focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
-                                            placeholder="Required for rejection"
+                                            placeholder="Optional additional notes"
                                             value={rejectReason}
                                             disabled={anyAction}
                                             onChange={(e) => setRejectReason(e.target.value)}
@@ -272,7 +411,7 @@ export function WorkerReviewSheet({
                                         <Button
                                             variant="destructive"
                                             onClick={handleReject}
-                                            disabled={anyAction || !rejectReason.trim()}
+                                            disabled={anyAction || !rejectReasonType}
                                         >
                                             {rejectLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
                                             Reject
