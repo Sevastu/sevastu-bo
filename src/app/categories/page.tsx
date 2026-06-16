@@ -1,5 +1,9 @@
-import { redirect } from "next/navigation";
+import { AppLayout } from "@/components/layout/AppLayout";
 
 export default function CategoriesPage() {
-    redirect("/catalog");
+    return (
+        <AppLayout>
+            <div>hello from categories</div>
+        </AppLayout>
+    )
 }

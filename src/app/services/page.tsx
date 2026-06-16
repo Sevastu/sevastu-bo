@@ -1,5 +1,10 @@
-import { redirect } from "next/navigation";
+import { AppLayout } from "@/components/layout/AppLayout";
+// import { redirect } from "next/navigation"; 
 
 export default function ServicesPage() {
-    redirect("/catalog");
+    return (
+        <AppLayout>
+            <div>hello from services</div>
+        </AppLayout>
+    )
 }
