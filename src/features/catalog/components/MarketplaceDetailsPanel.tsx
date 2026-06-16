@@ -10,7 +10,12 @@ import {
 } from "lucide-react";
 import { CatalogEntityType, Category, Service, SubService } from "@/features/services/types";
 import Image from "next/image";
-import { toast } from "sonner";
+
+// Temporary toast replacement until sonner is installed
+const toast = {
+    success: (message: string) => console.log('[Toast Success]', message),
+    error: (message: string) => console.error('[Toast Error]', message),
+};
 
 type DrawerNode = Category | Service | SubService;
 
