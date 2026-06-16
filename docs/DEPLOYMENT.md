@@ -1,49 +1,61 @@
-# Sevastu FE — Deployment
+# Sevastu Back Office - Deployment
 
 ## Prerequisites
 
-- Node.js 20+ (aligned with `package.json` types)
-- Access to a running **Sevastu-be** instance
+- Node.js 20+
+- npm
+- Running `Sevastu-be` API
 
 ## Environment
 
-| Variable | Description |
-|----------|-------------|
-| `NEXT_PUBLIC_API_URL` | Full origin of the Nest API (e.g. `https://api.example.com`) — **no trailing slash** |
-| `NEXT_PUBLIC_API_TIMEOUT_MS` | Optional. Axios timeout in ms (default **60000**). Raise if login still times out on very slow cold starts. |
+| Variable | Required | Description |
+| --- | --- | --- |
+| `NEXT_PUBLIC_API_URL` | Yes | Full backend origin with no trailing slash |
+| `NEXT_PUBLIC_API_TIMEOUT_MS` | No | Axios timeout in ms; default 60000 |
 
-If unset, the client defaults to the Render URL baked into `apiClient.ts`; override for every non-default environment.
+Example:
 
-## Install & build
+```bash
+NEXT_PUBLIC_API_URL=https://sevastu-be.onrender.com
+NEXT_PUBLIC_API_TIMEOUT_MS=60000
+```
+
+Next.js inlines `NEXT_PUBLIC_*` values into the browser bundle, so set them at build/deploy time.
+
+## Local Development
 
 ```bash
 cd Sevastu-bo
 npm install
-npm run build
-npm start
-```
-
-## Development
-
-```bash
+cp .env.example .env
 npm run dev
 ```
 
-Default Next dev server: `http://localhost:3000` (ensure `ALLOWED_ORIGINS` on the backend includes this origin).
+Open `http://localhost:3000`.
 
-## Production notes
+Confirm backend `ALLOWED_ORIGINS` includes `http://localhost:3000`.
 
-- Set `NEXT_PUBLIC_API_URL` at **build time** (Next inlines public env vars into the client bundle).
-- Use HTTPS in production; cookie `SameSite=Strict` is set in `setToken` — confirm cookie policy matches your domain model.
-- After deploy, verify admin login and that 401 handling redirects to `/login`.
-
-## Lint
+## Production Build
 
 ```bash
-npm run lint
+npm run build
+npm run start
 ```
 
-## Related docs
+## Deploy Checklist
+
+- Set `NEXT_PUBLIC_API_URL` explicitly; do not rely on the code fallback.
+- Use HTTPS for production API traffic.
+- Confirm admin login works against `/admin/auth/login`.
+- Confirm protected routes redirect to `/login` after token removal or 401.
+- Confirm `src/proxy.ts` cookie protection works after deployment.
+- Verify signed document previews on worker verification pages.
+- Verify catalog create/update/delete against the production backend.
+- Verify catalog tree/stats/search/reorder/cascade APIs if using the enhanced catalog page.
+- Verify catalog upload endpoint contract before enabling image upload in production.
+- Run `npm run lint` before release.
+
+## Related Docs
 
 - [OVERVIEW.md](./OVERVIEW.md)
 - [API-INTEGRATION.md](./API-INTEGRATION.md)
