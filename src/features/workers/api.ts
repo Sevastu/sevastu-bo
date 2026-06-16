@@ -10,9 +10,25 @@ export interface WorkerKyc {
     rejectionReason?: string;
 }
 
+export interface WorkerOcr {
+    _id: string;
+    workerId: string;
+    workerUserId: string;
+    extractedName?: string;
+    extractedDob?: string;
+    aadhaarLast4?: string;
+    confidence?: number;
+    nameMatch?: boolean;
+    status: string;
+    errorMessage?: string;
+    createdAt: string;
+    updatedAt: string;
+}
+
 export interface WorkerDetails {
     profile: any;
     kyc: WorkerKyc | null;
+    ocr?: WorkerOcr | null;
 }
 
 type WorkerListResponse = {
@@ -57,8 +73,18 @@ export const approveWorker = async (userId: string) => {
     return res.data;
 };
 
-export const rejectWorker = async (userId: string, reason: string) => {
-    const res = await apiClient.post(`/admin/worker/reject`, { userId, reason });
+export const rejectWorker = async (userId: string, reason: string, reasonType?: string) => {
+    const res = await apiClient.post(`/admin/worker/reject`, { userId, reason, reasonType });
+    return res.data;
+};
+
+export const fetchWorkerAuditHistory = async (userId: string) => {
+    const res = await apiClient.get(`/admin/worker/${userId}/audit-history`);
+    return res.data;
+};
+
+export const triggerWorkerOcr = async (userId: string) => {
+    const res = await apiClient.post(`/admin/worker/${userId}/trigger-ocr`);
     return res.data;
 };
 

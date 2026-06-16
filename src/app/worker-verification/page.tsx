@@ -15,7 +15,8 @@ import {
   Search,
   Filter,
   X,
-  Loader2
+  Loader2,
+  Clock
 } from 'lucide-react';
 // import { DashboardLayout } from '../../components/layout/DashboardLayout';
 import { VerificationStatusBadge } from '../../components/ui/VerificationStatusBadge';
@@ -425,6 +426,12 @@ const WorkerVerification: React.FC = () => {
   const [rejectReason, setRejectReason] = useState('');
   const [showRejectModal, setShowRejectModal] = useState(false);
   const [selectedWorkerForReject, setSelectedWorkerForReject] = useState<string | null>(null);
+  const [stats, setStats] = useState({
+    pending: 0,
+    approved: 0,
+    rejected: 0,
+    total: 0,
+  });
 
   useEffect(() => {
     loadWorkers();
@@ -461,6 +468,25 @@ const WorkerVerification: React.FC = () => {
         }
       }));
       setWorkers(mappedWorkers);
+      
+      // Calculate statistics
+      const pending = mappedWorkers.filter(w => 
+        w.verificationStatus === WorkerProfileStatus.UNDER_REVIEW || 
+        w.verificationStatus === WorkerProfileStatus.KYC_PENDING
+      ).length;
+      const approved = mappedWorkers.filter(w => 
+        w.verificationStatus === WorkerProfileStatus.VERIFIED
+      ).length;
+      const rejected = mappedWorkers.filter(w => 
+        w.verificationStatus === WorkerProfileStatus.REJECTED
+      ).length;
+      
+      setStats({
+        pending,
+        approved,
+        rejected,
+        total: mappedWorkers.length,
+      });
     } catch (err) {
       setError('Failed to load workers');
       console.error('Error loading workers:', err);
@@ -602,6 +628,46 @@ const WorkerVerification: React.FC = () => {
         <div>
           <h1 className="mt-2 flex items-center gap-2 text-3xl font-bold tracking-tight text-muted-foreground">Worker-Verification</h1>
           <p className="text-gray-500 text-lg">Review and verify worker documents and credentials</p>
+        </div>
+
+        {/* Statistics Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-blue-600 font-medium">Pending Reviews</p>
+                <p className="text-2xl font-bold text-blue-900">{stats.pending}</p>
+              </div>
+              <Clock className="h-8 w-8 text-blue-400" />
+            </div>
+          </div>
+          <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-green-600 font-medium">Approved</p>
+                <p className="text-2xl font-bold text-green-900">{stats.approved}</p>
+              </div>
+              <CheckCircle className="h-8 w-8 text-green-400" />
+            </div>
+          </div>
+          <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-red-600 font-medium">Rejected</p>
+                <p className="text-2xl font-bold text-red-900">{stats.rejected}</p>
+              </div>
+              <XCircle className="h-8 w-8 text-red-400" />
+            </div>
+          </div>
+          <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-gray-600 font-medium">Total Workers</p>
+                <p className="text-2xl font-bold text-gray-900">{stats.total}</p>
+              </div>
+              <User className="h-8 w-8 text-gray-400" />
+            </div>
+          </div>
         </div>
 
         {/* Filters */}
