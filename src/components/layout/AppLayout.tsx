@@ -219,6 +219,7 @@ export function AppLayout({ children }: AppLayoutProps) {
             roles: ["admin", "staff"],
             isDropdown: true,
             children: [
+                { name: "Catalog", href: "/catalog", icon: User2Icon, roles: ["admin", "staff"] },
                 { name: "Categories", href: "/categories", icon: User2Icon, roles: ["admin", "staff"] },
                 { name: "Services", href: "/services", icon: Hammer, roles: ["admin", "staff"] },
                 { name: "Sub-Services", href: "/sub-services", icon: Layers, roles: ["admin", "staff"] }
