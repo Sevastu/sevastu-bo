@@ -11,7 +11,6 @@ import {
   CheckCircle,
   XCircle,
   Eye,
-  Download,
   Search,
   Filter,
   X,
@@ -21,8 +20,9 @@ import {
 // import { DashboardLayout } from '../../components/layout/DashboardLayout';
 import { VerificationStatusBadge } from '../../components/ui/VerificationStatusBadge';
 import { AppLayout } from '@/components/layout/AppLayout';
-import { fetchWorkers, approveWorker, rejectWorker, fetchPrivateSignedUrl } from '@/features/workers/api';
+import { fetchWorkers, approveWorker, rejectWorker } from '@/features/workers/api';
 import { WorkerProfileStatus } from '@/lib/enums';
+import { WorkerReviewSheet } from '../workers/components/WorkerReviewSheet';
 
 interface Worker {
   id: string;
@@ -47,7 +47,7 @@ const WorkerVerificationCard: React.FC<{
   worker: Worker;
   onApprove: (id: string) => void;
   onReject: (id: string) => void;
-  onViewDocuments: (worker: Worker, documentType: "aadhaar" | "pan" | "experience" | "all") => void;
+  onViewDocuments: (worker: Worker) => void;
 }> = ({ worker, onApprove, onReject, onViewDocuments }) => {
   return (
     <div className="bg-[var(--color-card)] rounded-lg p-6">
@@ -125,78 +125,45 @@ const WorkerVerificationCard: React.FC<{
       {/* Documents Preview */}
       <div className="mb-4">
         <div className="text-sm font-medium text-[var(--color-text)] mb-2">Documents</div>
-        <div className="flex gap-2">
-          <button
-            onClick={() => onViewDocuments(worker, "aadhaar")}
-            className="flex-1 text-left p-3 bg-[var(--color-muted)] rounded-lg border border-[var(--color-border)] hover:border-[var(--color-primary)] transition-all"
-          >
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-sm font-medium text-[var(--color-text)]">
-                Aadhaar Card
-              </span>
-              <Eye size={14} className="text-[var(--color-primary)]" />
-            </div>
-
-            <div className="text-xs text-[var(--color-text-muted)]">
-              Click to preview
-            </div>
-          </button>
-          <button
-            onClick={() => onViewDocuments(worker, "pan")}
-            className="flex-1 text-left p-3 bg-[var(--color-muted)] rounded-lg border border-[var(--color-border)] hover:border-[var(--color-primary)] transition-all"
-          >
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-sm font-medium text-[var(--color-text)]">
-                PAN Card
-              </span>
-              <Eye size={14} className="text-[var(--color-primary)]" />
-            </div>
-
-            <div className="text-xs text-[var(--color-text-muted)]">
-              Click to preview
-            </div>
-          </button>
-          <button
-            onClick={() => onViewDocuments(worker, "experience")}
-            className="flex-1 text-left p-3 bg-[var(--color-muted)] rounded-lg border border-[var(--color-border)] hover:border-[var(--color-primary)] transition-all"
-          >
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-sm font-medium text-[var(--color-text)]">
-                Experience
-              </span>
-              <Eye size={14} className="text-[var(--color-primary)]" />
-            </div>
-
-            <div className="text-xs text-[var(--color-text-muted)]">
-              Click to preview
-            </div>
-          </button>
-        </div>
+        <button
+          onClick={() => onViewDocuments(worker)}
+          className="w-full text-left p-3 bg-[var(--color-muted)] rounded-lg border border-[var(--color-border)] hover:border-[var(--color-primary)] transition-all"
+        >
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-sm font-medium text-[var(--color-text)]">
+              View All Documents & Review
+            </span>
+            <Eye size={14} className="text-[var(--color-primary)]" />
+          </div>
+          <div className="text-xs text-[var(--color-text-muted)]">
+            Click to open review panel with OCR analysis
+          </div>
+        </button>
       </div>
 
       {/* Actions */}
       {worker.verificationStatus === WorkerProfileStatus.KYC_PENDING && (
         <div className="flex gap-3">
           <button
-            onClick={() => onViewDocuments(worker, "all")}
+            onClick={() => onViewDocuments(worker)}
             className="flex-1 bg-[var(--color-blue-600)] text-[var(--color-card)] px-4 py-2 rounded-lg hover:bg-blue-800 transition-colors font-medium flex items-center justify-center gap-2"
           >
             <Eye size={16} />
-            View Documents
+            Review & Approve
           </button>
           <button
             onClick={() => onApprove(worker.id)}
             className="flex-1 bg-[var(--color-success)] text-card px-4 py-2 rounded-lg hover:bg-green-600 transition-colors font-medium flex items-center justify-center gap-2"
           >
             <CheckCircle size={16} />
-            Approve
+            Quick Approve
           </button>
           <button
             onClick={() => onReject(worker.id)}
             className="flex-1 bg-[var(--color-error)] text-card px-4 py-2 rounded-lg hover:bg-red-600 transition-colors font-medium flex items-center justify-center gap-2"
           >
             <XCircle size={16} />
-            Reject
+            Quick Reject
           </button>
         </div>
       )}
@@ -204,234 +171,21 @@ const WorkerVerificationCard: React.FC<{
   );
 };
 
-const DocumentPreviewModal: React.FC<{
-  worker: Worker | null;
-  isOpen: boolean;
-  onClose: () => void;
-  onApprove: (id: string) => void;
-  selectedDocumentType: "aadhaar" | "pan" | "experience" | "all" | null;
-  documentUrls: {
-    aadhaarFront: string;
-    aadhaarBack: string;
-    pan: string;
-    experience: string;
-  };
-}> = ({
-  worker,
-  isOpen,
-  onClose,
-  onApprove,
-  selectedDocumentType,
-  documentUrls,
-}) => {
-    if (!isOpen || !worker) return null;
-
-    return (
-      <div className="fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center p-4">
-        <div className="bg-[var(--color-card)] rounded-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
-          {/* Header */}
-          <div className="flex items-center justify-between p-6 border-b border-[var(--color-border)]">
-            <div>
-              <h2 className="text-xl font-semibold text-[var(--color-text)]">Document Verification</h2>
-              <p className="text-sm text-[var(--color-text-secondary)]">{worker.name} - {worker.id}</p>
-            </div>
-            <button
-              onClick={onClose}
-              className="p-2 text-[var(--color-text-muted)] hover:text-[var(--color-text-secondary)] hover:bg-[var(--color-muted)] rounded-lg transition-colors"
-            >
-              <X size={20} />
-            </button>
-          </div>
-
-          {/* Documents */}
-          <div className="p-6 space-y-6">
-            {/* Aadhaar Card */}
-            {(selectedDocumentType === "aadhaar" ||
-              selectedDocumentType === "all") && (
-                <div className="border border-[var(--color-border)] rounded-lg p-4">
-                  <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-lg font-medium text-[var(--color-text)]">Aadhaar Card</h3>
-                  </div>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {/* Front */}
-                    <div className="bg-[var(--color-muted)] rounded-lg overflow-hidden">
-                      <div className="flex items-center justify-between p-2 border-b border-[var(--color-primary)]">
-                        <span className="text-sm font-medium">Front Side</span>
-                        <button
-                          onClick={() => documentUrls.aadhaarFront && window.open(documentUrls.aadhaarFront, "_blank")}
-                          disabled={!documentUrls.aadhaarFront}
-                          className="disabled:opacity-50"
-                        >
-                          <Download size={16} />
-                        </button>
-                      </div>
-
-                      <div className="h-64">
-                        {documentUrls.aadhaarFront ? (
-                          <img
-                            src={documentUrls.aadhaarFront}
-                            alt="Front Document"
-                            onError={() => console.log("Failed to load Aadhaar Front")}
-                            className="w-full h-full object-contain"
-                          />
-                        ) : (
-                          <div className="h-full flex items-center justify-center text-gray-400">
-                            No Front Document
-                          </div>
-                        )}
-                      </div>
-                    </div>
-
-                    {/* Back */}
-                    <div className="bg-[var(--color-muted)] rounded-lg overflow-hidden">
-                      <div className="flex items-center justify-between p-2 border-b border-[var(--color-primary)]">
-                        <span className="text-sm font-medium">Back Side</span>
-                        <button
-                          onClick={() => documentUrls.aadhaarBack && window.open(documentUrls.aadhaarBack, "_blank")}
-                          disabled={!documentUrls.aadhaarBack}
-                          className="disabled:opacity-50"
-                        >
-                          <Download size={16} />
-                        </button>
-                      </div>
-
-                      <div className="h-64">
-                        {documentUrls.aadhaarBack ? (
-                          <img
-                            src={documentUrls.aadhaarBack}
-                            alt="Back Document"
-                            onError={() => console.log("Failed to load Aadhaar Back")}
-                            className="w-full h-full object-contain"
-                          />
-                        ) : (
-                          <div className="h-full flex items-center justify-center text-gray-400">
-                            No Back Document
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )}
-
-            {/* PAN Card */}
-            {(selectedDocumentType === "pan" ||
-              selectedDocumentType === "all") && (
-                <div className="border border-[var(--color-border)] rounded-lg p-4">
-                  <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-lg font-medium text-[var(--color-text)]">PAN Card</h3>
-                    <button
-                      onClick={() => documentUrls.pan && window.open(documentUrls.pan, "_blank")}
-                      disabled={!documentUrls.pan}
-                      className="flex items-center gap-2 text-[var(--color-primary)] hover:text-[var(--color-primary)] disabled:opacity-50"
-                    >
-                      <Download size={16} />
-                      Download
-                    </button>
-                  </div>
-                  <div className="bg-[var(--color-muted)] rounded-lg h-64 flex items-center justify-center overflow-hidden">
-                    {documentUrls.pan ? (
-                      <img
-                        src={documentUrls.pan}
-                        alt="PAN Document"
-                        onError={() => console.log("Failed to load PAN")}
-                        className="w-full h-full object-contain"
-                      />
-                    ) : (
-                      <div className="text-center">
-                        <FileText size={48} className="text-[var(--color-text-muted)] mx-auto mb-2" />
-                        <p className="text-[var(--color-text-muted)]">PAN Card Preview</p>
-                        <p className="text-sm text-[var(--color-text-muted)]">No PAN card uploaded or failed to load</p>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              )}
-
-            {/* Experience Certificate */}
-            {(selectedDocumentType === "experience" ||
-              selectedDocumentType === "all") && (
-                <div className="border border-[var(--color-border)] rounded-lg p-4">
-                  <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-lg font-medium text-[var(--color-text)]">Experience Certificate</h3>
-                    <button
-                      onClick={() => documentUrls.experience && window.open(documentUrls.experience, "_blank")}
-                      disabled={!documentUrls.experience}
-                      className="flex items-center gap-2 text-[var(--color-primary)] hover:text-[var(--color-primary)] disabled:opacity-50"
-                    >
-                      <Download size={16} />
-                      Download
-                    </button>
-                  </div>
-                  <div className="bg-[var(--color-muted)] rounded-lg h-64 flex items-center justify-center overflow-hidden">
-                    {documentUrls.experience ? (
-                      <img
-                        src={documentUrls.experience}
-                        alt="Experience Certificate"
-                        onError={() => console.log("Failed to load Experience")}
-                        className="w-full h-full object-contain"
-                      />
-                    ) : (
-                      <div className="text-center">
-                        <FileText size={48} className="text-[var(--color-text-muted)] mx-auto mb-2" />
-                        <p className="text-[var(--color-text-muted)]">Experience Certificate Preview</p>
-                        <p className="text-sm text-[var(--color-text-muted)]">No Experience Certificate uploaded or failed to load</p>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              )}
-          </div>
-
-          {/* Actions */}
-          <div className="border-t border-[var(--color-border)] p-6">
-            <div className="flex gap-3">
-              <button
-                onClick={onClose}
-                className="flex-1 bg-[var(--color-muted)] text-[var(--color-text)] px-4 py-2 rounded-lg hover:bg-[var(--color-muted)] transition-colors font-medium"
-              >
-                Close
-              </button>
-              <button
-                onClick={() => onApprove(worker.id)}
-                className="flex-1 text-white px-4 py-2 rounded-lg bg-green-500 hover:bg-green-600 transition-colors font-medium flex items-center justify-center gap-2"
-              >
-                <CheckCircle size={16} />
-                Approve Worker
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  };
-
 const WorkerVerification: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedStatus, setSelectedStatus] = useState<WorkerProfileStatus | 'all'>('all');
-  const [selectedWorker, setSelectedWorker] = useState<Worker | null>(null);
-  const [selectedDocumentType, setSelectedDocumentType] = useState<
-    "aadhaar" | "pan" | "experience" | "all" | null
-  >(null);
-  const [documentUrls, setDocumentUrls] = useState({
-    aadhaarFront: '',
-    aadhaarBack: '',
-    pan: '',
-    experience: '',
-  });
-  const [isDocumentModalOpen, setIsDocumentModalOpen] = useState(false);
   const [workers, setWorkers] = useState<Worker[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [rejectReason, setRejectReason] = useState('');
-  const [showRejectModal, setShowRejectModal] = useState(false);
-  const [selectedWorkerForReject, setSelectedWorkerForReject] = useState<string | null>(null);
   const [stats, setStats] = useState({
     pending: 0,
     approved: 0,
     rejected: 0,
     total: 0,
   });
+  const [sheetOpen, setSheetOpen] = useState(false);
+  const [selectedWorkerUserId, setSelectedWorkerUserId] = useState<string | null>(null);
+  const [selectedRowStatus, setSelectedRowStatus] = useState<string | undefined>(undefined);
 
   useEffect(() => {
     loadWorkers();
@@ -515,20 +269,8 @@ const WorkerVerification: React.FC = () => {
   };
 
   const handleReject = async (workerId: string) => {
-    setSelectedWorkerForReject(workerId);
-    setShowRejectModal(true);
-  };
-
-  const confirmReject = async () => {
-    if (!selectedWorkerForReject || !rejectReason.trim()) {
-      setError('Please provide a rejection reason');
-      return;
-    }
     try {
-      await rejectWorker(selectedWorkerForReject, rejectReason);
-      setShowRejectModal(false);
-      setRejectReason('');
-      setSelectedWorkerForReject(null);
+      await rejectWorker(workerId, 'Rejected via quick action');
       await loadWorkers();
     } catch (err) {
       console.error('Error rejecting worker:', err);
@@ -536,90 +278,10 @@ const WorkerVerification: React.FC = () => {
     }
   };
 
-  const handleViewDocuments = async (
-    worker: Worker,
-    documentType: "aadhaar" | "pan" | "experience" | "all"
-  ) => {
-    try {
-      let aadhaarFront = '';
-      let aadhaarBack = '';
-      let pan = '';
-      let experience = '';
-
-      if (documentType === "all") {
-        const [
-          aadhaarFrontRes,
-          aadhaarBackRes,
-          panRes,
-          experienceRes,
-        ] = await Promise.all([
-          worker.documents.aadhaarFront
-            ? fetchPrivateSignedUrl(worker.documents.aadhaarFront)
-            : Promise.resolve({ url: "" }),
-
-          worker.documents.aadhaarBack
-            ? fetchPrivateSignedUrl(worker.documents.aadhaarBack)
-            : Promise.resolve({ url: "" }),
-
-          worker.documents.pan
-            ? fetchPrivateSignedUrl(worker.documents.pan)
-            : Promise.resolve({ url: "" }),
-
-          worker.documents.experience
-            ? fetchPrivateSignedUrl(worker.documents.experience)
-            : Promise.resolve({ url: "" }),
-        ]);
-
-        aadhaarFront = aadhaarFrontRes.url;
-        aadhaarBack = aadhaarBackRes.url;
-        pan = panRes.url;
-        experience = experienceRes.url;
-      }
-
-      else if (documentType === 'aadhaar') {
-        const [frontRes, backRes] = await Promise.all([
-          fetchPrivateSignedUrl(worker.documents.aadhaarFront),
-          fetchPrivateSignedUrl(worker.documents.aadhaarBack),
-        ]);
-
-        aadhaarFront = frontRes.url;
-        aadhaarBack = backRes.url;
-      }
-      else if (documentType === 'pan') {
-        if (worker.documents.pan) {
-          const res = await fetchPrivateSignedUrl(worker.documents.pan);
-          pan = res.url;
-        }
-      }
-      else if (documentType === 'experience') {
-        if (worker.documents.experience) {
-          const res = await fetchPrivateSignedUrl(worker.documents.experience);
-          experience = res.url;
-        }
-      }
-
-      setDocumentUrls({
-        aadhaarFront,
-        aadhaarBack,
-        pan,
-        experience,
-      });
-
-      setSelectedDocumentType(documentType);
-      setSelectedWorker(worker);
-      setIsDocumentModalOpen(true);
-    } catch (error) {
-      console.error(error);
-      setDocumentUrls({
-        aadhaarFront: '',
-        aadhaarBack: '',
-        pan: '',
-        experience: '',
-      });
-      setSelectedDocumentType(documentType);
-      setSelectedWorker(worker);
-      setIsDocumentModalOpen(true);
-    }
+  const handleViewDocuments = (worker: Worker) => {
+    setSelectedWorkerUserId(worker.id);
+    setSelectedRowStatus(worker.verificationStatus);
+    setSheetOpen(true);
   };
   return (
     <AppLayout>
@@ -738,58 +400,13 @@ const WorkerVerification: React.FC = () => {
           </div>
         )}
 
-        {/* Document Preview Modal */}
-        <DocumentPreviewModal
-          worker={selectedWorker}
-          isOpen={isDocumentModalOpen}
-          onClose={() => {
-            setIsDocumentModalOpen(false);
-            setSelectedDocumentType(null);
-            setDocumentUrls({
-              aadhaarFront: '',
-              aadhaarBack: '',
-              pan: '',
-              experience: '',
-            });
-          }}
-          onApprove={handleApprove}
-          selectedDocumentType={selectedDocumentType}
-          documentUrls={documentUrls}
+        <WorkerReviewSheet
+          open={sheetOpen}
+          onOpenChange={setSheetOpen}
+          workerUserId={selectedWorkerUserId}
+          initialProfileStatus={selectedRowStatus}
+          onAfterChange={loadWorkers}
         />
-
-        {/* Reject Confirmation Modal */}
-        {showRejectModal && (
-          <div className="fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center p-4">
-            <div className="bg-white rounded-xl max-w-md w-full p-6">
-              <h2 className="text-xl font-semibold mb-4">Reject Worker</h2>
-              <textarea
-                value={rejectReason}
-                onChange={(e) => setRejectReason(e.target.value)}
-                placeholder="Please provide a reason for rejection..."
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent mb-4"
-                rows={4}
-              />
-              <div className="flex gap-3">
-                <button
-                  onClick={() => {
-                    setShowRejectModal(false);
-                    setRejectReason('');
-                    setSelectedWorkerForReject(null);
-                  }}
-                  className="flex-1 bg-gray-100 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-200 transition-colors font-medium"
-                >
-                  Cancel
-                </button>
-                <button
-                  onClick={confirmReject}
-                  className="flex-1 bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition-colors font-medium"
-                >
-                  Confirm Reject
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
       </div>
     </AppLayout>
   );
