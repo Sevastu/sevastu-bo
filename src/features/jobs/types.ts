@@ -37,6 +37,15 @@ export interface JobFilters {
     search?: string;
 }
 
+export interface JobStats {
+    total: number;
+    cancelled: number;
+    assigned: number;
+    inProgress: number;
+    open: number;
+    completed: number;
+}
+
 export interface MatchedWorker {
     userId: string;
     name: string;
