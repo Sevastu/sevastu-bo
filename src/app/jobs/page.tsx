@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useEffect, useState, useCallback, useMemo } from "react";
-import { fetchJobs } from "@/features/jobs/api";
-import { Job, JobStatus, JobFilters } from "@/features/jobs/types";
+import React, { useEffect, useState, useCallback } from "react";
+import { fetchJobs, fetchJobStats } from "@/features/jobs/api";
+import { Job, JobStatus, JobFilters, JobStats } from "@/features/jobs/types";
 import { DataTable } from "@/components/DataTable";
 import { AppLayout } from "@/components/layout/AppLayout";
 import { Badge } from "@/components/ui/badge";
@@ -11,6 +11,7 @@ import { Filter, Eye, Calendar, Search } from "lucide-react";
 import { getUser } from "@/lib/auth";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../components/ui/select";
 import { JobDetailsSheet } from "./components/JobDetailsSheet";
+import { JobKpiCards } from "./components/JobKpiCards";
 import { cn } from "@/lib/utils";
 import { formatDate } from "@/lib/date-utils";
 import { Input } from "@/components/ui/input";
@@ -19,6 +20,8 @@ export default function JobsPage() {
     const [data, setData] = useState<Job[]>([]);
     const [total, setTotal] = useState(0);
     const [loading, setLoading] = useState(false);
+    const [stats, setStats] = useState<JobStats | null>(null);
+    const [statsLoading, setStatsLoading] = useState(false);
     const [page, setPage] = useState(1);
     const [limit, setLimit] = useState(10);
     const [filters, setFilters] = useState<JobFilters>({
@@ -44,9 +47,25 @@ export default function JobsPage() {
         }
     }, [filters, page, limit]);
 
+    const loadStats = useCallback(async () => {
+        setStatsLoading(true);
+        try {
+            const s = await fetchJobStats();
+            setStats(s);
+        } catch (err) {
+            console.error("Failed to fetch job stats", err);
+        } finally {
+            setStatsLoading(false);
+        }
+    }, []);
+
     useEffect(() => {
         loadData();
     }, [loadData]);
+
+    useEffect(() => {
+        loadStats();
+    }, [loadStats]);
 
     const statusColors: Record<string, string> = {
         [JobStatus.OPEN]: "bg-blue-500/10 text-blue-500 border-blue-500/20",
@@ -128,6 +147,8 @@ export default function JobsPage() {
                         <p className="text-gray-500 text-lg">Monitor and control all service requests across the network.</p>
                     </div>
                 </div>
+
+                <JobKpiCards stats={stats} loading={statsLoading} />
 
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-4 p-4 rounded-3xl bg-muted/30 border border-border/50">
                     <div className="relative">

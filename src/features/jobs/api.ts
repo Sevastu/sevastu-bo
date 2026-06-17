@@ -1,5 +1,5 @@
 import apiClient from '@/lib/apiClient';
-import { Job, JobFilters, JobStatus, MatchedWorker } from './types';
+import { Job, JobFilters, JobStats, JobStatus, MatchedWorker } from './types';
 
 export const fetchJobs = async (filters: JobFilters & { page?: number; limit?: number }) => {
     const res = await apiClient.get('/admin/jobs', { params: filters });
@@ -24,6 +24,21 @@ export const fetchJobs = async (filters: JobFilters & { page?: number; limit?: n
             : { total: rows.length, page: filters.page ?? 1, limit: filters.limit ?? 10 };
 
     return { data: rows, pagination };
+};
+
+export const fetchJobStats = async (): Promise<JobStats> => {
+    // Derive counts from the existing /admin/jobs endpoint using per-status
+    // pagination queries (limit=1) — no dedicated stats endpoint needed.
+    const [total, cancelled, assigned, inProgress, open, completed] = await Promise.all([
+        fetchJobs({ status: 'all',                    page: 1, limit: 1 }).then(r => r.pagination.total),
+        fetchJobs({ status: JobStatus.CANCELLED,      page: 1, limit: 1 }).then(r => r.pagination.total),
+        fetchJobs({ status: JobStatus.ASSIGNED,       page: 1, limit: 1 }).then(r => r.pagination.total),
+        fetchJobs({ status: JobStatus.IN_PROGRESS,    page: 1, limit: 1 }).then(r => r.pagination.total),
+        fetchJobs({ status: JobStatus.OPEN,           page: 1, limit: 1 }).then(r => r.pagination.total),
+        fetchJobs({ status: JobStatus.COMPLETED,      page: 1, limit: 1 }).then(r => r.pagination.total),
+    ]);
+
+    return { total, cancelled, assigned, inProgress, open, completed };
 };
 
 export const fetchJobById = async (id: string) => {
