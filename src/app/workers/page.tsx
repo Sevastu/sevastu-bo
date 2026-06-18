@@ -10,6 +10,7 @@ import { AppLayout } from "@/components/layout/AppLayout";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { WorkerReviewSheet } from "./components/WorkerReviewSheet";
+import { WorkerDetailsDrawer } from "./components/WorkerDetailsDrawer";
 
 function resolveWorkerUserId(row: Record<string, unknown>): string {
     return String(row.userId ?? row.id ?? "");
@@ -28,6 +29,8 @@ export default function WorkersPage() {
     const [sheetOpen, setSheetOpen] = useState(false);
     const [selectedWorkerUserId, setSelectedWorkerUserId] = useState<string | null>(null);
     const [selectedRowStatus, setSelectedRowStatus] = useState<string | undefined>(undefined);
+    const [detailsDrawerOpen, setDetailsDrawerOpen] = useState(false);
+    const [selectedWorkerId, setSelectedWorkerId] = useState<string | null>(null);
 
     const loadWorkers = async () => {
         setLoading(true);
@@ -84,6 +87,13 @@ export default function WorkersPage() {
         setSelectedWorkerUserId(uid);
         setSelectedRowStatus(String(row.profileStatus ?? ""));
         setSheetOpen(true);
+    };
+
+    const openWorkerDetails = (row: Record<string, unknown>) => {
+        const workerId = resolveWorkerUserId(row);
+        if (!workerId) return;
+        setSelectedWorkerId(workerId);
+        setDetailsDrawerOpen(true);
     };
 
     const openExternalView = (row: Record<string, unknown>) => {
@@ -383,7 +393,7 @@ export default function WorkersPage() {
                                         <tr 
                                             key={resolveWorkerUserId(worker)}
                                             className="bg-card shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1"
-                                            onClick={() => openReview(worker)}
+                                            onClick={() => openWorkerDetails(worker)}
                                         >
                                             <td className="px-6 py-4 whitespace-nowrap">
                                                 <div className="flex items-center">
@@ -492,6 +502,13 @@ export default function WorkersPage() {
                 workerUserId={selectedWorkerUserId}
                 initialProfileStatus={selectedRowStatus}
                 onAfterChange={loadWorkers}
+            />
+
+            <WorkerDetailsDrawer
+                isOpen={detailsDrawerOpen}
+                onClose={() => setDetailsDrawerOpen(false)}
+                workerId={selectedWorkerId}
+                onWorkerUpdate={loadWorkers}
             />
         </AppLayout>
     );
