@@ -1,14 +1,15 @@
 import apiClient from '@/lib/apiClient';
 import { Category, Service, SubService } from './types';
 
-/** Nest `ResponseInterceptor` returns `{ success, data }`; list endpoints still expose the array on `.data`. */
-function listFromResponse<T>(res: { data: unknown }): T[] {
+function listFromResponse<T>(res: { data: any }): T[] {
     const body = res.data;
-    if (Array.isArray(body)) return body as T[];
-    if (body && typeof body === 'object' && Array.isArray((body as { data?: unknown }).data)) {
-        return (body as { data: T[] }).data;
-    }
-    return [];
+
+    return (
+        body?.data?.data ??
+        body?.data?.items ??
+        body?.data ??
+        []
+    );
 }
 
 function entityFromResponse<T>(res: { data: unknown }): T {
@@ -35,8 +36,8 @@ export const updateCategory = async (id: string, data: Partial<Category>) => {
     return entityFromResponse<Category>(res);
 };
 
-export const fetchServices = async (categoryId?: string) => {
-    const res = await apiClient.get('/services', { params: { categoryId } });
+export const fetchServices = async (params?: { categoryId?: string; search?: string; status?: string; sort?: string }) => {
+    const res = await apiClient.get('/services', { params });
     return listFromResponse<Service>(res);
 };
 
