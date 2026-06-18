@@ -25,6 +25,16 @@ export interface WorkerOcr {
     updatedAt: string;
 }
 
+export interface VerificationAudit {
+    _id: string;
+    workerUserId: string;
+    action: 'approve' | 'reject';
+    adminUserId?: string;
+    reason?: string;
+    reasonType?: string;
+    createdAt: string;
+}
+
 export interface WorkerDetails {
     profile: any;
     kyc: WorkerKyc | null;
