@@ -10,12 +10,14 @@ import {
     fetchWorkerDetails,
     rejectWorker,
     triggerWorkerOcr,
+    fetchWorkerAuditHistory,
     type WorkerDetails,
     type WorkerKyc,
     type WorkerOcr,
+    type VerificationAudit,
 } from "@/features/workers/api";
 import { WorkerProfileStatus } from "@/lib/enums";
-import { Loader2, X, Fingerprint, AlertCircle, CheckCircle, RefreshCw } from "lucide-react";
+import { Loader2, X, Fingerprint, AlertCircle, CheckCircle, RefreshCw, History, XCircle } from "lucide-react";
 
 function SignedIdImage({ objectKey, label }: { objectKey: string | undefined; label: string }) {
     const [url, setUrl] = useState<string | null>(null);
@@ -109,6 +111,9 @@ export function WorkerReviewSheet({
     const [profile, setProfile] = useState<Record<string, unknown> | null>(null);
     const [kyc, setKyc] = useState<WorkerKyc | null>(null);
     const [ocr, setOcr] = useState<WorkerOcr | null>(null);
+    const [auditHistory, setAuditHistory] = useState<VerificationAudit[]>([]);
+    const [auditHistoryLoading, setAuditHistoryLoading] = useState(false);
+    const [auditHistoryError, setAuditHistoryError] = useState<string | null>(null);
     const [loading, setLoading] = useState(false);
     const [rejectReason, setRejectReason] = useState("");
     const [rejectReasonType, setRejectReasonType] = useState("");
@@ -121,26 +126,39 @@ export function WorkerReviewSheet({
             setProfile(null);
             setKyc(null);
             setOcr(null);
+            setAuditHistory([]);
+            setAuditHistoryError(null);
             return;
         }
         let cancelled = false;
         (async () => {
             setLoading(true);
+            setAuditHistoryLoading(true);
+            setAuditHistoryError(null);
             try {
-                const details: WorkerDetails = await fetchWorkerDetails(workerUserId);
+                const [details, history] = await Promise.all([
+                    fetchWorkerDetails(workerUserId),
+                    fetchWorkerAuditHistory(workerUserId),
+                ]);
                 if (!cancelled) {
                     setProfile((details.profile as Record<string, unknown>) ?? null);
                     setKyc(details.kyc ?? null);
                     setOcr(details.ocr ?? null);
+                    setAuditHistory(Array.isArray(history) ? history : []);
                 }
             } catch {
                 if (!cancelled) {
                     setProfile(null);
                     setKyc(null);
                     setOcr(null);
+                    setAuditHistory([]);
+                    setAuditHistoryError('Failed to load audit history');
                 }
             } finally {
-                if (!cancelled) setLoading(false);
+                if (!cancelled) {
+                    setLoading(false);
+                    setAuditHistoryLoading(false);
+                }
             }
         })();
         return () => {
@@ -373,6 +391,58 @@ export function WorkerReviewSheet({
                                     <p className="mt-2 text-xs text-muted-foreground">OCR has not been run on this worker's documents.</p>
                                 </div>
                             )}
+
+                            {/* Verification History */}
+                            <div>
+                                <div className="flex items-center gap-2 mb-3">
+                                    <History className="h-4 w-4 text-foreground" />
+                                    <p className="text-sm font-medium text-foreground">Verification History</p>
+                                </div>
+                                {auditHistoryLoading ? (
+                                    <div className="flex items-center justify-center py-4">
+                                        <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
+                                    </div>
+                                ) : auditHistoryError ? (
+                                    <div className="rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-600 dark:border-red-900 dark:bg-red-950/40">
+                                        {auditHistoryError}
+                                    </div>
+                                ) : auditHistory.length === 0 ? (
+                                    <p className="text-sm text-muted-foreground">No verification history available.</p>
+                                ) : (
+                                    <div className="space-y-3">
+                                        {auditHistory.map((audit) => (
+                                            <div key={audit._id} className="rounded-lg border bg-card p-3">
+                                                <div className="flex items-center justify-between mb-2">
+                                                    <div className="flex items-center gap-2">
+                                                        {audit.action === 'approve' ? (
+                                                            <CheckCircle className="h-4 w-4 text-green-600" />
+                                                        ) : (
+                                                            <XCircle className="h-4 w-4 text-red-600" />
+                                                        )}
+                                                        <span className="text-sm font-medium capitalize">{audit.action}</span>
+                                                    </div>
+                                                    <span className="text-xs text-muted-foreground">
+                                                        {new Date(audit.createdAt).toLocaleString()}
+                                                    </span>
+                                                </div>
+                                                {audit.reasonType && (
+                                                    <p className="text-xs text-muted-foreground mb-1">
+                                                        Reason Type: {audit.reasonType.replace(/_/g, ' ')}
+                                                    </p>
+                                                )}
+                                                {audit.reason && (
+                                                    <p className="text-sm text-foreground">{audit.reason}</p>
+                                                )}
+                                                {audit.adminUserId && (
+                                                    <p className="text-xs text-muted-foreground mt-1">
+                                                        Admin ID: {audit.adminUserId}
+                                                    </p>
+                                                )}
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
 
                             {showActions && (
                                 <div className="space-y-4 border-t pt-4">
