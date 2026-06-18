@@ -149,7 +149,15 @@ export function WorkerReviewSheet({
     }, [open, workerUserId]);
 
     const status = (profile?.profileStatus as string | undefined) ?? initialProfileStatus;
-    const showActions = status === WorkerProfileStatus.UNDER_REVIEW;
+    // const showActions = status === WorkerProfileStatus.UNDER_REVIEW;
+    const reviewableStatuses = [
+        WorkerProfileStatus.KYC_PENDING,
+        WorkerProfileStatus.UNDER_REVIEW,
+    ];
+
+    const showActions = reviewableStatuses.includes(
+        status as WorkerProfileStatus,
+    );
     const anyAction = approveLoading || rejectLoading;
 
     const handleApprove = async () => {
@@ -333,12 +341,11 @@ export function WorkerReviewSheet({
                                         </div>
                                         <div>
                                             <p className="text-muted-foreground text-xs">Status</p>
-                                            <p className={`font-medium ${
-                                                ocr.status === 'COMPLETED' ? 'text-green-600' :
-                                                ocr.status === 'FAILED' ? 'text-red-600' :
-                                                ocr.status === 'PROCESSING' ? 'text-blue-600' :
-                                                'text-gray-600'
-                                            }`}>{ocr.status}</p>
+                                            <p className={`font-medium ${ocr.status === 'COMPLETED' ? 'text-green-600' :
+                                                    ocr.status === 'FAILED' ? 'text-red-600' :
+                                                        ocr.status === 'PROCESSING' ? 'text-blue-600' :
+                                                            'text-gray-600'
+                                                }`}>{ocr.status}</p>
                                         </div>
                                     </div>
                                     {ocr.errorMessage && (
@@ -400,6 +407,7 @@ export function WorkerReviewSheet({
                                             <option value="OTHER">Other</option>
                                         </select>
                                         <Label htmlFor="reject-reason">Additional notes</Label>
+
                                         <textarea
                                             id="reject-reason"
                                             className="border-input bg-background ring-offset-background placeholder:text-muted-foreground focus-visible:ring-ring flex min-h-[80px] w-full rounded-lg border px-3 py-2 text-sm focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"

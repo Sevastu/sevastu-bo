@@ -17,10 +17,16 @@ export interface Service {
     imageUrl?: string;
     description?: string;
     categoryId: string | Category;
+    categoryName?: string;
+    icon?: string;
+    slug?: string;
+    subServiceCount?: number;
+    activeWorkerCount?: number;
     isActive: boolean;
     isDeleted: boolean;
     order: number;
     createdAt: string;
+    updatedAt?: string;
 }
 
 export interface SubService {
