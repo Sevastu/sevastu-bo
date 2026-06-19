@@ -465,7 +465,7 @@ export function AppLayout({ children }: AppLayoutProps) {
 
                 {/* Main Content */}
                 <main className="flex-1 flex flex-col min-w-0 lg:ml-62">
-                    <header className="sticky top-0 z-40 h-16 bg-card px-4 lg:px-4 mx-4 rounded-[50px] mt-4 shadow-lg border border-primary">
+                    <header className="sticky top-0 z-40 h-16 bg-card px-4 lg:px-4 mx-4 rounded-[50px] mt-4 shadow-lg shadow-primary/20 border border-primary">
                         <div className="flex h-full items-center justify-between gap-2">
 
                             {/* Left Side */}
