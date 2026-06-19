@@ -8,6 +8,7 @@ export interface WorkerKyc {
     backImage: string;
     status: string;
     rejectionReason?: string;
+    lastUpdated?: string;
 }
 
 export interface WorkerOcr {
@@ -21,6 +22,10 @@ export interface WorkerOcr {
     nameMatch?: boolean;
     status: string;
     errorMessage?: string;
+    extractedAddress?: string;
+    riskLevel?: string;
+    documentPattern?: string;
+    geoValidation?: string;
     createdAt: string;
     updatedAt: string;
 }
