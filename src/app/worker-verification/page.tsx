@@ -22,7 +22,7 @@ import { VerificationStatusBadge } from '../../components/ui/VerificationStatusB
 import { AppLayout } from '@/components/layout/AppLayout';
 import { fetchWorkers, approveWorker, rejectWorker } from '@/features/workers/api';
 import { WorkerProfileStatus } from '@/lib/enums';
-import { WorkerReviewSheet } from '../workers/components/WorkerReviewSheet';
+import { WorkerReviewPanel } from '../workers/components/WorkerReviewSheet';
 
 interface Worker {
   id: string;
@@ -183,9 +183,9 @@ const WorkerVerification: React.FC = () => {
     rejected: 0,
     total: 0,
   });
-  const [sheetOpen, setSheetOpen] = useState(false);
   const [selectedWorkerUserId, setSelectedWorkerUserId] = useState<string | null>(null);
   const [selectedRowStatus, setSelectedRowStatus] = useState<string | undefined>(undefined);
+  const [isViewingPanel, setIsViewingPanel] = useState(false);
 
   useEffect(() => {
     loadWorkers();
@@ -281,133 +281,147 @@ const WorkerVerification: React.FC = () => {
   const handleViewDocuments = (worker: Worker) => {
     setSelectedWorkerUserId(worker.id);
     setSelectedRowStatus(worker.verificationStatus);
-    setSheetOpen(true);
+    setIsViewingPanel(true);
+  };
+
+  const handleBackToList = () => {
+    setIsViewingPanel(false);
+    setSelectedWorkerUserId(null);
+    setSelectedRowStatus(undefined);
+  };
+
+  const handlePanelBack = () => {
+    setIsViewingPanel(false);
+    setSelectedWorkerUserId(null);
+    setSelectedRowStatus(undefined);
+    setTimeout(() => loadWorkers(), 100);
   };
   return (
     <AppLayout>
-      <div className="space-y-6">
-        {/* Header */}
-        <div>
-          <h1 className="mt-2 flex items-center gap-2 text-3xl font-bold tracking-tight text-muted-foreground">Worker-Verification</h1>
-          <p className="text-gray-500 text-lg">Review and verify worker documents and credentials</p>
-        </div>
-
-        {/* Statistics Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-blue-600 font-medium">Pending Reviews</p>
-                <p className="text-2xl font-bold text-blue-900">{stats.pending}</p>
-              </div>
-              <Clock className="h-8 w-8 text-blue-400" />
-            </div>
-          </div>
-          <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-green-600 font-medium">Approved</p>
-                <p className="text-2xl font-bold text-green-900">{stats.approved}</p>
-              </div>
-              <CheckCircle className="h-8 w-8 text-green-400" />
-            </div>
-          </div>
-          <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-red-600 font-medium">Rejected</p>
-                <p className="text-2xl font-bold text-red-900">{stats.rejected}</p>
-              </div>
-              <XCircle className="h-8 w-8 text-red-400" />
-            </div>
-          </div>
-          <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-gray-600 font-medium">Total Workers</p>
-                <p className="text-2xl font-bold text-gray-900">{stats.total}</p>
-              </div>
-              <User className="h-8 w-8 text-gray-400" />
-            </div>
-          </div>
-        </div>
-
-        {/* Filters */}
-        <div className="bg-card rounded-lg p-6">
-          <div className="flex flex-col lg:flex-row gap-4">
-            {/* Search */}
-            <div className="flex-1">
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-                <input
-                  type="text"
-                  placeholder="Search workers..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
-                />
-              </div>
-            </div>
-
-            {/* Status Filter */}
-            <div className="lg:w-48">
-              <select
-                value={selectedStatus}
-                onChange={(e) => setSelectedStatus(e.target.value as WorkerProfileStatus | 'all')}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              >
-                <option value="all">All Status</option>
-                <option value={WorkerProfileStatus.UNDER_REVIEW}>Under Review</option>
-                <option value={WorkerProfileStatus.VERIFIED}>Verified</option>
-                <option value={WorkerProfileStatus.REJECTED}>Rejected</option>
-                <option value={WorkerProfileStatus.KYC_PENDING}>KYC Pending</option>
-                <option value={WorkerProfileStatus.DRAFT}>Draft</option>
-              </select>
-            </div>
-
-            {/* Filter Button */}
-            <button className="flex items-center gap-2 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors">
-              <Filter size={16} />
-              More Filters
-            </button>
-          </div>
-        </div>
-
-        {/* Worker Cards */}
-        {loading ? (
-          <div className="flex items-center justify-center py-12">
-            <Loader2 className="animate-spin text-gray-400 w-8 h-8" />
-          </div>
-        ) : error ? (
-          <div className="bg-red-50 border border-red-200 rounded-lg p-4 text-red-600">
-            {error}
-          </div>
-        ) : filteredWorkers.length === 0 ? (
-          <div className="text-center py-12 text-gray-500">
-            No workers found matching the criteria
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {filteredWorkers.map((worker) => (
-              <WorkerVerificationCard
-                key={worker.id}
-                worker={worker}
-                onApprove={handleApprove}
-                onReject={handleReject}
-                onViewDocuments={handleViewDocuments}
-              />
-            ))}
-          </div>
-        )}
-
-        <WorkerReviewSheet
-          open={sheetOpen}
-          onOpenChange={setSheetOpen}
+      {isViewingPanel && selectedWorkerUserId ? (
+        <WorkerReviewPanel
           workerUserId={selectedWorkerUserId}
           initialProfileStatus={selectedRowStatus}
-          onAfterChange={loadWorkers}
+          onAfterChange={handlePanelBack}
+          onBack={handlePanelBack}
         />
-      </div>
+      ) : (
+        <div className="space-y-6">
+          {/* Header */}
+          <div>
+            <h1 className="mt-2 flex items-center gap-2 text-3xl font-bold tracking-tight text-muted-foreground">Worker-Verification</h1>
+            <p className="text-gray-500 text-lg">Review and verify worker documents and credentials</p>
+          </div>
+
+          {/* Statistics Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-blue-600 font-medium">Pending Reviews</p>
+                  <p className="text-2xl font-bold text-blue-900">{stats.pending}</p>
+                </div>
+                <Clock className="h-8 w-8 text-blue-400" />
+              </div>
+            </div>
+            <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-green-600 font-medium">Approved</p>
+                  <p className="text-2xl font-bold text-green-900">{stats.approved}</p>
+                </div>
+                <CheckCircle className="h-8 w-8 text-green-400" />
+              </div>
+            </div>
+            <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-red-600 font-medium">Rejected</p>
+                  <p className="text-2xl font-bold text-red-900">{stats.rejected}</p>
+                </div>
+                <XCircle className="h-8 w-8 text-red-400" />
+              </div>
+            </div>
+            <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-gray-600 font-medium">Total Workers</p>
+                  <p className="text-2xl font-bold text-gray-900">{stats.total}</p>
+                </div>
+                <User className="h-8 w-8 text-gray-400" />
+              </div>
+            </div>
+          </div>
+
+          {/* Filters */}
+          <div className="bg-card rounded-lg p-6">
+            <div className="flex flex-col lg:flex-row gap-4">
+              {/* Search */}
+              <div className="flex-1">
+                <div className="relative">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                  <input
+                    type="text"
+                    placeholder="Search workers..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
+                  />
+                </div>
+              </div>
+
+              {/* Status Filter */}
+              <div className="lg:w-48">
+                <select
+                  value={selectedStatus}
+                  onChange={(e) => setSelectedStatus(e.target.value as WorkerProfileStatus | 'all')}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                >
+                  <option value="all">All Status</option>
+                  <option value={WorkerProfileStatus.UNDER_REVIEW}>Under Review</option>
+                  <option value={WorkerProfileStatus.VERIFIED}>Verified</option>
+                  <option value={WorkerProfileStatus.REJECTED}>Rejected</option>
+                  <option value={WorkerProfileStatus.KYC_PENDING}>KYC Pending</option>
+                  <option value={WorkerProfileStatus.DRAFT}>Draft</option>
+                </select>
+              </div>
+
+              {/* Filter Button */}
+              <button className="flex items-center gap-2 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors">
+                <Filter size={16} />
+                More Filters
+              </button>
+            </div>
+          </div>
+
+          {/* Worker Cards */}
+          {loading ? (
+            <div className="flex items-center justify-center py-12">
+              <Loader2 className="animate-spin text-gray-400 w-8 h-8" />
+            </div>
+          ) : error ? (
+            <div className="bg-red-50 border border-red-200 rounded-lg p-4 text-red-600">
+              {error}
+            </div>
+          ) : filteredWorkers.length === 0 ? (
+            <div className="text-center py-12 text-gray-500">
+              No workers found matching the criteria
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              {filteredWorkers.map((worker) => (
+                <WorkerVerificationCard
+                  key={worker.id}
+                  worker={worker}
+                  onApprove={handleApprove}
+                  onReject={handleReject}
+                  onViewDocuments={handleViewDocuments}
+                />
+              ))}
+            </div>
+          )}
+        </div>
+      )}
     </AppLayout>
   );
 };

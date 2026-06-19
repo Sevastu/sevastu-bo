@@ -9,7 +9,7 @@ import { DataTable } from "@/components/DataTable";
 import { AppLayout } from "@/components/layout/AppLayout";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { WorkerReviewSheet } from "./components/WorkerReviewSheet";
+import { WorkerReviewPanel } from "./components/WorkerReviewSheet";
 import { WorkerDetailsDrawer } from "./components/WorkerDetailsDrawer";
 
 function resolveWorkerUserId(row: Record<string, unknown>): string {
@@ -26,9 +26,9 @@ export default function WorkersPage() {
     const [search, setSearch] = useState("");
     const [loading, setLoading] = useState(false);
     const [viewStatus, setViewStatus] = useState<StatusFilter>('all');
-    const [sheetOpen, setSheetOpen] = useState(false);
     const [selectedWorkerUserId, setSelectedWorkerUserId] = useState<string | null>(null);
     const [selectedRowStatus, setSelectedRowStatus] = useState<string | undefined>(undefined);
+    const [isViewingPanel, setIsViewingPanel] = useState(false);
     const [detailsDrawerOpen, setDetailsDrawerOpen] = useState(false);
     const [selectedWorkerId, setSelectedWorkerId] = useState<string | null>(null);
 
@@ -86,7 +86,20 @@ export default function WorkersPage() {
         if (!uid) return;
         setSelectedWorkerUserId(uid);
         setSelectedRowStatus(String(row.profileStatus ?? ""));
-        setSheetOpen(true);
+        setIsViewingPanel(true);
+    };
+
+    const handleBackToList = () => {
+        setIsViewingPanel(false);
+        setSelectedWorkerUserId(null);
+        setSelectedRowStatus(undefined);
+    };
+
+    const handlePanelBack = () => {
+        setIsViewingPanel(false);
+        setSelectedWorkerUserId(null);
+        setSelectedRowStatus(undefined);
+        setTimeout(() => loadWorkers(), 100);
     };
 
     const openWorkerDetails = (row: Record<string, unknown>) => {
@@ -258,251 +271,252 @@ export default function WorkersPage() {
 
     return (
         <AppLayout>
-            <div className="min-h-screen">
-                {/* Header Section */}
-                <div className="mb-8">
-                    <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 mb-6">
-                        <div>
-                            <h1 className="mt-2 flex items-center gap-2 text-3xl font-bold tracking-tight text-muted-foreground">Worker Management</h1>
-                            <p className="text-gray-500 text-lg">Manage and monitor service providers</p>
+            {isViewingPanel && selectedWorkerUserId ? (
+                <WorkerReviewPanel
+                    workerUserId={selectedWorkerUserId}
+                    initialProfileStatus={selectedRowStatus}
+                    onAfterChange={handlePanelBack}
+                    onBack={handlePanelBack}
+                />
+            ) : (
+                <div className="min-h-screen">
+                    {/* Header Section */}
+                    <div className="mb-8">
+                        <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 mb-6">
+                            <div>
+                                <h1 className="mt-2 flex items-center gap-2 text-3xl font-bold tracking-tight text-muted-foreground">Worker Management</h1>
+                                <p className="text-gray-500 text-lg">Manage and monitor service providers</p>
+                            </div>
+
+                            <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2">
+                                <Plus className="w-5 h-5" />
+                                Onboard Worker
+                            </button>
                         </div>
-                        
-                        <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2">
-                            <Plus className="w-5 h-5" />
-                            Onboard Worker
-                        </button>
-                    </div>
 
-                    {/* Search Bar */}
-                    <div className="relative max-w-md">
-                        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-                        <input
-                            type="text"
-                            placeholder="Search workers..."
-                            value={search}
-                            onChange={(e) => setSearch(e.target.value)}
-                            className="bg-card w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                        />
-                    </div>
-                </div>
-
-                {/* Status Tabs */}
-                <div className="flex gap-1 mb-6 bg-transparent p-1 rounded-lg w-fit">
-                    {[
-                        { key: 'all', label: 'All Workers' },
-                        { key: 'verified', label: 'Verified' },
-                        { key: 'pending', label: 'Pending' },
-                        { key: 'rejected', label: 'Rejected' }
-                    ].map((tab) => (
-                        <button
-                            key={tab.key}
-                            onClick={() => setViewStatus(tab.key as StatusFilter)}
-                            className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-                                viewStatus === tab.key
-                                    ? 'bg-blue-600 text-white'
-                                    : 'text-gray-600 hover:text-gray-900 hover:bg-gray-200'
-                            }`}
-                        >
-                            {tab.label}
-                        </button>
-                    ))}
-                </div>
-
-                {/* Stats Cards */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                    <div className="bg-card rounded-lg p-6">
-                        <h3 className="text-lg font-semibold text-gray-900 mb-2">Credentialing Status</h3>
-                        <div className="space-y-3">
-                            <div className="flex justify-between items-center">
-                                <span className="text-sm text-gray-600">Verified</span>
-                                <span className="text-sm font-medium text-green-600">
-                                    {data.filter(w => (w as any).profileStatus === 'verified' || (w as any).profileStatus === 'APPROVED').length}
-                                </span>
-                            </div>
-                            <div className="flex justify-between items-center">
-                                <span className="text-sm text-gray-600">Pending</span>
-                                <span className="text-sm font-medium text-yellow-600">
-                                    {data.filter(w => (w as any).profileStatus === 'under_review' || (w as any).profileStatus === 'kyc_pending').length}
-                                </span>
-                            </div>
-                            <div className="flex justify-between items-center">
-                                <span className="text-sm text-gray-600">Rejected</span>
-                                <span className="text-sm font-medium text-red-600">
-                                    {data.filter(w => (w as any).profileStatus === 'rejected').length}
-                                </span>
-                            </div>
+                        {/* Search Bar */}
+                        <div className="relative max-w-md">
+                            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                            <input
+                                type="text"
+                                placeholder="Search workers..."
+                                value={search}
+                                onChange={(e) => setSearch(e.target.value)}
+                                className="bg-card w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            />
                         </div>
                     </div>
 
-                    <div className="bg-card rounded-lg p-6 ">
-                        <h3 className="text-lg font-semibold text-gray-900 mb-2">Monthly Growth</h3>
-                        <div className="text-2xl font-bold text-blue-600">+12.5%</div>
-                        <p className="text-sm text-gray-600">23 new workers this month</p>
+                    {/* Status Tabs */}
+                    <div className="flex gap-1 mb-6 bg-transparent p-1 rounded-lg w-fit">
+                        {[
+                            { key: 'all', label: 'All Workers' },
+                            { key: 'verified', label: 'Verified' },
+                            { key: 'pending', label: 'Pending' },
+                            { key: 'rejected', label: 'Rejected' }
+                        ].map((tab) => (
+                            <button
+                                key={tab.key}
+                                onClick={() => setViewStatus(tab.key as StatusFilter)}
+                                className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+                                    viewStatus === tab.key
+                                        ? 'bg-blue-600 text-white'
+                                        : 'text-gray-600 hover:text-gray-900 hover:bg-gray-200'
+                                }`}
+                            >
+                                {tab.label}
+                            </button>
+                        ))}
                     </div>
 
-                    <div className="bg-card rounded-lg p-6">
-                        <h3 className="text-lg font-semibold text-gray-900 mb-2">Active Workers</h3>
-                        <div className="text-2xl font-bold text-gray-900">
-                            {data.filter(w => (w as any).isAvailable).length}
+                    {/* Stats Cards */}
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                        <div className="bg-card rounded-lg p-6">
+                            <h3 className="text-lg font-semibold text-gray-900 mb-2">Credentialing Status</h3>
+                            <div className="space-y-3">
+                                <div className="flex justify-between items-center">
+                                    <span className="text-sm text-gray-600">Verified</span>
+                                    <span className="text-sm font-medium text-green-600">
+                                        {data.filter(w => (w as any).profileStatus === 'verified' || (w as any).profileStatus === 'APPROVED').length}
+                                    </span>
+                                </div>
+                                <div className="flex justify-between items-center">
+                                    <span className="text-sm text-gray-600">Pending</span>
+                                    <span className="text-sm font-medium text-yellow-600">
+                                        {data.filter(w => (w as any).profileStatus === 'under_review' || (w as any).profileStatus === 'kyc_pending').length}
+                                    </span>
+                                </div>
+                                <div className="flex justify-between items-center">
+                                    <span className="text-sm text-gray-600">Rejected</span>
+                                    <span className="text-sm font-medium text-red-600">
+                                        {data.filter(w => (w as any).profileStatus === 'rejected').length}
+                                    </span>
+                                </div>
+                            </div>
                         </div>
-                        <p className="text-sm text-gray-600">Currently available</p>
-                    </div>
-                </div>
 
-                {/* Data Table */}
-                <div className="bg-transparent rounded-sm overflow-hidden">
-                    <div className="overflow-x-auto">
-                        <table className="w-full">
-                            <thead className="bg-muted/50">
-                                <tr>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Worker Name
-                                    </th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Primary Skills
-                                    </th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Location
-                                    </th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Status
-                                    </th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Rating
-                                    </th>
-                                    <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Actions
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody className=" divide-y-0">
-                                {loading ? (
+                        <div className="bg-card rounded-lg p-6 ">
+                            <h3 className="text-lg font-semibold text-gray-900 mb-2">Monthly Growth</h3>
+                            <div className="text-2xl font-bold text-blue-600">+12.5%</div>
+                            <p className="text-sm text-gray-600">23 new workers this month</p>
+                        </div>
+
+                        <div className="bg-card rounded-lg p-6">
+                            <h3 className="text-lg font-semibold text-gray-900 mb-2">Active Workers</h3>
+                            <div className="text-2xl font-bold text-gray-900">
+                                {data.filter(w => (w as any).isAvailable).length}
+                            </div>
+                            <p className="text-sm text-gray-600">Currently available</p>
+                        </div>
+                    </div>
+
+                    {/* Data Table */}
+                    <div className="bg-transparent rounded-sm overflow-hidden">
+                        <div className="overflow-x-auto">
+                            <table className="w-full">
+                                <thead className="bg-muted/50">
                                     <tr>
-                                        <td colSpan={6} className="px-6 py-12 text-center text-gray-500">
-                                            Loading workers...
-                                        </td>
+                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            Worker Name
+                                        </th>
+                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            Primary Skills
+                                        </th>
+                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            Location
+                                        </th>
+                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            Status
+                                        </th>
+                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            Rating
+                                        </th>
+                                        <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            Actions
+                                        </th>
                                     </tr>
-                                ) : data.length === 0 ? (
-                                    <tr>
-                                        <td colSpan={6} className="px-6 py-12 text-center text-gray-500">
-                                            No workers found
-                                        </td>
-                                    </tr>
-                                ) : (
-                                    data.map((worker) => (
-                                        <tr 
-                                            key={resolveWorkerUserId(worker)}
-                                            className="bg-card shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1"
-                                            onClick={() => openWorkerDetails(worker)}
-                                        >
-                                            <td className="px-6 py-4 whitespace-nowrap">
-                                                <div className="flex items-center">
-                                                    <div className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center mr-3">
-                                                        {(worker as any).photoUrl ? (
-                                                            <img 
-                                                                src={(worker as any).photoUrl} 
-                                                                alt={(worker as any).name}
-                                                                className="w-10 h-10 rounded-full object-cover"
-                                                            />
-                                                        ) : (
-                                                            <span className="text-gray-500 font-medium">
-                                                                {(worker as any).name?.charAt(0).toUpperCase() || 'W'}
+                                </thead>
+                                <tbody className=" divide-y-0">
+                                    {loading ? (
+                                        <tr>
+                                            <td colSpan={6} className="px-6 py-12 text-center text-gray-500">
+                                                Loading workers...
+                                            </td>
+                                        </tr>
+                                    ) : data.length === 0 ? (
+                                        <tr>
+                                            <td colSpan={6} className="px-6 py-12 text-center text-gray-500">
+                                                No workers found
+                                            </td>
+                                        </tr>
+                                    ) : (
+                                        data.map((worker) => (
+                                            <tr
+                                                key={resolveWorkerUserId(worker)}
+                                                className="bg-card shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1"
+                                                onClick={() => openWorkerDetails(worker)}
+                                            >
+                                                <td className="px-6 py-4 whitespace-nowrap">
+                                                    <div className="flex items-center">
+                                                        <div className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center mr-3">
+                                                            {(worker as any).photoUrl ? (
+                                                                <img
+                                                                    src={(worker as any).photoUrl}
+                                                                    alt={(worker as any).name}
+                                                                    className="w-10 h-10 rounded-full object-cover"
+                                                                />
+                                                            ) : (
+                                                                <span className="text-gray-500 font-medium">
+                                                                    {(worker as any).name?.charAt(0).toUpperCase() || 'W'}
+                                                                </span>
+                                                            )}
+                                                        </div>
+                                                        <div>
+                                                            <div className="text-sm font-medium text-gray-900">{(worker as any).name || '—'}</div>
+                                                            <div className="text-sm text-gray-500">{(worker as any).email || '—'}</div>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td className="px-6 py-4 whitespace-nowrap">
+                                                    <div className="flex flex-wrap gap-1">
+                                                        {((worker as any).skills || []).slice(0, 3).map((skill: string, index: number) => (
+                                                            <span
+                                                                key={index}
+                                                                className="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full"
+                                                            >
+                                                                {skill}
+                                                            </span>
+                                                        ))}
+                                                        {((worker as any).skills || []).length > 3 && (
+                                                            <span className="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded-full">
+                                                                +{((worker as any).skills || []).length - 3}
                                                             </span>
                                                         )}
                                                     </div>
-                                                    <div>
-                                                        <div className="text-sm font-medium text-gray-900">{(worker as any).name || '—'}</div>
-                                                        <div className="text-sm text-gray-500">{(worker as any).email || '—'}</div>
+                                                </td>
+                                                <td className="px-6 py-4 whitespace-nowrap">
+                                                    <div className="flex items-center text-sm text-gray-900">
+                                                        <MapPin className="w-4 h-4 text-gray-400 mr-1" />
+                                                        {(worker as any).city && (worker as any).state ? `${(worker as any).city}, ${(worker as any).state}` : '—'}
                                                     </div>
-                                                </div>
-                                            </td>
-                                            <td className="px-6 py-4 whitespace-nowrap">
-                                                <div className="flex flex-wrap gap-1">
-                                                    {((worker as any).skills || []).slice(0, 3).map((skill: string, index: number) => (
-                                                        <span 
-                                                            key={index}
-                                                            className="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full"
+                                                </td>
+                                                <td className="px-6 py-4 whitespace-nowrap">
+                                                    <StatusBadge status={(worker as any).profileStatus || 'N/A'} />
+                                                </td>
+                                                <td className="px-6 py-4 whitespace-nowrap">
+                                                    <StarRating rating={(worker as any).rating || 0} />
+                                                </td>
+                                                <td className="px-6 py-4 whitespace-nowrap">
+                                                    <div className="flex items-center justify-end gap-2">
+                                                        {/* <button className="text-gray-400 hover:text-gray-600 transition-colors">
+                                                            <Edit className="w-4 h-4" />
+                                                        </button> */}
+                                                        <button
+                                                            className="text-blue-600 hover:text-blue-700 bg-blue-50 hover:bg-blue-100 transition-colors p-2 rounded-md font-medium"
+                                                            onClick={() => openExternalView(worker)}
+                                                            title="View Profile in New Window"
                                                         >
-                                                            {skill}
-                                                        </span>
-                                                    ))}
-                                                    {((worker as any).skills || []).length > 3 && (
-                                                        <span className="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded-full">
-                                                            +{((worker as any).skills || []).length - 3}
-                                                        </span>
-                                                    )}
-                                                </div>
-                                            </td>
-                                            <td className="px-6 py-4 whitespace-nowrap">
-                                                <div className="flex items-center text-sm text-gray-900">
-                                                    <MapPin className="w-4 h-4 text-gray-400 mr-1" />
-                                                    {(worker as any).city && (worker as any).state ? `${(worker as any).city}, ${(worker as any).state}` : '—'}
-                                                </div>
-                                            </td>
-                                            <td className="px-6 py-4 whitespace-nowrap">
-                                                <StatusBadge status={(worker as any).profileStatus || 'N/A'} />
-                                            </td>
-                                            <td className="px-6 py-4 whitespace-nowrap">
-                                                <StarRating rating={(worker as any).rating || 0} />
-                                            </td>
-                                            <td className="px-6 py-4 whitespace-nowrap">
-                                                <div className="flex items-center justify-end gap-2">
-                                                    {/* <button className="text-gray-400 hover:text-gray-600 transition-colors">
-                                                        <Edit className="w-4 h-4" />
-                                                    </button> */}
-                                                    <button 
-                                                        className="text-blue-600 hover:text-blue-700 bg-blue-50 hover:bg-blue-100 transition-colors p-2 rounded-md font-medium"
-                                                        onClick={() => openExternalView(worker)}
-                                                        title="View Profile in New Window"
-                                                    >
-                                                        <Eye className="w-4 h-4" />
-                                                    </button>
-                                                    <button className="text-gray-400 hover:text-gray-600 transition-colors">
-                                                        <MoreVertical className="w-4 h-4" />
-                                                    </button>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    ))
-                                )}
-                            </tbody>
-                        </table>
+                                                            <Eye className="w-4 h-4" />
+                                                        </button>
+                                                        <button className="text-gray-400 hover:text-gray-600 transition-colors">
+                                                            <MoreVertical className="w-4 h-4" />
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        ))
+                                    )}
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
+
+                    {/* Pagination */}
+                    {total > 10 && (
+                        <div className="flex items-center justify-between mt-6">
+                            <div className="text-sm text-gray-700">
+                                Showing {((page - 1) * 10) + 1} to {Math.min(page * 10, total)} of {total} results
+                            </div>
+                            <div className="flex gap-2">
+                                <button
+                                    onClick={() => setPage(page - 1)}
+                                    disabled={page === 1}
+                                    className="px-3 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                                >
+                                    Previous
+                                </button>
+                                <button
+                                    onClick={() => setPage(page + 1)}
+                                    disabled={page * 10 >= total}
+                                    className="px-3 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                                >
+                                    Next
+                                </button>
+                            </div>
+                        </div>
+                    )}
                 </div>
-
-                {/* Pagination */}
-                {total > 10 && (
-                    <div className="flex items-center justify-between mt-6">
-                        <div className="text-sm text-gray-700">
-                            Showing {((page - 1) * 10) + 1} to {Math.min(page * 10, total)} of {total} results
-                        </div>
-                        <div className="flex gap-2">
-                            <button
-                                onClick={() => setPage(page - 1)}
-                                disabled={page === 1}
-                                className="px-3 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
-                            >
-                                Previous
-                            </button>
-                            <button
-                                onClick={() => setPage(page + 1)}
-                                disabled={page * 10 >= total}
-                                className="px-3 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
-                            >
-                                Next
-                            </button>
-                        </div>
-                    </div>
-                )}
-            </div>
-
-            <WorkerReviewSheet
-                open={sheetOpen}
-                onOpenChange={setSheetOpen}
-                workerUserId={selectedWorkerUserId}
-                initialProfileStatus={selectedRowStatus}
-                onAfterChange={loadWorkers}
-            />
+            )}
 
             <WorkerDetailsDrawer
                 isOpen={detailsDrawerOpen}
