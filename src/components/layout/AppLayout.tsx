@@ -221,8 +221,8 @@ export function AppLayout({ children }: AppLayoutProps) {
             children: [
                 { name: "Catalog", href: "/catalog", icon: User2Icon, roles: ["admin", "staff"] },
                 { name: "Categories", href: "/categories", icon: User2Icon, roles: ["admin", "staff"] },
-                { name: "Services", href: "/services", icon: Hammer, roles: ["admin", "staff"] },
-                { name: "Sub-Services", href: "/sub-services", icon: Layers, roles: ["admin", "staff"] }
+                { name: "All Services", href: "/services", icon: Hammer, roles: ["admin", "staff"] },
+                { name: "All Sub-Services", href: "/sub-services", icon: Layers, roles: ["admin", "staff"] }
             ]
         },
         {
