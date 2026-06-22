@@ -1,37 +1,22 @@
 'use client';
 
-import React, { useEffect, useState, Suspense } from 'react';
+import React, { useEffect, useState, Suspense, useMemo, useCallback } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { fetchServices, fetchCategories, deleteService } from '@/features/services/api';
 import { Service, Category } from '@/features/services/types';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Card, CardContent } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Dropdown } from '@/components/ui/dropdown';
-import { KPICard } from '@/components/ui/KPICard';
-import { Plus, Search, MoreVertical, Edit, Copy, Archive, Trash2, Layers, Briefcase, CheckCircle, XCircle } from 'lucide-react';
-import { ServiceModal } from '@/features/services/components/ServiceModal';
-import * as LucideIcons from 'lucide-react';
 import { toast } from 'sonner';
+import { Briefcase, CheckCircle, Layers, XCircle } from 'lucide-react';
 
-const FALLBACK_IMAGE = 'https://placehold.co/600x400/f8fafc/94a3b8?text=No+Image';
-
-function timeAgo(dateString: string) {
-    const date = new Date(dateString);
-    const seconds = Math.floor((new Date().getTime() - date.getTime()) / 1000);
-    let interval = seconds / 31536000;
-    if (interval > 1) return Math.floor(interval) + ' years ago';
-    interval = seconds / 2592000;
-    if (interval > 1) return Math.floor(interval) + ' months ago';
-    interval = seconds / 86400;
-    if (interval > 1) return Math.floor(interval) + ' days ago';
-    interval = seconds / 3600;
-    if (interval > 1) return Math.floor(interval) + ' hours ago';
-    interval = seconds / 60;
-    if (interval > 1) return Math.floor(interval) + ' minutes ago';
-    return Math.floor(seconds) + ' seconds ago';
-}
+import { AppLayout } from '@/components/layout/AppLayout';
+import { ServiceModal } from '@/features/services/components/ServiceModal';
+import { EmptyState } from '@/features/services/components/EmptyState';
+import { ServiceCardSkeleton } from '@/features/services/components/ServiceCardSkeleton';
+import { ServiceStatsCard } from '@/features/services/components/ServiceStatsCard';
+import { ServicesHeader } from '@/features/services/components/ServicesHeader';
+import { ServicesFilters } from '@/features/services/components/ServicesFilters';
+import { ServiceCard } from '@/features/services/components/ServiceCard';
+import { ServicesTable } from '@/features/services/components/ServicesTable';
+import { ServicesPagination } from '@/features/services/components/ServicesPagination';
 
 // Custom hook for debouncing
 function useDebounce<T>(value: T, delay: number): T {
@@ -49,25 +34,46 @@ function ServicesContent() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const urlCategoryId = searchParams?.get('categoryId') || null;
-    // const categoryName = searchParams?.get('categoryName') || null;
+    
+    // Data State
     const [categories, setCategories] = useState<Category[]>([]);
     const [services, setServices] = useState<Service[]>([]);
     const [isLoading, setIsLoading] = useState(true);
 
-    // Filters
+    // Filter State
     const [searchQuery, setSearchQuery] = useState('');
     const debouncedSearch = useDebounce(searchQuery, 300);
     const [selectedCategoryId, setSelectedCategoryId] = useState<string>(urlCategoryId || 'all');
     const [statusFilter, setStatusFilter] = useState<string>('all');
     const [sortFilter, setSortFilter] = useState<string>('newest');
 
+    // UI State
+    const [viewMode, setViewMode] = useState<'grid' | 'table'>('grid');
+    
+    // Pagination State
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 12;
+
     // Modal State
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [editingService, setEditingService] = useState<Service | null>(null);
 
     const isCategoryMode = !!urlCategoryId;
-    const activeCategory = categories.find(c => c._id === urlCategoryId);
 
+    // Initialize View Mode from LocalStorage
+    useEffect(() => {
+        const savedView = localStorage.getItem('servicesViewMode');
+        if (savedView === 'grid' || savedView === 'table') {
+            setViewMode(savedView);
+        }
+    }, []);
+
+    const handleViewModeChange = (mode: 'grid' | 'table') => {
+        setViewMode(mode);
+        localStorage.setItem('servicesViewMode', mode);
+    };
+
+    // Load Data
     const loadData = async () => {
         setIsLoading(true);
         try {
@@ -83,6 +89,7 @@ function ServicesContent() {
                 sort: sortFilter
             });
             setServices(srvs);
+            setCurrentPage(1); // Reset to first page on filter change
         } catch (error) {
             console.error('Failed to fetch data', error);
             toast.error('Failed to load services');
@@ -97,6 +104,55 @@ function ServicesContent() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [urlCategoryId, selectedCategoryId, isCategoryMode, debouncedSearch, statusFilter, sortFilter]);
 
+    // Derived Data with useMemo
+    const activeCategory = useMemo(() => 
+        categories.find(c => c._id === urlCategoryId),
+    [categories, urlCategoryId]);
+
+    const categoryMap = useMemo(() => 
+        Object.fromEntries(categories.map(cat => [cat._id, cat])),
+    [categories]);
+
+    const stats = useMemo(() => {
+        let active = 0;
+        let inactive = 0;
+        let subServices = 0;
+        let workers = 0;
+
+        services.forEach(s => {
+            if (s.isActive) active++; else inactive++;
+            subServices += s.subServiceCount || 0;
+            workers += s.activeWorkerCount || 0;
+        });
+
+        return {
+            total: services.length,
+            active,
+            inactive,
+            subServices,
+            workers
+        };
+    }, [services]);
+
+    // Helpers
+    const getCategoryName = useCallback((id: string | Category) => {
+        if (typeof id === 'object') return id.name;
+        const cat = categoryMap[id];
+        return cat ? cat.name : 'Unknown Category';
+    }, [categoryMap]);
+
+    const openEditModal = useCallback((service: Service | null = null) => {
+        setEditingService(service);
+        setIsModalOpen(true);
+    }, []);
+
+    const handleClearFilters = useCallback(() => {
+        setSearchQuery('');
+        setSelectedCategoryId('all');
+        setStatusFilter('all');
+        setSortFilter('newest');
+    }, []);
+
     const handleDelete = async (service: Service) => {
         if (window.confirm(`Are you sure you want to delete "${service.name}"?`)) {
             try {
@@ -109,256 +165,142 @@ function ServicesContent() {
         }
     };
 
-    const getCategoryName = (id: string | Category) => {
-        if (typeof id === 'object') return id.name;
-        const cat = categories.find(c => c._id === id);
-        return cat ? cat.name : 'Unknown Category';
-    };
+    const hasActiveFilters = Boolean(
+        searchQuery || 
+        (!isCategoryMode && selectedCategoryId !== 'all') || 
+        statusFilter !== 'all' || 
+        sortFilter !== 'newest'
+    );
 
-    const renderIcon = (iconName?: string) => {
-        if (!iconName) return <LucideIcons.Package className="w-5 h-5 text-blue-600" />;
-        const Icon = (LucideIcons as any)[iconName];
-        return Icon ? <Icon className="w-5 h-5 text-blue-600" /> : <LucideIcons.Package className="w-5 h-5 text-blue-600" />;
-    };
-
-    // Calculate KPIs
-    const stats = {
-        total: services.length,
-        active: services.filter(s => s.isActive).length,
-        inactive: services.filter(s => !s.isActive).length,
-        subServices: services.reduce((acc, s) => acc + (s.subServiceCount || 0), 0)
-    };
+    // Client-side pagination logic
+    const paginatedServices = useMemo(() => {
+        const startIndex = (currentPage - 1) * itemsPerPage;
+        return services.slice(startIndex, startIndex + itemsPerPage);
+    }, [services, currentPage, itemsPerPage]);
 
     return (
-        <div className="min-h-screen bg-slate-50 p-6 md:p-8">
-            <div className="max-w-7xl mx-auto">
+        <div className="min-h-screen bg-transparent">
+            <div className="max-w-[1600px] mx-auto">
                 {/* Breadcrumbs */}
-                <div className="text-sm text-slate-500 mb-6 flex items-center gap-2">
-                    {/* <span>Catalog</span> */}
-                    {/* <span>/</span> */}
-                    {isCategoryMode ? (
-                        <>
-                            <span className="cursor-pointer hover:text-blue-600" onClick={() => router.push('/categories')}>Categories</span>
-                            <span>/</span>
-                            <span>{activeCategory ? activeCategory.name : '...'}</span>
-                            {/* <span>/</span> */}
-                        </>
-                    ) : null}
-                    {/* <span className="text-slate-900 font-medium">Services</span> */}
-                </div>
-
-                {/* Header */}
-                <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
-                    <div>
-                        <h1 className="text-3xl font-bold text-slate-900 tracking-tight">
-                            {isCategoryMode 
-                                ? (activeCategory ? activeCategory.name : 'Loading Category...') 
-                                : 'All Services'}
-                        </h1>
-                        <p className="text-slate-500 mt-1">
-                            {isCategoryMode ? 'Manage services within this category.' : 'Manage all marketplace services across every category.'}
-                        </p>
-                    </div>
-                    <Button
-                        onClick={() => { setEditingService(null); setIsModalOpen(true); }}
-                        className="bg-blue-600 hover:bg-blue-700 text-white rounded-xl shadow-sm transition-all duration-200 ease-out"
-                    >
-                        <Plus className="w-4 h-4 mr-2" /> Add Service
-                    </Button>
-                </div>
-
-                {/* Analytics Cards */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                    <KPICard title="Total Services" value={stats.total.toString()} icon={<Briefcase className="w-6 h-6" />} change="+0%" changeType="increase" />
-                    <KPICard title="Active Services" value={stats.active.toString()} icon={<CheckCircle className="w-6 h-6" />} change="+0%" changeType="increase" />
-                    <KPICard title="Inactive Services" value={stats.inactive.toString()} icon={<XCircle className="w-6 h-6" />} change="+0%" changeType="decrease" />
-                    <KPICard title="Total Sub-services" value={stats.subServices.toString()} icon={<Layers className="w-6 h-6" />} change="+0%" changeType="increase" />
-                </div>
-
-                {/* Filters */}
-                <Card className="mb-8 rounded-xl shadow-sm border-slate-100">
-                    <CardContent className="p-4 flex flex-col md:flex-row gap-4 items-center">
-                        <div className="relative flex-1 w-full">
-                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
-                            <Input
-                                placeholder="Search services..."
-                                className="pl-9 w-full bg-slate-50 border-slate-200"
-                                value={searchQuery}
-                                onChange={e => setSearchQuery(e.target.value)}
-                            />
-                        </div>
-
-                        <div className="flex w-full md:w-auto gap-4">
-                            {!isCategoryMode && (
-                                <div className="w-full sm:w-48">
-                                    <select
-                                        className="w-full h-10 px-3 py-2 rounded-md border border-slate-200 bg-slate-50 text-sm"
-                                        value={selectedCategoryId}
-                                        onChange={e => setSelectedCategoryId(e.target.value)}
-                                    >
-                                        <option value="all">All Categories</option>
-                                        {categories.map(cat => (
-                                            <option key={cat._id} value={cat._id}>{cat.name}</option>
-                                        ))}
-                                    </select>
-                                </div>
-                            )}
-
-                            <div className="w-full sm:w-40">
-                                <select
-                                    className="w-full h-10 px-3 py-2 rounded-md border border-slate-200 bg-slate-50 text-sm"
-                                    value={statusFilter}
-                                    onChange={e => setStatusFilter(e.target.value)}
-                                >
-                                    <option value="all">All Status</option>
-                                    <option value="active">Active</option>
-                                    <option value="inactive">Inactive</option>
-                                </select>
-                            </div>
-
-                            <div className="w-full sm:w-48">
-                                <select
-                                    className="w-full h-10 px-3 py-2 rounded-md border border-slate-200 bg-slate-50 text-sm"
-                                    value={sortFilter}
-                                    onChange={e => setSortFilter(e.target.value)}
-                                >
-                                    <option value="newest">Newest First</option>
-                                    <option value="oldest">Oldest First</option>
-                                    <option value="name_asc">Name A-Z</option>
-                                    <option value="name_desc">Name Z-A</option>
-                                    <option value="sub_services">Most Sub-services</option>
-                                </select>
-                            </div>
-                        </div>
-                    </CardContent>
-                </Card>
-
-                {/* Grid */}
-                {isLoading ? (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                        {[...Array(8)].map((_, i) => (
-                            <div key={i} className="h-80 bg-white rounded-xl shadow-sm animate-pulse border border-slate-100">
-                                <div className="h-40 bg-slate-200 rounded-t-xl" />
-                                <div className="p-5">
-                                    <div className="h-5 bg-slate-200 rounded w-1/2 mb-4" />
-                                    <div className="h-4 bg-slate-200 rounded w-full mb-2" />
-                                    <div className="h-4 bg-slate-200 rounded w-3/4" />
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                ) : services.length === 0 ? (
-                    <div className="text-center py-20 bg-white rounded-xl shadow-sm border border-slate-100">
-                        <Briefcase className="w-16 h-16 mx-auto text-slate-300 mb-4" />
-                        <h3 className="text-lg font-semibold text-slate-900">No services found</h3>
-                        <p className="text-slate-500 mt-2 mb-6">Create your first service to get started.</p>
-                        <Button
-                            onClick={() => { setEditingService(null); setIsModalOpen(true); }}
-                            className="bg-blue-600 hover:bg-blue-700 text-white rounded-xl"
-                        >
-                            Create First Service
-                        </Button>
-                    </div>
-                ) : (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                        {services.map(service => (
-                            <div
-                                key={service._id}
-                                className="group bg-white rounded-xl shadow-[0_4px_20px_rgba(41,52,61,0.04)] border border-slate-100 overflow-hidden hover:-translate-y-1 hover:shadow-lg transition-all duration-200 ease-out flex flex-col"
-                            >
-                                {/* Image Header */}
-                                <div className="relative h-40 bg-slate-100 overflow-hidden shrink-0">
-                                    <img
-                                        src={service.imageUrl || FALLBACK_IMAGE}
-                                        alt={service.name}
-                                        className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
-                                        onError={(e) => (e.currentTarget.src = FALLBACK_IMAGE)}
-                                    />
-                                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-60" />
-
-                                    {/* Floating Icon */}
-                                    <div className="absolute -bottom-6 left-5 w-12 h-12 bg-white rounded-full shadow-md flex items-center justify-center border border-slate-50 group-hover:shadow-blue-100 group-hover:shadow-lg transition-shadow duration-200 z-10">
-                                        {renderIcon(service.icon)}
-                                    </div>
-
-                                    <div className="absolute top-3 right-3">
-                                        <Badge variant="secondary" className={`text-[10px] uppercase font-bold tracking-wider ${service.isActive ? 'bg-green-100 text-green-700 border-green-200' : 'bg-slate-100 text-slate-600 border-slate-200'}`}>
-                                            {service.isActive ? 'Active' : 'Inactive'}
-                                        </Badge>
-                                    </div>
-                                </div>
-
-                                {/* Card Content */}
-                                <div className="pt-8 px-5 pb-5 flex-1 flex flex-col">
-                                    <div className="flex justify-between items-start mb-2">
-                                        <div>
-                                            <h3 className="text-[18px] font-semibold text-slate-900 leading-tight">
-                                                {service.name}
-                                            </h3>
-                                            <p className="text-xs text-blue-600 font-medium mt-1 mb-3">
-                                                {getCategoryName(service.categoryId)}
-                                            </p>
-                                        </div>
-                                        <Dropdown
-                                            className="w-48 bg-white shadow-md border border-slate-100 z-20"
-                                            trigger={
-                                                <button className="p-1 text-slate-400 hover:text-slate-600 rounded-md hover:bg-slate-50 transition-colors">
-                                                    <MoreVertical className="w-5 h-5" />
-                                                </button>
-                                            }
-                                        >
-                                            <button onClick={() => { setEditingService(service); setIsModalOpen(true); }} className="w-full text-left px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 flex items-center">
-                                                <Edit className="w-4 h-4 mr-2" /> Edit Service
-                                            </button>
-                                            <button onClick={() => router.push(`/sub-services?serviceId=${service._id}`)} className="w-full text-left px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 flex items-center">
-                                                <Layers className="w-4 h-4 mr-2" /> View Sub-services
-                                            </button>
-                                            <button className="w-full text-left px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 flex items-center">
-                                                <Copy className="w-4 h-4 mr-2" /> Duplicate Service
-                                            </button>
-                                            <button className="w-full text-left px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 flex items-center">
-                                                <Archive className="w-4 h-4 mr-2" /> Archive Service
-                                            </button>
-                                            <button onClick={() => handleDelete(service)} className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 flex items-center">
-                                                <Trash2 className="w-4 h-4 mr-2" /> Delete Service
-                                            </button>
-                                        </Dropdown>
-                                    </div>
-
-                                    <p className="text-[13px] text-slate-500 line-clamp-2 mb-4 flex-1">
-                                        {service.description || 'No description provided.'}
-                                    </p>
-
-                                    <div className="flex gap-2 mb-4">
-                                        <div className="bg-slate-50 rounded-lg p-2 text-center border border-slate-100 flex-1">
-                                            <div className="text-lg font-semibold text-slate-700">{service.subServiceCount || 0}</div>
-                                            <div className="text-[10px] text-slate-500 uppercase tracking-wider font-medium">Sub-services</div>
-                                        </div>
-                                        <div className="bg-slate-50 rounded-lg p-2 text-center border border-slate-100 flex-1">
-                                            <div className="text-lg font-semibold text-slate-700">{service.activeWorkerCount || 0}</div>
-                                            <div className="text-[10px] text-slate-500 uppercase tracking-wider font-medium">Workers</div>
-                                        </div>
-                                    </div>
-
-                                    {/* Actions & Footer */}
-                                    <div className="pt-4 border-t border-slate-100 flex items-center justify-between">
-                                        <div className="flex gap-2">
-                                            <Button variant="outline" size="sm" onClick={() => { setEditingService(service); setIsModalOpen(true); }} className="rounded-lg h-8 px-3 text-[13px]">
-                                                Edit
-                                            </Button>
-                                            <Button variant="secondary" size="sm" onClick={() => router.push(`/sub-services?serviceId=${service._id}`)} className="rounded-lg h-8 px-3 text-[13px] bg-slate-100 hover:bg-slate-200 text-slate-700">
-                                                View Sub-services
-                                            </Button>
-                                        </div>
-                                        <div className="text-[11px] text-slate-400">
-                                            Updated {service.updatedAt ? timeAgo(service.updatedAt) : 'recently'}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        ))}
+                {isCategoryMode && (
+                    <div className="text-sm text-slate-500 mb-6 flex items-center gap-2">
+                        <span className="cursor-pointer hover:text-blue-600 transition-colors" onClick={() => router.push('/categories')}>Categories</span>
+                        <span className="text-slate-300">/</span>
+                        <span className="font-medium text-slate-700">{activeCategory ? activeCategory.name : '...'}</span>
                     </div>
                 )}
+
+                <ServicesHeader 
+                    isCategoryMode={isCategoryMode} 
+                    activeCategory={activeCategory} 
+                    onCreateService={() => openEditModal(null)} 
+                />
+
+                {/* Analytics Cards */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-2 mb-4">
+                    <ServiceStatsCard 
+                        title="Total Services" 
+                        value={stats.total} 
+                        icon={<Briefcase className="w-5 h-5" />} 
+                        iconClassName="text-blue-600 bg-blue-50"
+                    />
+                    <ServiceStatsCard 
+                        title="Active Services" 
+                        value={stats.active} 
+                        icon={<CheckCircle className="w-5 h-5" />} 
+                        iconClassName="text-emerald-600 bg-emerald-50"
+                    />
+                    <ServiceStatsCard 
+                        title="Inactive Services" 
+                        value={stats.inactive} 
+                        icon={<XCircle className="w-5 h-5" />} 
+                        iconClassName="text-rose-600 bg-rose-50"
+                    />
+                    <ServiceStatsCard 
+                        title="Total Sub-services" 
+                        value={stats.subServices} 
+                        icon={<Layers className="w-5 h-5" />} 
+                        iconClassName="text-indigo-600 bg-indigo-50"
+                    />
+                    <ServiceStatsCard 
+                        title="Assigned Workers" 
+                        value={stats.workers} 
+                        icon={<Briefcase className="w-5 h-5" />} 
+                        iconClassName="text-amber-600 bg-amber-50"
+                    />
+                </div>
+
+                <ServicesFilters 
+                    searchQuery={searchQuery}
+                    onSearchChange={setSearchQuery}
+                    categories={categories}
+                    selectedCategoryId={selectedCategoryId}
+                    onCategoryChange={setSelectedCategoryId}
+                    statusFilter={statusFilter}
+                    onStatusChange={setStatusFilter}
+                    sortFilter={sortFilter}
+                    onSortChange={setSortFilter}
+                    isCategoryMode={isCategoryMode}
+                    viewMode={viewMode}
+                    onViewModeChange={handleViewModeChange}
+                    onClearFilters={handleClearFilters}
+                    hasActiveFilters={hasActiveFilters}
+                />
+
+                {/* Main Content Area */}
+                <div className="mt-2">
+                    {isLoading ? (
+                        viewMode === 'grid' ? (
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                                {[...Array(8)].map((_, i) => <ServiceCardSkeleton key={i} />)}
+                            </div>
+                        ) : (
+                            <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-8 flex justify-center">
+                                <div className="animate-pulse flex flex-col items-center gap-4">
+                                    <div className="w-12 h-12 bg-slate-100 rounded-full"></div>
+                                    <div className="h-4 w-32 bg-slate-100 rounded"></div>
+                                </div>
+                            </div>
+                        )
+                    ) : services.length === 0 ? (
+                        <EmptyState 
+                            onClearFilters={handleClearFilters} 
+                            onCreateService={() => openEditModal(null)}
+                            hasFilters={hasActiveFilters}
+                        />
+                    ) : (
+                        <>
+                            {viewMode === 'grid' ? (
+                                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                                    {paginatedServices.map(service => (
+                                        <ServiceCard 
+                                            key={service._id} 
+                                            service={service} 
+                                            categoryName={getCategoryName(service.categoryId)}
+                                            onEdit={openEditModal}
+                                            onDelete={handleDelete}
+                                        />
+                                    ))}
+                                </div>
+                            ) : (
+                                <ServicesTable 
+                                    services={paginatedServices}
+                                    getCategoryName={getCategoryName}
+                                    onEdit={openEditModal}
+                                    onDelete={handleDelete}
+                                />
+                            )}
+                            
+                            <ServicesPagination 
+                                currentPage={currentPage}
+                                totalPages={Math.ceil(services.length / itemsPerPage)}
+                                totalItems={services.length}
+                                itemsPerPage={itemsPerPage}
+                                onPageChange={setCurrentPage}
+                            />
+                        </>
+                    )}
+                </div>
 
                 <ServiceModal
                     isOpen={isModalOpen}
@@ -373,12 +315,10 @@ function ServicesContent() {
     );
 }
 
-import { AppLayout } from '@/components/layout/AppLayout';
-
 export default function ServicesPage() {
     return (
         <AppLayout>
-            <Suspense fallback={<div className="p-8">Loading Services...</div>}>
+            <Suspense fallback={<div className="p-8 flex justify-center text-slate-500">Loading Services Dashboard...</div>}>
                 <ServicesContent />
             </Suspense>
         </AppLayout>
