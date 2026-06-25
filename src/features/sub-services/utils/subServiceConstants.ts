@@ -1,0 +1,2 @@
+export const SUB_SERVICES_PAGINATION_LIMIT = 10;
+export const SUB_SERVICES_PAGE_LIMITS = [10, 20, 50, 100];
