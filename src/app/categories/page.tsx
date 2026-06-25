@@ -97,7 +97,7 @@ export default function CategoriesPage() {
                     <CategoriesHeader onCreateCategory={handleAddClick} />
 
                     {/* Analytics Cards */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2 mb-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
                         <CategoryStatsCard
                             title="Total Categories"
                             value={stats.total}

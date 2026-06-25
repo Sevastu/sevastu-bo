@@ -1,163 +1,140 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import React, { useState } from "react";
 import { AppLayout } from "@/components/layout/AppLayout";
-import { DataTable } from "@/components/DataTable";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { getUser } from "@/lib/auth";
-import { fetchSubServices, fetchServices, createSubService, updateSubService } from "@/features/services/api";
-import type { SubService, Service } from "@/features/services/types";
-import { Filter, IndianRupee, Edit2, Plus } from "lucide-react";
+import { SubService } from "@/features/services/types";
+
+// Hooks
+import { useSubServices } from "@/features/sub-services/hooks/useSubServices";
+import { useSubServiceStats } from "@/features/sub-services/hooks/useSubServiceStats";
+
+// Components
+import { SubServiceHeader } from "@/features/sub-services/components/SubServiceHeader";
+import { SubServiceStats } from "@/features/sub-services/components/SubServiceStats";
+import { SubServiceFilters } from "@/features/sub-services/components/SubServiceFilters";
+import { SubServiceTable } from "@/features/sub-services/components/SubServiceTable";
+import { SubServiceCard } from "@/features/sub-services/components/SubServiceCard";
+import { SubServicePagination } from "@/features/sub-services/components/SubServicePagination";
+import { SubServiceModal } from "@/features/sub-services/components/SubServiceModal";
+import { SubServiceSkeleton } from "@/features/sub-services/components/SubServiceSkeleton";
+import { SubServiceEmptyState } from "@/features/sub-services/components/SubServiceEmptyState";
 
 export default function SubServicesPage() {
-    const [data, setData] = useState<SubService[]>([]);
-    const [services, setServices] = useState<Service[]>([]);
-    const [selectedService, setSelectedService] = useState<string>("all");
-    const [loading, setLoading] = useState(false);
     const user = getUser();
     const isAdmin = user?.role === "admin";
 
-    const loadData = useCallback(async () => {
-        setLoading(true);
-        try {
-            const [subServices, srvs] = await Promise.all([
-                fetchSubServices(selectedService === "all" ? undefined : selectedService),
-                fetchServices()
-            ]);
-            setData(subServices);
-            setServices(srvs);
-        } catch (err) {
-            console.error("Failed to fetch sub-services", err);
-        } finally {
-            setLoading(false);
-        }
-    }, [selectedService]);
+    const {
+        subServices,
+        allSubServices,
+        services,
+        loading,
+        page,
+        setPage,
+        limit,
+        setLimit,
+        totalItems,
+        filters,
+        setFilters,
+        handleCreateSubService,
+        handleUpdateSubService,
+        toggleStatus,
+    } = useSubServices();
 
-    useEffect(() => {
-        loadData();
-    }, [loadData]);
+    const stats = useSubServiceStats(allSubServices);
 
-    const handleCreate = async () => {
-        const name = prompt("Enter sub-service name:");
-        const basePrice = Number(prompt("Enter base price (INR):"));
-        const priceType = prompt("Price type ('fixed' or 'range'):") as 'fixed' | 'range' || 'fixed';
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [editingSubService, setEditingSubService] = useState<SubService | null>(null);
 
-        if (!name || isNaN(basePrice) || selectedService === "all") {
-            if (selectedService === "all") alert("Please select a service first.");
-            return;
-        }
+    const handleOpenCreateModal = () => {
+        setEditingSubService(null);
+        setIsModalOpen(true);
+    };
 
-        try {
-            await createSubService({ name, basePrice, priceType, serviceId: selectedService });
-            loadData();
-        } catch (err) {
-            console.error("Failed to create sub-service", err);
+    const handleOpenEditModal = (subService: SubService) => {
+        setEditingSubService(subService);
+        setIsModalOpen(true);
+    };
+
+    const handleModalSubmit = async (data: Partial<SubService>) => {
+        if (editingSubService) {
+            await handleUpdateSubService(editingSubService._id, data);
+        } else {
+            await handleCreateSubService(data);
         }
     };
 
-    const columns: any[] = [
-        { key: "name", label: "Name" },
-        {
-            key: "serviceId",
-            label: "Parent Service",
-            render: (item: SubService) => typeof item.serviceId === 'string' ? item.serviceId : (item.serviceId as Service).name
-        },
-        {
-            key: "basePrice",
-            label: "Base Price",
-            render: (item: SubService) => (
-                <div className="flex items-center font-semibold text-primary">
-                    <IndianRupee className="w-3 h-3 mr-0.5" />
-                    {item.basePrice}
-                    {item.priceType === 'range' && <span className="text-[10px] ml-1 opacity-70">Onwards</span>}
-                </div>
-            )
-        },
-        {
-            key: "isActive",
-            label: "Status",
-            render: (item: SubService) => (
-                <Badge
-                    className={isAdmin ? "cursor-pointer" : ""}
-                    variant={item.isActive ? "default" : "secondary"}
-                    onClick={async () => {
-                        if (!isAdmin) return;
-                        await updateSubService(item._id, { isActive: !item.isActive });
-                        loadData();
-                    }}
-                >
-                    {item.isActive ? "Active" : "Inactive"}
-                </Badge>
-            ),
-        },
-        {
-            key: "actions",
-            label: "Actions",
-            render: (item: SubService) => (
-                <div className="flex gap-2">
-                    <Button
-                        size="sm"
-                        variant="ghost"
-                        disabled={!isAdmin}
-                        onClick={() => {
-                            const newName = prompt("New name:", item.name);
-                            if (newName) updateSubService(item._id, { name: newName }).then(loadData);
-                        }}
-                    >
-                        <Edit2 className="w-4 h-4" />
-                    </Button>
-                </div>
-            )
-        }
-    ];
+    const hasActiveFilters = filters.search !== '' || filters.parentService !== 'all' || filters.status !== 'all' || filters.priceType !== 'all';
 
     return (
         <AppLayout>
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
-                <div className="flex flex-col gap-1">
-                    <h2 className="mt-2 flex items-center gap-2 text-3xl font-bold tracking-tight text-muted-foreground">Sub-Service Management</h2>
-                    <p className="text-gray-500 text-lg">Manage granular service offerings and pricing models.</p>
-                </div>
+            <div className="max-w-[1400px] mx-auto w-full pb-12 animate-in fade-in duration-500">
+                <SubServiceHeader 
+                    onCreateSubService={handleOpenCreateModal} 
+                    isAdmin={isAdmin} 
+                />
 
-                <div className="flex flex-col md:flex-row gap-4 items-center w-full md:w-auto">
-                    <div className="flex items-center gap-2 bg-muted/50 p-1 rounded-xl ring-1 ring-border/50">
-                        <Filter className="w-4 h-4 ml-2 text-muted-foreground" />
-                        <Select value={selectedService} onValueChange={setSelectedService}>
-                            <SelectTrigger className="w-[200px] border-none bg-transparent focus:ring-0">
-                                <SelectValue placeholder="Filter by Service" />
-                            </SelectTrigger>
-                            <SelectContent>
-                                <SelectItem value="all">All Services</SelectItem>
-                                {services.map((srv) => (
-                                    <SelectItem key={srv._id} value={srv._id}>{srv.name}</SelectItem>
-                                ))}
-                            </SelectContent>
-                        </Select>
-                    </div>
+                {loading && allSubServices.length === 0 ? (
+                    <SubServiceSkeleton />
+                ) : (
+                    <>
+                        <SubServiceStats stats={stats} />
+                        
+                        <SubServiceFilters 
+                            filters={filters} 
+                            setFilters={setFilters} 
+                            services={services} 
+                        />
 
-                    {isAdmin && (
-                        <Button
-                            onClick={handleCreate}
-                            disabled={selectedService === "all"}
-                            className="gap-2 shrink-0"
-                        >
-                            <Plus className="w-4 h-4" /> Add Sub-Service
-                        </Button>
-                    )}
-                </div>
+                        {subServices.length === 0 ? (
+                            <SubServiceEmptyState 
+                                isFiltered={hasActiveFilters}
+                                onClearFilters={() => setFilters({ search: '', parentService: 'all', status: 'all', priceType: 'all' })}
+                                onCreateSubService={handleOpenCreateModal}
+                                isAdmin={isAdmin}
+                            />
+                        ) : (
+                            <>
+                                <SubServiceTable 
+                                    data={subServices} 
+                                    onEdit={handleOpenEditModal} 
+                                    onToggleStatus={toggleStatus} 
+                                    isAdmin={isAdmin} 
+                                />
+
+                                {/* Mobile/Tablet Card View */}
+                                <div className="lg:hidden space-y-4">
+                                    {subServices.map(subService => (
+                                        <SubServiceCard 
+                                            key={subService._id} 
+                                            subService={subService} 
+                                            onEdit={handleOpenEditModal} 
+                                            onToggleStatus={toggleStatus} 
+                                            isAdmin={isAdmin} 
+                                        />
+                                    ))}
+                                </div>
+
+                                <SubServicePagination 
+                                    currentPage={page}
+                                    totalPages={Math.ceil(totalItems / limit)}
+                                    limit={limit}
+                                    totalItems={totalItems}
+                                    onPageChange={setPage}
+                                    onLimitChange={setLimit}
+                                />
+                            </>
+                        )}
+                    </>
+                )}
             </div>
 
-            <DataTable
-                data={data}
-                columns={columns}
-                isLoading={loading}
-                total={data.length}
-                page={1}
-                limit={100}
-                onPageChange={() => { }}
-                onSearch={() => { }}
+            <SubServiceModal 
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+                onSubmit={handleModalSubmit}
+                services={services}
+                initialData={editingSubService}
             />
         </AppLayout>
     );

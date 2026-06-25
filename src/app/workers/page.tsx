@@ -109,12 +109,18 @@ export default function WorkersPage() {
                     <div className="max-w-[1600px] mx-auto">
                         <WorkerHeader />
 
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-2 mb-4">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
                             <WorkerStats
                                 title="Total Workers"
                                 value={stats.total}
                                 icon={<Users className="w-5 h-5" />}
                                 iconClassName="text-blue-600 bg-blue-50"
+                            />
+                            <WorkerStats
+                                title="Available"
+                                value={stats.available}
+                                icon={<UserPlus className="w-5 h-5" />}
+                                iconClassName="text-emerald-600 bg-emerald-50"
                             />
                             <WorkerStats
                                 title="Verified"
@@ -133,12 +139,6 @@ export default function WorkersPage() {
                                 value={stats.rejected}
                                 icon={<UserX className="w-5 h-5" />}
                                 iconClassName="text-red-600 bg-red-50"
-                            />
-                            <WorkerStats
-                                title="Available"
-                                value={stats.available}
-                                icon={<UserPlus className="w-5 h-5" />}
-                                iconClassName="text-emerald-600 bg-emerald-50"
                             />
                             <WorkerStats
                                 title="Avg Rating"
@@ -181,7 +181,7 @@ export default function WorkersPage() {
                             ) : (
                                 <>
                                     {viewMode === 'grid' ? (
-                                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6">
                                             {workers.map(worker => (
                                                 <WorkerCard
                                                     key={resolveWorkerUserId(worker)}
