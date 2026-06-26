@@ -11,7 +11,9 @@ import {
 import { CatalogEntityType, Category, Service, SubService } from "@/features/services/types";
 import Image from "next/image";
 
-type DrawerNode = Category | Service | SubService;
+import { CatalogTreeNode, ServiceTreeNode, SubServiceTreeNode } from '../hooks/useCatalogAdmin';
+
+export type DrawerNode = Category | Service | SubService | CatalogTreeNode | ServiceTreeNode | SubServiceTreeNode;
 
 interface MarketplaceManagementDrawerProps {
     open: boolean;
@@ -114,7 +116,7 @@ export function MarketplaceManagementDrawer({
                 <div className="flex-1 overflow-y-auto px-6 py-6 space-y-8 relative">
                     
                     {/* Metadata Section */}
-                    <section>
+                    {/* <section>
                         <h4 className="text-sm font-bold text-slate-900 dark:text-slate-100 mb-4 flex items-center gap-2">
                             <Activity className="h-4 w-4 text-primary" />
                             System Metadata
@@ -135,7 +137,7 @@ export function MarketplaceManagementDrawer({
                                 </div>
                             </div>
                         </div>
-                    </section>
+                    </section> */}
 
                     {/* Assets Section */}
                     {(type === 'category' || type === 'service') && (
