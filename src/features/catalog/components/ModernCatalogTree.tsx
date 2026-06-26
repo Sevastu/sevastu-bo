@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import type { CatalogEntityType } from "@/features/services/types";
@@ -108,6 +109,9 @@ export function ModernCatalogTree({
     onReorder,
     searchQuery = ""
 }: ModernCatalogTreeProps) {
+    const [hoveredCategory, setHoveredCategory] = useState<string | null>(null);
+    const [hoveredService, setHoveredService] = useState<string | null>(null);
+
     if (tree.length === 0) {
         return (
             <Card className="border-dashed border-2 bg-muted/20">
@@ -138,11 +142,15 @@ export function ModernCatalogTree({
     return (
         <div className="space-y-4">
             {tree.map((category, catIndex) => {
-                const catExpanded = expandedCategories[category._id] ?? true;
+                const catExpanded = (expandedCategories[category._id] ?? false) || hoveredCategory === category._id;
                 return (
-                    <Card key={category._id} className="overflow-hidden shadow-sm bg-card rounded-lg">
+                    <Card key={category._id} 
+                          className="overflow-hidden shadow-sm bg-primary/20 border border-border rounded-lg"
+                          onMouseEnter={() => setHoveredCategory(category._id)}
+                          onMouseLeave={() => setHoveredCategory(null)}
+                    >
                         <div
-                            className="flex items-center gap-5 bg-muted/50 hover:bg-muted hover:shadow-md hover:shadow-blue-500 px-4 py-3 cursor-pointer transition-colors"
+                            className="flex items-center gap-5 bg-primary/20 hover:shadow-md hover:shadow-blue-500 px-4 py-3 cursor-pointer transition-colors"
                             onClick={() => onSelectNode('category', category)}
                         >
                             <button
@@ -195,9 +203,13 @@ export function ModernCatalogTree({
                                 ) : (
                                     <div className="space-y-2 py-2 pl-6">
                                         {category.services.map((service, srvIndex) => {
-                                            const srvExpanded = expandedServices[service._id] ?? true;
+                                            const srvExpanded = (expandedServices[service._id] ?? false) || hoveredService === service._id;
                                             return (
-                                                <div key={service._id} className="relative rounded-lg bg-background shadow-sm hover:border-indigo-500/30 transition-colors">
+                                                <div key={service._id} 
+                                                     className="relative rounded-lg bg-primary/15 shadow-sm hover:border-indigo-500/30 transition-colors"
+                                                     onMouseEnter={() => setHoveredService(service._id)}
+                                                     onMouseLeave={() => setHoveredService(null)}
+                                                >
                                                     {/* Horizontal branch for Service */}
                                                     <div className="absolute -left-6 top-6 w-6 h-px" />
                                                     
