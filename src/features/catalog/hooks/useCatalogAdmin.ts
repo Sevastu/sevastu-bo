@@ -26,7 +26,7 @@ import type {
     SubServiceFormValues,
 } from "@/features/services/types";
 
-interface CatalogTreeNode {
+export interface CatalogTreeNode {
     _id: string;
     name: string;
     description?: string;
@@ -34,10 +34,12 @@ interface CatalogTreeNode {
     iconUrl?: string;
     isActive: boolean;
     order: number;
+    createdAt: string;
+    updatedAt?: string;
     services: ServiceTreeNode[];
 }
 
-interface ServiceTreeNode {
+export interface ServiceTreeNode {
     _id: string;
     name: string;
     description?: string;
@@ -46,10 +48,12 @@ interface ServiceTreeNode {
     categoryId: string;
     isActive: boolean;
     order: number;
+    createdAt: string;
+    updatedAt?: string;
     subServices: SubServiceTreeNode[];
 }
 
-interface SubServiceTreeNode {
+export interface SubServiceTreeNode {
     _id: string;
     name: string;
     slug?: string;
@@ -74,6 +78,8 @@ interface SubServiceTreeNode {
     };
     isActive: boolean;
     order: number;
+    createdAt: string;
+    updatedAt?: string;
 }
 
 export function useCatalogAdmin() {
@@ -104,7 +110,7 @@ export function useCatalogAdmin() {
     const [searchQuery, setSearchQuery] = useState("");
     const [searchResults, setSearchResults] = useState<any[]>([]);
 
-    const loadCatalog = useCallback(async () => {
+    const loadCatalog = useCallback(async (): Promise<CatalogTreeNode[] | null> => {
         setLoading(true);
         setError(null);
         try {
@@ -116,9 +122,11 @@ export function useCatalogAdmin() {
             setTree(treeData);
             setStats(statsData);
             setOverview(overviewData);
+            return treeData;
         } catch (err) {
             console.error(err);
             setError("Failed to load catalog. Please try again.");
+            return null;
         } finally {
             setLoading(false);
         }
@@ -142,7 +150,7 @@ export function useCatalogAdmin() {
         }
     }, []);
 
-    const saveCategory = async (values: CategoryFormValues, editing?: Category) => {
+    const saveCategory = async (values: CategoryFormValues, editing?: Category): Promise<CatalogTreeNode[] | null> => {
         const payload = {
             name: values.name.trim(),
             description: values.description.trim() || undefined,
@@ -154,10 +162,10 @@ export function useCatalogAdmin() {
         } else {
             await createCategory(payload);
         }
-        await loadCatalog();
+        return await loadCatalog();
     };
 
-    const saveService = async (values: ServiceFormValues, editing?: Service) => {
+    const saveService = async (values: ServiceFormValues, editing?: Service): Promise<CatalogTreeNode[] | null> => {
         const payload = {
             name: values.name.trim(),
             description: values.description.trim() || undefined,
@@ -170,10 +178,10 @@ export function useCatalogAdmin() {
         } else {
             await createService(payload);
         }
-        await loadCatalog();
+        return await loadCatalog();
     };
 
-    const saveSubService = async (values: SubServiceFormValues, editing?: SubService) => {
+    const saveSubService = async (values: SubServiceFormValues, editing?: SubService): Promise<CatalogTreeNode[] | null> => {
         const payload = {
             name: values.name.trim(),
             description: values.description.trim() || undefined,
@@ -193,22 +201,22 @@ export function useCatalogAdmin() {
         } else {
             await createSubService(payload);
         }
-        await loadCatalog();
+        return await loadCatalog();
     };
 
-    const removeCategory = async (id: string) => {
+    const removeCategory = async (id: string): Promise<CatalogTreeNode[] | null> => {
         await deleteCategory(id);
-        await loadCatalog();
+        return await loadCatalog();
     };
 
-    const removeService = async (id: string) => {
+    const removeService = async (id: string): Promise<CatalogTreeNode[] | null> => {
         await deleteService(id);
-        await loadCatalog();
+        return await loadCatalog();
     };
 
-    const removeSubService = async (id: string) => {
+    const removeSubService = async (id: string): Promise<CatalogTreeNode[] | null> => {
         await deleteSubService(id);
-        await loadCatalog();
+        return await loadCatalog();
     };
 
     const toggleCategory = (id: string) => {
@@ -219,10 +227,10 @@ export function useCatalogAdmin() {
         setExpandedServices((prev) => ({ ...prev, [id]: !prev[id] }));
     };
 
-    const reorderItem = async (type: "category"|"service"|"subService", ids: string[]) => {
+    const reorderItem = async (type: "category"|"service"|"subService", ids: string[]): Promise<CatalogTreeNode[] | null> => {
         try {
             await reorderCatalog(type, ids);
-            await loadCatalog();
+            return await loadCatalog();
         } catch(err) {
             console.error("Reorder failed", err);
             throw err;

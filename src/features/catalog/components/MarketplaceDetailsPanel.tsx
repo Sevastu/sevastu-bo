@@ -12,7 +12,9 @@ import { CatalogEntityType, Category, Service, SubService } from "@/features/ser
 import Image from "next/image";
 import { toast } from "sonner";     
 
-type DrawerNode = Category | Service | SubService;
+import { CatalogTreeNode, ServiceTreeNode, SubServiceTreeNode } from '../hooks/useCatalogAdmin';
+
+export type DrawerNode = Category | Service | SubService | CatalogTreeNode | ServiceTreeNode | SubServiceTreeNode;
 
 interface MarketplaceDetailsPanelProps {
     type: CatalogEntityType | null;

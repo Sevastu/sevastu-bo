@@ -1,6 +1,7 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
+import { toast } from "sonner";
 import { AppLayout } from "@/components/layout/AppLayout";
 import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
@@ -11,8 +12,8 @@ import { CategoryFormDialog } from "@/features/catalog/components/CategoryFormDi
 import { ServiceFormDialog } from "@/features/catalog/components/ServiceFormDialog";
 import { SubServiceFormDialog } from "@/features/catalog/components/SubServiceFormDialog";
 import { DeleteConfirmDialog } from "@/features/catalog/components/DeleteConfirmDialog";
-import { useCatalogAdmin } from "@/features/catalog/hooks/useCatalogAdmin";
-import type { CatalogEntityType, Category, Service, SubService } from "@/features/services/types";
+import { useCatalogAdmin, CatalogTreeNode, ServiceTreeNode, SubServiceTreeNode } from "@/features/catalog/hooks/useCatalogAdmin";
+import type { CatalogEntityType, Category, Service, SubService, CategoryFormValues, ServiceFormValues, SubServiceFormValues } from "@/features/services/types";
 import { getUser } from "@/lib/auth";
 import { FolderTree, Loader2, Plus, RefreshCw, Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
@@ -31,6 +32,51 @@ type DeleteState = {
     name: string;
 } | null;
 
+interface SelectedNodeState {
+    type: CatalogEntityType | null;
+    node: CatalogTreeNode | ServiceTreeNode | SubServiceTreeNode | null;
+}
+
+const getEndpoint = (type: CatalogEntityType) => type === 'category' ? 'categories' : type === 'service' ? 'services' : 'sub-services';
+
+// Reusable Debounce Hook
+function useDebounce<T>(value: T, delay: number): T {
+    const [debouncedValue, setDebouncedValue] = useState<T>(value);
+    
+    useEffect(() => {
+        const handler = setTimeout(() => {
+            setDebouncedValue(value);
+        }, delay);
+        return () => clearTimeout(handler);
+    }, [value, delay]);
+    
+    return debouncedValue;
+}
+
+// Helper to find fresh node inside the loaded tree without stale closures
+function findNodeInTree(tree: CatalogTreeNode[], type: CatalogEntityType | null, id: string): CatalogTreeNode | ServiceTreeNode | SubServiceTreeNode | null {
+    if (!type || !tree) return null;
+    
+    if (type === 'category') {
+        return tree.find(c => c._id === id) || null;
+    }
+    
+    for (const cat of tree) {
+        if (type === 'service') {
+            const srv = cat.services?.find(s => s._id === id);
+            if (srv) return srv;
+        }
+        
+        if (type === 'subService') {
+            for (const srv of cat.services || []) {
+                const sub = srv.subServices?.find(ss => ss._id === id);
+                if (sub) return sub;
+            }
+        }
+    }
+    return null;
+}
+
 export default function CatalogPage() {
     const user = getUser();
     const isAdmin = user?.role === "admin";
@@ -41,7 +87,6 @@ export default function CatalogPage() {
         services,
         subServices,
         stats,
-        overview,
         loading,
         error,
         expandedCategories,
@@ -49,43 +94,79 @@ export default function CatalogPage() {
         toggleCategory,
         toggleService,
         loadCatalog,
-        handleSearch,
         saveCategory,
         saveService,
         saveSubService,
         removeCategory,
         removeService,
         removeSubService,
+        reorderItem,
     } = useCatalogAdmin();
 
     const [dialog, setDialog] = useState<DialogState>(null);
     const [deleteTarget, setDeleteTarget] = useState<DeleteState>(null);
     const [deleting, setDeleting] = useState(false);
 
-    // Filters
+    // Filters & Debounce Search
     const [searchQuery, setSearchQuery] = useState("");
+    const debouncedSearchQuery = useDebounce(searchQuery, 300);
+    
     const [statusFilter, setStatusFilter] = useState<"all" | "active" | "inactive">("all");
     const [marketplaceFilter, setMarketplaceFilter] = useState<"all" | "featured" | "popular" | "searchable">("all");
     const [categoryFilter, setCategoryFilter] = useState<string>("all");
 
-    // Node selection for Drawer
-    const [selectedNode, setSelectedNode] = useState<{ type: CatalogEntityType | null, node: any }>({ type: null, node: null });
+    // Node selection for Drawer (Strongly Typed)
+    const [selectedNode, setSelectedNode] = useState<SelectedNodeState>({ type: null, node: null });
 
+    // Memoize Lookup Maps for Performance
     const categoryById = useMemo(() => new Map(categories.map((c) => [c._id, c])), [categories]);
     const serviceById = useMemo(() => new Map(services.map((s) => [s._id, s])), [services]);
     const subServiceById = useMemo(() => new Map(subServices.map((s) => [s._id, s])), [subServices]);
+
+    // State Synchronization Helper: Refreshes the selected node using the latest fetched tree
+    const refreshSelectedNode = (freshTree: CatalogTreeNode[]) => {
+        if (!selectedNode.type || !selectedNode.node) return;
+        
+        const freshNode = findNodeInTree(freshTree, selectedNode.type, selectedNode.node._id);
+        if (freshNode) {
+            setSelectedNode({ type: selectedNode.type, node: freshNode });
+        } else {
+            setSelectedNode({ type: null, node: null }); // Unselect if deleted
+        }
+    };
+
+    const handleEdit = (type: CatalogEntityType, id: string) => {
+        const map = type === 'category' ? categoryById : type === 'service' ? serviceById : subServiceById;
+        const item = map.get(id);
+        if (item) setDialog({ kind: type, mode: "edit", [type]: item } as any);
+    };
+
+    const handleDelete = (type: CatalogEntityType, id: string) => {
+        const map = type === 'category' ? categoryById : type === 'service' ? serviceById : subServiceById;
+        const item = map.get(id);
+        if (item) setDeleteTarget({ type, id, name: item.name });
+    };
 
     const handleDeleteConfirm = async () => {
         if (!deleteTarget) return;
         setDeleting(true);
         try {
-            if (deleteTarget.type === "category") await removeCategory(deleteTarget.id);
-            if (deleteTarget.type === "service") await removeService(deleteTarget.id);
-            if (deleteTarget.type === "subService") await removeSubService(deleteTarget.id);
+            let freshTree: CatalogTreeNode[] | null = null;
+            if (deleteTarget.type === "category") freshTree = await removeCategory(deleteTarget.id);
+            if (deleteTarget.type === "service") freshTree = await removeService(deleteTarget.id);
+            if (deleteTarget.type === "subService") freshTree = await removeSubService(deleteTarget.id);
+            
             setDeleteTarget(null);
-            if (selectedNode.node?._id === deleteTarget.id) setSelectedNode({ type: null, node: null });
-        } catch {
-            // keep dialog open
+            toast.success(`${deleteTarget.name} deleted successfully.`);
+            
+            if (selectedNode.node?._id === deleteTarget.id) {
+                setSelectedNode({ type: null, node: null });
+            } else if (freshTree) {
+                refreshSelectedNode(freshTree);
+            }
+        } catch (err) {
+            console.error("Failed to delete", err);
+            toast.error("Failed to delete item.");
         } finally {
             setDeleting(false);
         }
@@ -93,43 +174,63 @@ export default function CatalogPage() {
 
     const handlePanelUpdate = async (type: CatalogEntityType, id: string, payload: any) => {
         try {
-            const endpoint = type === 'category' ? 'categories' : type === 'service' ? 'services' : 'sub-services';
-            await apiClient.patch(`/${endpoint}/${id}`, payload);
-
-            await loadCatalog();
-
-            setSelectedNode(prev => {
-                if (prev.node && prev.node._id === id) {
-                    const updateNested = (obj: any, updates: any): any => {
-                        const out = { ...obj };
-                        for (const key in updates) {
-                            if (typeof updates[key] === 'object' && updates[key] !== null && !Array.isArray(updates[key])) {
-                                out[key] = updateNested(out[key] || {}, updates[key]);
-                            } else {
-                                out[key] = updates[key];
-                            }
-                        }
-                        return out;
-                    };
-                    return { ...prev, node: updateNested(prev.node, payload) };
-                }
-                return prev;
-            });
+            // No manual merge payload! Reload catalog instead.
+            await apiClient.patch(`/${getEndpoint(type)}/${id}`, payload);
+            const freshTree = await loadCatalog();
+            if (freshTree) {
+                refreshSelectedNode(freshTree);
+            }
+            toast.success("Settings updated successfully.");
         } catch (err) {
             console.error("Failed to update item", err);
+            toast.error("Failed to update settings.");
         }
     };
 
     const handleReorder = async (type: CatalogEntityType, ids: string[]) => {
         try {
-            let endpoint = '';
-            if (type === 'category') endpoint = '/categories/reorder';
-            if (type === 'service') endpoint = '/services/reorder';
-            if (type === 'subService') endpoint = '/sub-services/reorder';
-            await apiClient.patch(endpoint, { ids });
-            await loadCatalog();
+            const freshTree = await reorderItem(type, ids);
+            if (freshTree) refreshSelectedNode(freshTree);
+            toast.success("Reordered successfully.");
         } catch (err) {
             console.error("Failed to reorder", err);
+            toast.error("Failed to reorder items.");
+        }
+    };
+
+    const handleSaveCategory = async (values: CategoryFormValues, editing?: Category) => {
+        try {
+            const freshTree = await saveCategory(values, editing);
+            if (freshTree) refreshSelectedNode(freshTree);
+            toast.success(editing ? "Category updated." : "Category created.");
+            setDialog(null);
+        } catch (err) {
+            console.error(err);
+            toast.error("Failed to save category.");
+        }
+    };
+
+    const handleSaveService = async (values: ServiceFormValues, editing?: Service) => {
+        try {
+            const freshTree = await saveService(values, editing);
+            if (freshTree) refreshSelectedNode(freshTree);
+            toast.success(editing ? "Service updated." : "Service created.");
+            setDialog(null);
+        } catch (err) {
+            console.error(err);
+            toast.error("Failed to save service.");
+        }
+    };
+
+    const handleSaveSubService = async (values: SubServiceFormValues, editing?: SubService) => {
+        try {
+            const freshTree = await saveSubService(values, editing);
+            if (freshTree) refreshSelectedNode(freshTree);
+            toast.success(editing ? "Sub-service updated." : "Sub-service created.");
+            setDialog(null);
+        } catch (err) {
+            console.error(err);
+            toast.error("Failed to save sub-service.");
         }
     };
 
@@ -137,124 +238,118 @@ export default function CatalogPage() {
     const editingService = dialog?.kind === "service" && dialog.mode === "edit" ? dialog.service : undefined;
     const editingSubService = dialog?.kind === "subService" && dialog.mode === "edit" ? dialog.subService : undefined;
 
-    const getBreadcrumbs = () => {
+    // Memoize Breadcrumbs Calculations
+    const breadcrumbs = useMemo(() => {
         if (!selectedNode.node || !selectedNode.type) return [];
 
         for (const category of tree) {
-            if (
-                selectedNode.type === "category" &&
-                category._id === selectedNode.node._id
-            ) {
+            if (selectedNode.type === "category" && category._id === selectedNode.node._id) {
                 return [category.name];
             }
 
             for (const service of category.services) {
-                if (
-                    selectedNode.type === "service" &&
-                    service._id === selectedNode.node._id
-                ) {
-                    return [
-                        category.name,
-                        service.name,
-                    ];
+                if (selectedNode.type === "service" && service._id === selectedNode.node._id) {
+                    return [category.name, service.name];
                 }
 
                 for (const sub of service.subServices) {
-                    if (
-                        selectedNode.type === "subService" &&
-                        sub._id === selectedNode.node._id
-                    ) {
-                        return [
-                            category.name,
-                            service.name,
-                            sub.name,
-                        ];
+                    if (selectedNode.type === "subService" && sub._id === selectedNode.node._id) {
+                        return [category.name, service.name, sub.name];
                     }
                 }
             }
         }
-
         return [];
-    };
+    }, [tree, selectedNode]);
 
+    // Optimize Filtering: Preserve object references and avoid unnecessary clones
     const filteredTree = useMemo(() => {
         let result = tree;
 
-        // Apply category filter
         if (categoryFilter !== "all") {
             result = result.filter(category => category._id === categoryFilter);
         }
 
-        // Apply status filter
+        const filterTreeStructure = (
+            currentTree: CatalogTreeNode[],
+            categoryCondition: (c: CatalogTreeNode) => boolean,
+            serviceCondition: (s: ServiceTreeNode) => boolean,
+            subServiceCondition: (ss: SubServiceTreeNode) => boolean
+        ): CatalogTreeNode[] => {
+            let treeChanged = false;
+
+            const newTree = currentTree.map(category => {
+                let servicesChanged = false;
+
+                const filteredServices = category.services.map((service) => {
+                    const filteredSubs = service.subServices.filter(subServiceCondition);
+                    const subsChanged = filteredSubs.length !== service.subServices.length;
+
+                    if (serviceCondition(service) || filteredSubs.length > 0) {
+                        // Preserve reference if nothing changed inside
+                        if (subsChanged) {
+                            servicesChanged = true;
+                            return { ...service, subServices: filteredSubs };
+                        }
+                        return service;
+                    }
+                    servicesChanged = true;
+                    return null;
+                }).filter(Boolean) as ServiceTreeNode[];
+
+                if (categoryCondition(category) || filteredServices.length > 0) {
+                    // Preserve category reference if services didn't change
+                    if (servicesChanged || filteredServices.length !== category.services.length) {
+                        treeChanged = true;
+                        return { ...category, services: filteredServices };
+                    }
+                    return category;
+                }
+                
+                treeChanged = true;
+                return null;
+            }).filter(Boolean) as CatalogTreeNode[];
+            
+            // Only return new array if modifications actually occurred
+            return treeChanged ? newTree : currentTree;
+        };
+
         if (statusFilter !== "all") {
-            const isActiveFilter = statusFilter === "active";
-            result = result.map(category => {
-                const filteredServices = category.services.map(service => {
-                    const filteredSubs = service.subServices.filter(sub => sub.isActive === isActiveFilter);
-                    if (service.isActive === isActiveFilter || filteredSubs.length > 0) {
-                        return { ...service, subServices: filteredSubs };
-                    }
-                    return null;
-                }).filter(Boolean) as any[];
-
-                if (category.isActive === isActiveFilter || filteredServices.length > 0) {
-                    return { ...category, services: filteredServices };
-                }
-                return null;
-            }).filter(Boolean) as any[];
+            const isActive = statusFilter === "active";
+            result = filterTreeStructure(
+                result,
+                c => c.isActive === isActive,
+                s => s.isActive === isActive,
+                ss => ss.isActive === isActive
+            );
         }
 
-        // Apply marketplace filter
         if (marketplaceFilter !== "all") {
-            result = result.map(category => {
-                const filteredServices = category.services.map(service => {
-                    const filteredSubs = service.subServices.filter(sub => {
-                        if (marketplaceFilter === "featured") return sub.marketplace?.featured;
-                        if (marketplaceFilter === "popular") return sub.marketplace?.popular;
-                        if (marketplaceFilter === "searchable") return sub.marketplace?.searchable;
-                        return true;
-                    });
-                    
-                    if (filteredSubs.length > 0) {
-                        return { ...service, subServices: filteredSubs };
-                    }
-                    return null;
-                }).filter(Boolean) as any[];
-
-                if (filteredServices.length > 0) {
-                    return { ...category, services: filteredServices };
+            result = filterTreeStructure(
+                result,
+                () => false,
+                () => false,
+                ss => {
+                    if (marketplaceFilter === "featured") return !!ss.marketplace?.featured;
+                    if (marketplaceFilter === "popular") return !!ss.marketplace?.popular;
+                    if (marketplaceFilter === "searchable") return !!ss.marketplace?.searchable;
+                    return true;
                 }
-                return null;
-            }).filter(Boolean) as any[];
+            );
         }
 
-        // Apply search filter
-        if (searchQuery.trim()) {
-            const q = searchQuery.toLowerCase();
-            result = result.map(category => {
-                const catMatch = category.name.toLowerCase().includes(q);
-
-                const filteredServices = category.services.map(service => {
-                    const srvMatch = service.name.toLowerCase().includes(q);
-                    const filteredSubs = service.subServices.filter(sub =>
-                        sub.name.toLowerCase().includes(q)
-                    );
-
-                    if (srvMatch || filteredSubs.length > 0) {
-                        return { ...service, subServices: filteredSubs.length > 0 ? filteredSubs : service.subServices };
-                    }
-                    return null;
-                }).filter(Boolean) as any[];
-
-                if (catMatch || filteredServices.length > 0) {
-                    return { ...category, services: filteredServices.length > 0 ? filteredServices : category.services };
-                }
-                return null;
-            }).filter(Boolean) as any[];
+        if (debouncedSearchQuery.trim()) {
+            const q = debouncedSearchQuery.toLowerCase();
+            result = filterTreeStructure(
+                result,
+                c => c.name.toLowerCase().includes(q),
+                s => s.name.toLowerCase().includes(q),
+                ss => ss.name.toLowerCase().includes(q)
+            );
         }
 
         return result;
-    }, [tree, statusFilter, marketplaceFilter, categoryFilter, searchQuery]);
+    }, [tree, statusFilter, marketplaceFilter, categoryFilter, debouncedSearchQuery]);
 
     return (
         <AppLayout>
@@ -294,16 +389,17 @@ export default function CatalogPage() {
                     </AlertDescription>
                 </Alert>
             )}
-            <div className=" mb-8 flex">
-                {!loading && overview && (
-                    <CatalogDashboardCards stats={stats} />
+            
+            <div className="mb-8 flex">
+                {!loading && (
+                    <CatalogDashboardCards stats={stats}/>
                 )}
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
                 {/* LEFT PANEL (70%) */}
                 <div className="lg:col-span-8 flex flex-col gap-4">
-                    <div className="flex flex-col sm:flex-row gap-12 items-center bg-card/80 p-4 rounded-lg">
+                    <div className="flex flex-col sm:flex-row gap-12 items-center bg-card p-4 rounded-lg">
                         <div className="relative w-full">
                             <Search className="absolute left-2 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                             <Input
@@ -366,55 +462,29 @@ export default function CatalogPage() {
                             expandedServices={expandedServices}
                             onToggleCategory={toggleCategory}
                             onToggleService={toggleService}
-                            onEditCategory={(id) => {
-                                const category = categoryById.get(id);
-                                if (category) setDialog({ kind: "category", mode: "edit", category });
-                            }}
-                            onDeleteCategory={(id) => {
-                                const category = categoryById.get(id);
-                                if (category) setDeleteTarget({ type: "category", id, name: category.name });
-                            }}
+                            onEditCategory={(id) => handleEdit('category', id)}
+                            onDeleteCategory={(id) => handleDelete('category', id)}
                             onAddService={(categoryId) => setDialog({ kind: "service", mode: "create", defaultCategoryId: categoryId })}
-                            onEditService={(id) => {
-                                const service = serviceById.get(id);
-                                if (service) setDialog({ kind: "service", mode: "edit", service });
-                            }}
-                            onDeleteService={(id) => {
-                                const service = serviceById.get(id);
-                                if (service) setDeleteTarget({ type: "service", id, name: service.name });
-                            }}
+                            onEditService={(id) => handleEdit('service', id)}
+                            onDeleteService={(id) => handleDelete('service', id)}
                             onAddSubService={(serviceId) => setDialog({ kind: "subService", mode: "create", defaultServiceId: serviceId })}
-                            onEditSubService={(id) => {
-                                const sub = subServiceById.get(id);
-                                if (sub) setDialog({ kind: "subService", mode: "edit", subService: sub });
-                            }}
-                            onDeleteSubService={(id) => {
-                                const sub = subServiceById.get(id);
-                                if (sub) setDeleteTarget({ type: "subService", id, name: sub.name });
-                            }}
+                            onEditSubService={(id) => handleEdit('subService', id)}
+                            onDeleteSubService={(id) => handleDelete('subService', id)}
                             onSelectNode={(type, node) => setSelectedNode({ type, node })}
                             onReorder={handleReorder}
-                            searchQuery={searchQuery}
+                            searchQuery={debouncedSearchQuery}
                         />
                     )}
                 </div>
 
                 {/* RIGHT PANEL (30%) */}
-                <div className="lg:col-span-4 h-full relative">
+                <div className="lg:col-span-4 relative">
                     <MarketplaceDetailsPanel
                         type={selectedNode.type}
                         node={selectedNode.node}
-                        breadcrumbs={getBreadcrumbs()}
-                        onEdit={(type, id) => {
-                            const map = type === 'category' ? categoryById : type === 'service' ? serviceById : subServiceById;
-                            const item = map.get(id);
-                            if (item) setDialog({ kind: type, mode: "edit", [type]: item } as any);
-                        }}
-                        onDelete={(type, id) => {
-                            const map = type === 'category' ? categoryById : type === 'service' ? serviceById : subServiceById;
-                            const item = map.get(id);
-                            if (item) setDeleteTarget({ type, id, name: item.name });
-                        }}
+                        breadcrumbs={breadcrumbs}
+                        onEdit={handleEdit}
+                        onDelete={handleDelete}
                         onUpdate={handlePanelUpdate}
                     />
                 </div>
@@ -424,7 +494,7 @@ export default function CatalogPage() {
                 open={dialog?.kind === "category"}
                 category={editingCategory ?? null}
                 onOpenChange={(open) => !open && setDialog(null)}
-                onSubmit={saveCategory}
+                onSubmit={handleSaveCategory}
             />
 
             <ServiceFormDialog
@@ -433,7 +503,7 @@ export default function CatalogPage() {
                 categories={categories}
                 defaultCategoryId={dialog?.kind === "service" ? dialog.defaultCategoryId : undefined}
                 onOpenChange={(open) => !open && setDialog(null)}
-                onSubmit={saveService}
+                onSubmit={handleSaveService}
             />
 
             <SubServiceFormDialog
@@ -443,7 +513,7 @@ export default function CatalogPage() {
                 categories={categories}
                 defaultServiceId={dialog?.kind === "subService" ? dialog.defaultServiceId : undefined}
                 onOpenChange={(open) => !open && setDialog(null)}
-                onSubmit={saveSubService}
+                onSubmit={handleSaveSubService}
             />
 
             <DeleteConfirmDialog
