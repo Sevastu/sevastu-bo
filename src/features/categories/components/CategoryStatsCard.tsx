@@ -15,7 +15,7 @@ interface CategoryStatsCardProps {
 
 export function CategoryStatsCard({ title, value, icon, subtitle, trend, iconClassName = "text-blue-600 bg-blue-50" }: CategoryStatsCardProps) {
     return (
-        <div className="bg-white rounded-2xl p-6 shadow-[0_2px_10px_rgba(0,0,0,0.02)] border border-slate-100 flex">
+        <div className="bg-card rounded-2xl p-6 shadow-[0_2px_10px_rgba(0,0,0,0.02)] border border-slate-100 flex">
             <div className="flex justify-around items-start mr-6">
                 <div className={`p-3 rounded-xl ${iconClassName}`}>
                     {icon}

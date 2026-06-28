@@ -15,9 +15,9 @@
   --color-focus-ring: rgba(23, 103, 232, 0.2);
   
   /* State Colors */
-  --color-success: #22ff44;
-  --color-warning: #ebe536;
-  --color-error: #d31111;
+  --color-success: #21c139;
+  --color-warning: #e8cc13;
+  --color-error: #e82727;
   --color-destructive: var(--color-error);
   
   /* Component Colors */

@@ -16,7 +16,7 @@ export const WorkerVerificationFilters = memo(function WorkerVerificationFilters
   onStatusChange
 }: WorkerVerificationFiltersProps) {
   return (
-    <div className="bg-white rounded-2xl p-4 border border-slate-200 shadow-sm sticky top-0 z-10">
+    <div className="bg-card rounded-2xl p-4 border border-slate-200 shadow-sm sticky top-0 z-10">
       <div className="flex flex-col lg:flex-row gap-4">
         {/* Search */}
         <div className="flex-1">
@@ -27,7 +27,7 @@ export const WorkerVerificationFilters = memo(function WorkerVerificationFilters
               placeholder="Search workers by name, email, or ID..."
               value={searchTerm}
               onChange={(e) => onSearchChange(e.target.value)}
-              className="w-full pl-11 pr-10 py-2.5 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 bg-slate-50 transition-all text-sm font-medium text-slate-900"
+              className="w-full pl-11 pr-10 py-2.5 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 bg-slate-100 transition-all text-sm font-medium text-slate-900"
             />
             {searchTerm && (
               <button 
@@ -45,7 +45,7 @@ export const WorkerVerificationFilters = memo(function WorkerVerificationFilters
           <select
             value={statusFilter}
             onChange={(e) => onStatusChange(e.target.value as WorkerProfileStatus | 'all')}
-            className="w-full px-4 py-2.5 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 bg-slate-50 text-sm font-medium text-slate-700 appearance-none"
+            className="w-full px-4 py-2.5 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 bg-slate-100 text-sm font-medium text-slate-700 appearance-none"
           >
             <option value="all">All Status</option>
             <option value={WorkerProfileStatus.UNDER_REVIEW}>Under Review</option>

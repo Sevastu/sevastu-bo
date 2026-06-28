@@ -18,7 +18,7 @@ export function CustomerAnalyticsCards({ analytics }: CustomerAnalyticsCardsProp
 
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-            <div className="bg-white rounded-2xl p-6 shadow-[0_2px_10px_rgba(0,0,0,0.02)] border border-slate-100 flex">
+            <div className="bg-card rounded-2xl p-6 border border-slate-100 flex transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-primary/10 cursor-pointer">
                 <div className="flex justify-around items-start mr-6">
                     <div className="p-3 rounded-xl text-blue-600 bg-blue-50">
                         <UserCheck className="w-5 h-5" />
@@ -31,7 +31,7 @@ export function CustomerAnalyticsCards({ analytics }: CustomerAnalyticsCardsProp
                 </div>
             </div>
 
-            <div className="bg-white rounded-2xl p-6 shadow-[0_2px_10px_rgba(0,0,0,0.02)] border border-slate-100 flex">
+            <div className="bg-card rounded-2xl p-6 border border-slate-100 flex transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-primary/10 cursor-pointer">
                 <div className="flex justify-around items-start mr-6">
                     <div className="p-3 rounded-xl text-green-600 bg-green-50">
                         <TrendingUp className="w-5 h-5" />
@@ -44,7 +44,7 @@ export function CustomerAnalyticsCards({ analytics }: CustomerAnalyticsCardsProp
                 </div>
             </div>
 
-            <div className="bg-white rounded-2xl p-6 shadow-[0_2px_10px_rgba(0,0,0,0.02)] border border-slate-100 flex">
+            <div className="bg-card rounded-2xl p-6 border border-slate-100 flex transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-primary/10 cursor-pointer">
                 <div className="flex justify-around items-start mr-6">
                     <div className="p-3 rounded-xl text-purple-600 bg-purple-50">
                         <DollarSign className="w-5 h-5" />
@@ -57,7 +57,7 @@ export function CustomerAnalyticsCards({ analytics }: CustomerAnalyticsCardsProp
                 </div>
             </div>
 
-            <div className="bg-white rounded-2xl p-6 shadow-[0_2px_10px_rgba(0,0,0,0.02)] border border-slate-100 flex">
+            <div className="bg-card rounded-2xl p-6 border border-slate-100 flex transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-primary/10 cursor-pointer">
                 <div className="flex justify-around items-start mr-6">
                     <div className="p-3 rounded-xl text-slate-600 bg-slate-50">
                         <Users className="w-5 h-5" />
