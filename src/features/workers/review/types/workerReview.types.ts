@@ -22,14 +22,21 @@ export interface ReviewWorkerDetails {
     completedJobs?: number;
     verificationStatus?: string;
     photoUrl?: string;
+    idProof?: {
+        frontKey?: string;
+        backKey?: string;
+        uploadedAt?: string;
+    };
 }
 
 export interface ReviewWorkerKyc {
     _id?: string;
-    idProof?: {
-        frontKey?: string;
-        backKey?: string;
-    };
+    documentType?: string;
+    frontImage?: string;
+    backImage?: string;
+    status?: string;
+    rejectionReason?: string;
+    lastUpdated?: string;
     panProof?: {
         key?: string;
     };

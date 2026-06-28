@@ -25,11 +25,11 @@ export function useVerificationScore(kyc: ReviewWorkerKyc | null, ocr: ReviewWor
 
         let score = 0;
 
-        if (kyc?.idProof?.frontKey) {
+        if (kyc?.frontImage) {
             points.idFront = 25;
             score += 25;
         }
-        if (kyc?.idProof?.backKey) {
+        if (kyc?.backImage) {
             points.idBack = 25;
             score += 25;
         }
@@ -39,7 +39,7 @@ export function useVerificationScore(kyc: ReviewWorkerKyc | null, ocr: ReviewWor
                 points.ocrNameMatch = 25;
                 score += 25;
             }
-            
+
             if (ocr.confidence && ocr.confidence > 0.4) {
                 points.ocrHighConfidence = 25;
                 score += 25;

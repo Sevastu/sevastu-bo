@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { Loader2, ZoomIn } from "lucide-react";
+import { Loader2, ZoomIn, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { fetchPrivateSignedUrl } from "@/features/workers/api";
 
@@ -85,8 +85,19 @@ export function SignedIdImage({ objectKey, label, showActions = true }: SignedId
                                         size="sm"
                                         className="h-8 w-8 p-0 rounded-lg shadow-sm bg-white hover:bg-slate-100 border border-slate-200"
                                         onClick={() => setIsZoomed(!isZoomed)}
+                                        title={isZoomed ? "Zoom Out" : "Zoom In"}
                                     >
                                         <ZoomIn className="h-4 w-4 text-slate-700" />
+                                    </Button>
+                                    <Button
+                                        type="button"
+                                        variant="secondary"
+                                        size="sm"
+                                        className="h-8 w-8 p-0 rounded-lg shadow-sm bg-white hover:bg-slate-100 border border-slate-200"
+                                        onClick={() => window.open(url, '_blank')}
+                                        title="Open Full Image"
+                                    >
+                                        <ExternalLink className="h-4 w-4 text-slate-700" />
                                     </Button>
                                 </div>
                             )}
