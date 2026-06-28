@@ -17,9 +17,7 @@ export const KPICard: React.FC<KPICardProps> = ({
   icon
 }) => {
   return (
-    <div className="bg-[var(--color-card)] rounded-lg p-6 transition-all duration-300
-  hover:-translate-y-1
-  hover:shadow-lg">
+    <div className="bg-[var(--color-card)] rounded-lg p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-primary/10 cursor-pointer">
 
       <div className="flex items-center justify-between">
 

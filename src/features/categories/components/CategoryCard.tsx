@@ -44,7 +44,7 @@ export function CategoryCard({ category, onEdit, onDelete }: CategoryCardProps) 
     ];
 
     return (
-        <div className="group bg-white rounded-2xl shadow-[0_4px_20px_rgba(41,52,61,0.04)] border border-slate-100 overflow-hidden hover:-translate-y-1 hover:border-blue-500 hover:shadow-lg transition-all duration-300 ease-out flex flex-col h-full">
+        <div className="group bg-card rounded-sm shadow-[0_4px_20px_rgba(41,52,61,0.04)] border border-slate-100 overflow-hidden hover:-translate-y-1 hover:border-blue-500 hover:shadow-lg transition-all duration-300 ease-out flex flex-col h-full">
             {/* Image Header */}
             <div className="relative aspect-[16/9] bg-slate-100 overflow-hidden shrink-0">
                 <img
@@ -56,7 +56,7 @@ export function CategoryCard({ category, onEdit, onDelete }: CategoryCardProps) 
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-slate-900/20 to-transparent opacity-80" />
 
                 {/* Floating Icon */}
-                <div className="absolute -bottom-6 left-6 w-12 h-12 bg-white rounded-xl shadow-md flex items-center justify-center border border-slate-50 group-hover:shadow-blue-100 group-hover:shadow-lg transition-shadow duration-300 z-10">
+                <div className="absolute bottom-26 left-4 w-12 h-12 bg-card rounded-xl shadow-md flex items-center justify-center border border-slate-50 group-hover:shadow-blue-100 group-hover:shadow-lg transition-shadow duration-300 z-10">
                     {renderIcon(category.icon || category.iconKey)}
                 </div>
 
@@ -77,7 +77,7 @@ export function CategoryCard({ category, onEdit, onDelete }: CategoryCardProps) 
             </div>
 
             {/* Card Content */}
-            <div className="pt-8 px-6 pb-6 flex-1 flex flex-col bg-white">
+            <div className="pt-8 px-6 pb-6 flex-1 flex flex-col bg-card">
                 <div className="flex justify-between items-start mb-2">
                     <div className="pr-4">
                         <h3 className="text-lg font-bold text-slate-900 leading-tight group-hover:text-blue-600 transition-colors">

@@ -25,7 +25,7 @@ export function SubServiceFilters({ filters, setFilters, services }: SubServiceF
     const hasActiveFilters = filters.search !== '' || filters.parentService !== 'all' || filters.status !== 'all' || filters.priceType !== 'all';
 
     return (
-        <div className="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm mb-6 flex flex-col md:flex-row gap-4 items-center justify-between sticky top-4 z-10">
+        <div className="bg-card p-4 rounded-2xl border border-slate-200 shadow-sm mb-6 flex flex-col md:flex-row gap-4 items-center justify-between sticky top-4 z-10">
             <div className="relative w-full md:w-96 debounce={300}">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                 <Input
@@ -37,7 +37,7 @@ export function SubServiceFilters({ filters, setFilters, services }: SubServiceF
             </div>
 
             <div className="flex items-center gap-3 w-full md:w-auto">
-                <div className="flex items-center bg-slate-50 border border-slate-200 rounded-xl px-3 h-10">
+                <div className="flex items-center bg-slate-100 border border-slate-200 rounded-xl px-3 h-10">
                     <Filter className="w-4 h-4 text-slate-400 mr-2" />
                     <Select
                         value={filters.parentService}
@@ -59,7 +59,7 @@ export function SubServiceFilters({ filters, setFilters, services }: SubServiceF
                     value={filters.status}
                     onValueChange={(val) => setFilters(prev => ({ ...prev, status: val }))}
                 >
-                    <SelectTrigger className="w-[130px] bg-slate-50 border-slate-200 rounded-xl h-10">
+                    <SelectTrigger className="w-[130px] bg-slate-100 border-slate-200 rounded-xl h-10">
                         <SelectValue placeholder="Status" />
                     </SelectTrigger>
                     <SelectContent>
@@ -73,7 +73,7 @@ export function SubServiceFilters({ filters, setFilters, services }: SubServiceF
                     value={filters.priceType}
                     onValueChange={(val) => setFilters(prev => ({ ...prev, priceType: val }))}
                 >
-                    <SelectTrigger className="w-[130px] bg-slate-50 border-slate-200 rounded-xl h-10">
+                    <SelectTrigger className="w-[130px] bg-slate-100 border-slate-200 rounded-xl h-10">
                         <SelectValue placeholder="Price Type" />
                     </SelectTrigger>
                     <SelectContent>

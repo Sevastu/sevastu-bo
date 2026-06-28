@@ -45,11 +45,11 @@ export function MarketplaceDetailsPanel({
 
     if (!node || !type) {
         return (
-            <div className="h-full flex flex-col items-center justify-center p-8 text-center bg-slate-50/50 dark:bg-zinc-950/50 border rounded-xl m-4">
-                <div className="h-12 w-12 rounded-full bg-slate-100 dark:bg-zinc-900 flex items-center justify-center mb-4">
+            <div className="h-full flex flex-col items-center justify-center p-8 text-center bg-slate-200/50 border border-slate-200 rounded-xl m-4">
+                <div className="h-12 w-12 rounded-full bg-slate-100 flex items-center justify-center mb-4">
                     <Info className="h-6 w-6 text-slate-400" />
                 </div>
-                <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-2">No Item Selected</h3>
+                <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-400 mb-2">No Item Selected</h3>
                 <p className="text-sm text-slate-500 max-w-[250px]">
                     Select a Category, Service, or Sub-Service from the catalog tree to view and manage its details.
                 </p>

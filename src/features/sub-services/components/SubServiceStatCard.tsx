@@ -16,7 +16,7 @@ interface SubServiceStatCardProps {
 
 export function SubServiceStatCard({ title, value, icon: Icon, trend, colorClass, bgClass }: SubServiceStatCardProps) {
     return (
-        <Card className="border-slate-200 bg-white shadow-sm hover:shadow-md transition-shadow duration-200 rounded-2xl overflow-hidden group">
+        <Card className="border-slate-200 bg-card shadow-sm hover:shadow-md transition-shadow duration-200 rounded-2xl overflow-hidden group">
             <CardContent className="p-6 flex gap-4 items-center">
                 <div className="items-center justify-between">
                     <div className={`p-3 rounded-xl ${bgClass} ${colorClass} group-hover:scale-110 transition-transform duration-300`}>

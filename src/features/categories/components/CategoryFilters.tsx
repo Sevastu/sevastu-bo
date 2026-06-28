@@ -44,14 +44,14 @@ export function CategoryFilters({
     ];
 
     return (
-        <div className="sticky top-0 z-30 backdrop-blur-md mt-4 mb-4">
-            <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-4">
+        <div className="sticky top-0 z-30 backdrop-blur-md mt-4 mb-4 bg-card rounded-2xl shadow-sm border border-slate-200 p-4">
+            <div className="">
                 <div className="flex flex-col xl:flex-row gap-4 items-center justify-between">
                     <div className="relative flex-1 w-full max-w-md">
                         <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                         <Input
                             placeholder="Search categories by name or description..."
-                            className="pl-9 w-full bg-slate-50 border-slate-200 rounded-xl h-10 focus-visible:ring-blue-500"
+                            className="pl-9 w-full bg-slate-50 border-slate-200 rounded-xl h-10 focus-visible:ring-primary/10"
                             value={searchQuery}
                             onChange={e => onSearchChange(e.target.value)}
                         />
