@@ -14,7 +14,7 @@ export function FilterSelect({ options, icon, className = '', ...props }: Filter
                 </div>
             )}
             <select
-                className={`w-full h-10 ${icon ? 'pl-10' : 'pl-3'} pr-8 py-2 rounded-xl border border-slate-200 bg-white text-sm text-slate-700 shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none appearance-none cursor-pointer transition-colors hover:border-slate-300 ${className}`}
+                className={`w-full h-10 ${icon ? 'pl-10' : 'pl-3'} pr-8 py-2 rounded-xl border border-slate-200 bg-slate-100 text-sm text-slate-700 shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none appearance-none cursor-pointer transition-colors hover:border-slate-300 ${className}`}
                 {...props}
             >
                 {options.map((option) => (

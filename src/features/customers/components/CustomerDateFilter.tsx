@@ -10,7 +10,7 @@ interface CustomerDateFilterProps {
 export function CustomerDateFilter({ dateRange, onChange }: CustomerDateFilterProps) {
     return (
         <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2">
-            <div className="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-xl px-3 h-10 w-full sm:w-auto">
+            <div className="flex items-center gap-2 bg-slate-100 border border-slate-200 rounded-xl px-3 h-10 w-full sm:w-auto">
                 <Calendar className="w-4 h-4 text-slate-400" />
                 <input
                     type="date"
@@ -21,7 +21,7 @@ export function CustomerDateFilter({ dateRange, onChange }: CustomerDateFilterPr
                 />
             </div>
             <span className="text-slate-400 hidden sm:inline">-</span>
-            <div className="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-xl px-3 h-10 w-full sm:w-auto">
+            <div className="flex items-center gap-2 bg-slate-100 border border-slate-200 rounded-xl px-3 h-10 w-full sm:w-auto">
                 <input
                     type="date"
                     value={dateRange?.to || ''}

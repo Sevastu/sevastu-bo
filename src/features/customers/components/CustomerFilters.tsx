@@ -39,14 +39,14 @@ export function CustomerFilters({
 
     return (
         <div className="sticky top-0 z-30 backdrop-blur-md mb-4 mt-4">
-            <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-4">
+            <div className="bg-card rounded-2xl shadow-sm border border-slate-200 p-4">
                 <div className="flex flex-col gap-4">
                     <div className="flex flex-col xl:flex-row gap-4 items-center justify-between">
                         <div className="relative flex-1 w-full max-w-md">
                             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                             <Input
                                 placeholder="Search by name, email, or phone..."
-                                className="pl-9 w-full bg-slate-50 border-slate-200 rounded-xl h-10 focus-visible:ring-blue-500"
+                                className="pl-9 w-full bg-slate-100 border-slate-200 rounded-xl h-10 focus-visible:ring-blue-500"
                                 value={searchQuery}
                                 onChange={e => onSearchChange(e.target.value)}
                             />
@@ -61,7 +61,7 @@ export function CustomerFilters({
                                 />
                             </div>
 
-                            <div className="h-6 w-px bg-slate-200 hidden sm:block mx-1"></div>
+                            <div className="h-6 w-px bg-slate-100 hidden sm:block mx-1"></div>
 
                             <div className="flex bg-slate-100 p-1 rounded-xl">
                                 <button

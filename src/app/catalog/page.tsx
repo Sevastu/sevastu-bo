@@ -406,11 +406,11 @@ export default function CatalogPage() {
                                 placeholder="Search catalog..."
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
-                                className="pl-8 pr-4 py-4 bg-background"
+                                className="pl-8 pr-4 py-4 bg-slate-100"
                             />
                         </div>
                         <Select value={statusFilter} onValueChange={(val: any) => setStatusFilter(val)}>
-                            <SelectTrigger className="w-full sm:w-[150px] bg-background">
+                            <SelectTrigger className="w-full sm:w-[150px] bg-slate-100 border-slate-200">
                                 <SelectValue placeholder="All Status">
                                     {statusFilter === "all" ? "All Status" : statusFilter === "active" ? "Active" : "Inactive"}
                                 </SelectValue>
@@ -422,7 +422,7 @@ export default function CatalogPage() {
                             </SelectContent>
                         </Select>
                         <Select value={marketplaceFilter} onValueChange={(val: any) => setMarketplaceFilter(val)}>
-                            <SelectTrigger className="w-full sm:w-[160px] bg-background">
+                            <SelectTrigger className="w-full sm:w-[160px] bg-slate-100 border-slate-200">
                                 <SelectValue placeholder="Marketplace">
                                     {marketplaceFilter === "all" ? "All Features" : marketplaceFilter === "featured" ? "Featured" : marketplaceFilter === "popular" ? "Popular" : "Searchable"}
                                 </SelectValue>
@@ -435,7 +435,7 @@ export default function CatalogPage() {
                             </SelectContent>
                         </Select>
                         <Select value={categoryFilter} onValueChange={(val: string) => setCategoryFilter(val)}>
-                            <SelectTrigger className="w-full sm:w-[160px] bg-background">
+                            <SelectTrigger className="w-full sm:w-[160px] bg-slate-100 border-slate-200">
                                 <SelectValue placeholder="Category">
                                     {categoryFilter === "all" ? "All Categories" : categories.find(c => c._id === categoryFilter)?.name || "Category"}
                                 </SelectValue>

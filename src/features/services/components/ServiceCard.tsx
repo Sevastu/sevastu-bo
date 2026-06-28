@@ -44,7 +44,7 @@ export function ServiceCard({ service, categoryName, onEdit, onDelete }: Service
     ];
 
     return (
-        <div className="group bg-white rounded-md mt-2 shadow-[0_4px_20px_rgba(41,52,61,0.04)] border border-slate-100 overflow-hidden hover:-translate-y-1 hover:border-blue-500 hover:shadow-lg transition-all duration-300 ease-out flex flex-col h-full">
+        <div className="group bg-card rounded-md mt-2 shadow-[0_4px_20px_rgba(41,52,61,0.04)] border border-slate-100 overflow-hidden hover:-translate-y-1 hover:border-blue-500 hover:shadow-lg transition-all duration-300 ease-out flex flex-col h-full">
             {/* Image Header */}
             <div className="relative h-44 bg-slate-100 overflow-hidden shrink-0">
                 <img
@@ -56,9 +56,9 @@ export function ServiceCard({ service, categoryName, onEdit, onDelete }: Service
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-slate-900/20 to-transparent opacity-80" />
 
                 {/* Floating Icon */}
-                {/* <div className="absolute bottom-30 left-6 w-12 h-12 bg-white rounded-xl shadow-md flex items-center justify-center border border-slate-50 group-hover:shadow-blue-100 group-hover:shadow-lg transition-shadow duration-300 z-10">
+                <div className="absolute bottom-30 left-6 w-12 h-12 bg-white rounded-xl shadow-md flex items-center justify-center border border-slate-50 group-hover:shadow-blue-100 group-hover:shadow-lg transition-shadow duration-300 z-10">
                     {renderIcon(service.icon)}
-                </div> */}
+                </div>
 
                 {/* Status Badges */}
                 <div className="absolute top-4 right-4 flex flex-col items-end gap-2">
@@ -77,7 +77,7 @@ export function ServiceCard({ service, categoryName, onEdit, onDelete }: Service
             </div>
 
             {/* Card Content */}
-            <div className="pt-8 px-6 pb-6 flex-1 flex flex-col bg-white">
+            <div className="pt-8 px-6 pb-6 flex-1 flex flex-col bg-card">
                 <div className="flex justify-between items-start mb-2">
                     <div className="pr-4">
                         <Badge variant="outline" className="mb-2 text-[10px] uppercase font-semibold tracking-wider text-blue-600 bg-blue-50 border-blue-100 rounded-md">
@@ -110,7 +110,7 @@ export function ServiceCard({ service, categoryName, onEdit, onDelete }: Service
                 </p>
 
                 {/* Metrics */}
-                <div className="flex gap-3 mb-6 bg-slate-50/50 rounded-xl p-3 border border-slate-100/50">
+                <div className="flex gap-3 mb-6 bg-slate-200/50 rounded-xl p-3 border border-slate-100/50">
                     <div className="flex-1 text-center">
                         <div className="text-xl font-bold text-slate-700">{subServiceCount}</div>
                         <div className="text-[11px] text-slate-500 uppercase tracking-wider font-semibold mt-0.5">Sub-services</div>

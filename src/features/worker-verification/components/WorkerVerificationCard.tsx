@@ -22,7 +22,7 @@ export const WorkerVerificationCard = memo(function WorkerVerificationCard({
   onViewDocuments
 }: WorkerVerificationCardProps) {
   return (
-    <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm transition-all hover:shadow-md flex flex-col h-full">
+    <div className="bg-card rounded-2xl p-6 border border-slate-200 shadow-sm transition-all hover:shadow-md flex flex-col h-full">
       {/* Header */}
       <div className="flex items-start justify-between mb-6">
         <div className="flex items-center gap-4">

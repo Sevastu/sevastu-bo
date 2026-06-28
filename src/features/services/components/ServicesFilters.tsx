@@ -59,7 +59,7 @@ export function ServicesFilters({
 
     return (
         <div className="sticky top-0 z-30 backdrop-blur-md">
-            <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-4">
+            <div className="bg-card rounded-2xl shadow-sm border border-slate-200 p-4">
                 <div className="flex flex-col xl:flex-row gap-4 items-center justify-between">
                     {/* Search Input */}
                     <div className="relative flex-1 w-full max-w-md">

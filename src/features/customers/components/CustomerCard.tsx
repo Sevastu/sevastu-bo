@@ -15,7 +15,7 @@ interface CustomerCardProps {
 export function CustomerCard({ customer, onClick, onViewProfile }: CustomerCardProps) {
     return (
         <div 
-            className="group bg-white rounded-2xl shadow-[0_4px_20px_rgba(41,52,61,0.04)] border border-slate-100 overflow-hidden hover:-translate-y-1 hover:border-blue-500 hover:shadow-lg transition-all duration-300 ease-out flex flex-col h-full cursor-pointer"
+            className="group bg-card rounded-2xl shadow-[0_4px_20px_rgba(41,52,61,0.04)] border border-slate-100 overflow-hidden hover:-translate-y-1 hover:border-blue-500 hover:shadow-lg transition-all duration-300 ease-out flex flex-col h-full cursor-pointer"
             onClick={() => onClick(customer)}
         >
             <div className="p-6 pb-4 flex items-start justify-between">
