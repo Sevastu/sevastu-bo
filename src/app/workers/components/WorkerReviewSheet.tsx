@@ -5,12 +5,14 @@ import { approveWorker, rejectWorker, triggerWorkerOcr } from "@/features/worker
 
 import { useWorkerReview } from "@/features/workers/review/hooks/useWorkerReview";
 import { WorkerReviewHeader } from "@/features/workers/review/components/WorkerReviewHeader";
-import { WorkerProfileSummary } from "@/features/workers/review/components/WorkerProfileSummary";
-import { VerificationMetricsGrid } from "@/features/workers/review/components/VerificationMetricsGrid";
-import { VerificationTimeline } from "@/features/workers/review/components/VerificationTimeline";
-import { DocumentsSection } from "@/features/workers/review/components/DocumentsSection";
+import { QuickStatisticsRow } from "@/features/workers/review/components/QuickStatisticsRow";
+import { WorkerProfileDetails } from "@/features/workers/review/components/WorkerProfileDetails";
 import { OCRDashboard } from "@/features/workers/review/components/OCRDashboard";
-import { VerificationScore } from "@/features/workers/review/components/VerificationScore";
+import { ProfileOcrComparison } from "@/features/workers/review/components/ProfileOcrComparison";
+import { VerificationChecklist } from "@/features/workers/review/components/VerificationChecklist";
+import { DocumentsSection } from "@/features/workers/review/components/DocumentsSection";
+import { VerificationTimeline } from "@/features/workers/review/components/VerificationTimeline";
+import { SystemInformationAccordion } from "@/features/workers/review/components/SystemInformationAccordion";
 import { VerificationDecisionPanel } from "@/features/workers/review/components/VerificationDecisionPanel";
 import { LoadingState } from "@/features/workers/review/components/LoadingState";
 import { ErrorState } from "@/features/workers/review/components/ErrorState";
@@ -28,9 +30,9 @@ export function WorkerReviewPanel({
     onAfterChange,
     initialProfileStatus,
 }: WorkerReviewPanelProps) {
-    
+
     const { profile, kyc, ocr, isLoading, error, refresh } = useWorkerReview(workerUserId);
-    
+
     const [isApproving, setIsApproving] = useState(false);
     const [isRejecting, setIsRejecting] = useState(false);
     const [isTriggeringOcr, setIsTriggeringOcr] = useState(false);
@@ -91,41 +93,58 @@ export function WorkerReviewPanel({
     }
 
     return (
-        <div className="flex flex-col min-h-screen font-manrope">
-            <WorkerReviewHeader 
-                onBack={onBack} 
-                onRefresh={refresh} 
-                workerId={profile?._id || workerUserId} 
-                isRefreshing={isLoading || isTriggeringOcr} 
+        <div className="flex flex-col min-h-screen font-manrope space-y-6">
+
+            {/* 1. Header */}
+            <WorkerReviewHeader
+                onBack={onBack}
+                onRefresh={refresh}
+                workerId={profile?._id || workerUserId}
+                isRefreshing={isLoading || isTriggeringOcr}
+                profile={profile}
+                ocr={ocr}
             />
+            <div className="flex-1 max-w-[1400px] mx-auto w-full space-y-6">
 
-            <div className="flex-1 max-w-7xl mx-auto w-full pt-6 space-y-6">
-                
-                <VerificationMetricsGrid profile={profile} ocr={ocr} />
+                {/* 2. Quick Statistics */}
+                <QuickStatisticsRow profile={profile} />
 
-                <WorkerProfileSummary profile={profile} />
-
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                    <div className="space-y-6">
-                        <VerificationTimeline profile={profile} ocr={ocr} />
-                    </div>
-                    <div className="lg:col-span-2 space-y-6">
-                        <OCRDashboard 
-                            ocr={ocr} 
-                            profile={profile}
-                            isTriggering={isTriggeringOcr} 
-                            onTriggerOcr={handleTriggerOcr} 
-                        />
-                        <VerificationScore kyc={kyc} ocr={ocr} />
-                        <DocumentsSection kyc={kyc} />
-                    </div>
-                    
+                {/* 3. Profile Information + OCR Summary */}
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-stretch">
+                    <WorkerProfileDetails profile={profile} />
+                    <OCRDashboard
+                        ocr={ocr}
+                        profile={profile}
+                        isTriggering={isTriggeringOcr}
+                        onTriggerOcr={handleTriggerOcr}
+                    />
                 </div>
 
+                {/* 4. Profile vs OCR Comparison + Verification Checklist */}
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-stretch">
+                    <ProfileOcrComparison profile={profile} ocr={ocr} />
+                    <VerificationChecklist profile={profile} ocr={ocr} kyc={kyc} />
+                </div>
 
+                {/* 5. Aadhaar Documents + Timeline */}
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-stretch">
+                    <div className="lg:col-span-2">
+                        <DocumentsSection profile={profile} kyc={kyc} ocr={ocr} />
+                    </div>
+                    <div className="lg:col-span-1">
+                        <VerificationTimeline profile={profile} ocr={ocr} kyc={kyc} />
+                    </div>
+                </div>
+
+                {/* 6. System Information */}
+                <SystemInformationAccordion profile={profile} ocr={ocr} />
+
+                {/* Spacer for bottom sticky panel */}
+                <div className="h-12"></div>
             </div>
 
-            <VerificationDecisionPanel 
+            {/* 7. Verification Decision Panel */}
+            <VerificationDecisionPanel
                 status={profile?.verificationStatus || initialProfileStatus}
                 isApproving={isApproving}
                 isRejecting={isRejecting}
