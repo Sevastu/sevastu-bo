@@ -11,7 +11,7 @@ interface VerificationScoreProps {
 
 export const VerificationScore = memo(function VerificationScore({ kyc, ocr }: VerificationScoreProps) {
     const { totalScore, maxScore, points } = useVerificationScore(kyc, ocr);
-    
+
     // Using risk level as an overall text indicator for the score section
     const risk = getRiskLevel(ocr?.nameMatchScore);
     const progressPercent = Math.min((totalScore / maxScore) * 100, 100);
@@ -27,7 +27,7 @@ export const VerificationScore = memo(function VerificationScore({ kyc, ocr }: V
         <div className="bg-slate-900 rounded-2xl p-6 shadow-md text-white relative overflow-hidden">
             {/* Background design */}
             <div className="absolute -top-12 -right-12 w-40 h-40 bg-blue-500/10 rounded-full blur-2xl pointer-events-none" />
-            
+
             <div className="relative z-10">
                 <div className="flex items-start justify-between mb-8">
                     <div>
@@ -53,7 +53,7 @@ export const VerificationScore = memo(function VerificationScore({ kyc, ocr }: V
                         <span>{progressPercent}%</span>
                     </div>
                     <div className="h-2 bg-slate-800 rounded-full overflow-hidden">
-                        <div 
+                        <div
                             className="h-full bg-blue-500 rounded-full transition-all duration-1000 ease-out"
                             style={{ width: `${progressPercent}%` }}
                         />
