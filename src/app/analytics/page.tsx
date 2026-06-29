@@ -88,7 +88,7 @@ export default function AnalyticsPage() {
             <select
               value={timeRange}
               onChange={(e) => setTimeRange(e.target.value)}
-              className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="px-2 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-transparent"
             >
               <option value="7d">Last 7 days</option>
               <option value="30d">Last 30 days</option>
@@ -97,7 +97,7 @@ export default function AnalyticsPage() {
             </select>
             
             {/* Export Button */}
-            <button className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+            <button className="flex items-center gap-2 px-4 py-2 bg-primary text-card rounded-lg hover:bg-primary/30 transition-colors">
               <Download size={16} />
               Export Report
             </button>

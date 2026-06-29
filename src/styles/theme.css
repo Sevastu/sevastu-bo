@@ -1,19 +1,21 @@
 :root {
   /* Core Color Variables - Light Theme */
-  --color-bg: #e3f2f4;
+  /* --color-bg: #e3f2f4; */
+  --color-bg: #fafafa;
   --color-bg-secondary: #d6e5ff;
-  --color-card: #f9ffff;
-  --color-primary: #2563EB;
+  /* --color-card: #f9ffff; */
+  --color-card: #fffcfd;
+  --color-primary: #dc0076;
+    /* --color-primary: #2563EB; */
   --color-primary-hover: #0d3bba;
   --color-text:#000000;
   --color-text-secondary: #3d4043;
   --color-text-muted: #777b81;
-  --color-border: #7ba9d2;
+  --color-border: #e7e2e5;
   --color-border-hover: #3b71c2;
   --color-input: #d5dced;
   --color-focus: #55a7ee;
   --color-focus-ring: rgba(23, 103, 232, 0.2);
-  
   /* State Colors */
   --color-success: #21c139;
   --color-warning: #e8cc13;

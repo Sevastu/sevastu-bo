@@ -1,5 +1,6 @@
 import React, { memo } from 'react';
 import { usePathname } from 'next/navigation';
+import { cn } from '@/lib/utils';
 import { NavItem } from '@/utils/navigation';
 import { SidebarNavItem } from './SidebarNavItem';
 import { SidebarDropdown } from './SidebarDropdown';
@@ -24,7 +25,10 @@ export const SidebarNav = memo(function SidebarNav({
     const pathname = usePathname();
 
     return (
-        <nav className="flex-1 py-6 px-3 space-y-2 overflow-y-auto overflow-x-hidden scrollbar-thin scrollbar-thumb-muted/50">
+        <nav className={cn(
+            "flex-1 py-6 px-3 space-y-2 overflow-y-auto scrollbar-thin scrollbar-thumb-muted/50",
+            isCollapsed ? "overflow-visible" : "overflow-x-hidden"
+        )}>
             {items.map((item) => {
                 if (item.isDropdown) {
                     const isChildActive = item.children?.some(child => child.href && pathname?.startsWith(child.href)) || false;
