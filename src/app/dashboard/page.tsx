@@ -140,21 +140,21 @@ export default function DashboardPage() {
             </div>
 
             {/* Recent Activity */}
-            <Card className="rounded-sm p-6 bg-card">
+            <Card className="rounded-sm p-6 bg-card border border-primary/10">
                 <div className="flex items-center justify-between mb-6">
                     <h3 className="text-lg font-semibold tracking-tight flex items-center gap-2">
                         <Briefcase className="w-5 h-5 text-primary" />
                         Recent Activity
                     </h3>
-                    <Button variant="outline" className="rounded-2xl bg-card hover:bg-muted font-bold h-10 shadow-sm">
+                    <Button variant="outline" className="rounded-md bg-black border border-card hover:bg-card hover:text-black hover:border hover:border-black font-bold h-10 shadow-sm text-card">
                         View All
                     </Button>
                 </div>
                 
                 <div className="space-y-4">
                     {[1, 2, 3, 4].map((item) => (
-                        <div key={item} className="flex items-center gap-4 p-4 bg-muted/50 rounded-lg hover:bg-muted transition-colors">
-                            <div className="w-10 h-10 bg-muted rounded-full flex items-center justify-center">
+                        <div key={item} className="flex items-center gap-4 p-4 bg-primary/5 rounded-md hover:bg-primary/20 transition-colors">
+                            <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
                                 <Briefcase className="w-5 h-5 text-primary" />
                             </div>
                             <div className="flex-1">

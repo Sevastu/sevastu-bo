@@ -17,12 +17,12 @@ export const KPICard: React.FC<KPICardProps> = ({
   icon
 }) => {
   return (
-    <div className="bg-[var(--color-card)] rounded-lg p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-primary/10 cursor-pointer">
+    <div className="bg-card rounded-lg p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-primary/10 cursor-pointer border border-primary/10">
 
       <div className="flex items-center justify-between">
 
         <div className="flex-1">
-          <p className="text-sm text-[var(--color-text-secondary)] mb-1">
+          <p className="text-md text-[var(--color-text-secondary)] mb-1">
             {title}
           </p>
 
@@ -43,7 +43,7 @@ export const KPICard: React.FC<KPICardProps> = ({
           </div>
         </div>
 
-        <div className="w-12 h-12 rounded-lg flex items-center justify-center bg-[var(--color-muted)] text-[var(--color-primary)]">
+        <div className="w-12 h-12 rounded-lg flex items-center justify-center bg-primary/10 text-[var(--color-primary)]">
           {icon}
         </div>
 
