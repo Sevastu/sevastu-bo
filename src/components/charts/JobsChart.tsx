@@ -17,7 +17,7 @@ export const JobsChart: React.FC = () => {
   const padding = 40;
 
   return (
-    <div className="bg-[var(--color-card)] rounded-sm p-6">
+    <div className="bg-[var(--color-card)] rounded-sm p-6 border border-primary/10">
       <div className="mb-6">
         <h2 className="text-lg font-semibold text-[var(--color-text)]">Jobs Over Time</h2>
         <p className="text-sm text-[var(--color-text-secondary)]">Last 30 days overview</p>

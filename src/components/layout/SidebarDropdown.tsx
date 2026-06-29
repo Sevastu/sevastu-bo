@@ -76,10 +76,10 @@ export function SidebarDropdown({
             {isOpen && (
                 <div
                     className={cn(
-                        "space-y-1 overflow-hidden animate-in fade-in zoom-in-95 duration-200",
+                        "space-y-1 overflow-hidden animate-in fade-in origin-left transition-all duration-200",
                         isCollapsed
-                            ? "absolute left-full top-0 ml-2 w-48 bg-card border rounded-lg shadow-xl p-2 z-50"
-                            : "ml-8 mt-2"
+                            ? "absolute left-full top-0 ml-2 w-48 bg-card border-1 border-primary/50 rounded-md shadow-xl p-2 z-40"
+                            : "ml-12 mt-2"
                     )}
                 >
                     {item.children?.map((child) => {

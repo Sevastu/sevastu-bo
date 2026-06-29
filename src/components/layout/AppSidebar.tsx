@@ -5,7 +5,7 @@ import { NavItem } from '@/utils/navigation';
 import { LAYOUT } from '@/utils/layoutConstants';
 import { SidebarLogo } from './SidebarLogo';
 import { SidebarNav } from './SidebarNav';
-import { SidebarFooter } from './SidebarFooter';
+// import { SidebarFooter } from './SidebarFooter';
 
 interface AppSidebarProps {
     user: User | null;
@@ -57,7 +57,7 @@ export function AppSidebar({
             {/* Sidebar Component */}
             <aside
                 className={cn(
-                    "fixed top-0 left-0 h-screen overflow-hidden flex flex-col bg-card border-r border-border/50",
+                    "fixed top-0 left-0 h-screen flex flex-col bg-card border-r-2 border-primary/50",
                     "transition-all", LAYOUT.ANIMATION_DURATION, LAYOUT.Z_INDEX.SIDEBAR,
                     isCollapsed ? LAYOUT.SIDEBAR_WIDTH_COLLAPSED : LAYOUT.SIDEBAR_WIDTH,
                     isSidebarOpen ? "translate-x-0" : "-translate-x-full",
@@ -81,13 +81,13 @@ export function AppSidebar({
                     onMouseLeaveDropdown={onMouseLeaveDropdown}
                 />
 
-                <SidebarFooter 
+                {/* <SidebarFooter 
                     user={user}
                     isCollapsed={isCollapsed}
                     isMobile={isMobile}
                     onLogout={onLogout}
                     onToggleCollapse={onToggleDesktopSidebar}
-                />
+                /> */}
             </aside>
         </>
     );

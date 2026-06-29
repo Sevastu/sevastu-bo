@@ -24,7 +24,7 @@ export function AppHeader({ user, onToggleSidebar, onLogout }: AppHeaderProps) {
                 "bg-card",
                 "backdrop-blur-xl",
                 "border-2 border-primary/50",
-                "shadow-[0_10px_35px_rgba(37,99,235,0.18)]",
+                // "shadow-[0_10px_35px_rgba(37,99,235,0.18)],
                 LAYOUT.Z_INDEX.HEADER
             )}
         >

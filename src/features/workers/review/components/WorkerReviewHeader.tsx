@@ -26,9 +26,31 @@ export const WorkerReviewHeader = memo(function WorkerReviewHeader({
     const isAvailable = profile?.availability;
 
     return (
-        <div className="bg-card flex flex-col rounded-lg">
+        <div className="flex flex-col space-y-6">
+            {/* Sticky Top Bar */}
+            <div className="sticky top-0 z-30 bg-card backdrop-blur-md px-6 py-4 flex items-center justify-between border border-slate-200 shadow-sm rounded-2xl">
+                <Button 
+                    variant="ghost" 
+                    onClick={onBack}
+                    className="rounded-xl shadow-sm hover:bg-slate-100 text-slate-700 bg-slate-50 border border-slate-200"
+                >
+                    <ArrowLeft className="h-4 w-4 mr-2" />
+                    Back to List
+                </Button>
+                <Button 
+                    variant="outline" 
+                    onClick={onRefresh}
+                    disabled={isRefreshing}
+                    className="rounded-xl border-slate-200 bg-white hover:bg-slate-50 shadow-sm text-slate-700 font-medium"
+                >
+                    <RefreshCw className={`w-4 h-4 mr-2 ${isRefreshing ? 'animate-spin text-blue-600' : 'text-slate-500'}`} />
+                    Refresh Data
+                </Button>
+            </div>
+
             {/* Scrollable Hero Content */}
-            <div className="p-4 flex flex-col lg:flex-row justify-center gap-8">
+            <div className="bg-card flex flex-col rounded-2xl border border-slate-200 shadow-sm">
+                <div className="p-6 flex flex-col lg:flex-row justify-center gap-8 items-center">
                 {/* Left side: Photo & Details */}
                 <div className="flex flex-col sm:flex-row gap-8 flex-1">
                     <div className="w-50 h-60 shrink-0 rounded-lg overflow-hidden bg-slate-100 shadow-[0_4px_14px_rgba(0,0,0,0.08)] flex items-center justify-center">
@@ -48,7 +70,7 @@ export const WorkerReviewHeader = memo(function WorkerReviewHeader({
                             {profile?.name || 'Unknown Worker'}
                         </h1>
                         <p className="text-lg font-medium text-slate-500 uppercase tracking-wider">
-                            {profile?.experience || 'Experience Not Listed'}
+                            {`${profile?.experience} Years Experience` || 'Experience Not Listed'}
                         </p>
                         
                             <div className="flex items-center gap-1.5"><Hash className="w-4 h-4 text-slate-400"/> ID: {workerId}</div>
@@ -112,6 +134,7 @@ export const WorkerReviewHeader = memo(function WorkerReviewHeader({
                         </div>
                     </div>
                 </div>
+            </div>
             </div>
         </div>
     );
