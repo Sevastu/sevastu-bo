@@ -114,7 +114,7 @@ export default function AnalyticsPage() {
         {/* Charts Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Revenue Trend */}
-          <div className="bg-card rounded-sm p-6">
+          <div className="bg-card rounded-sm p-6 border border-primary/10">
             <div className="mb-6">
               <h3 className="text-lg font-semibold text-gray-900">Revenue & Jobs Trend</h3>
               <p className="text-sm text-gray-600">Monthly performance overview</p>
@@ -123,7 +123,7 @@ export default function AnalyticsPage() {
           </div>
 
           {/* Service Distribution */}
-          <div className="bg-card rounded-sm p-6">
+          <div className="bg-card rounded-sm p-6 border border-primary/10">
             <div className="mb-6">
               <h3 className="text-lg font-semibold text-gray-900">Service Distribution</h3>
               <p className="text-sm text-gray-600">Jobs by service category</p>
@@ -133,7 +133,7 @@ export default function AnalyticsPage() {
         </div>
 
         {/* Worker Performance */}
-        <div className="bg-card rounded-sm p-6">
+        <div className="bg-card rounded-sm p-6 border border-primary/10">
           <div className="mb-6">
             <h3 className="text-lg font-semibold text-gray-600">Top Worker Performance</h3>
             <p className="text-sm text-gray-600">Best performing workers this month</p>
@@ -144,7 +144,7 @@ export default function AnalyticsPage() {
         {/* Additional Metrics */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Customer Acquisition */}
-          <div className="bg-card rounded-sm p-6">
+          <div className="bg-card rounded-sm p-6 border border-primary/10">
             <div className="mb-6">
               <h3 className="text-lg font-semibold text-gray-900">Customer Acquisition</h3>
               <p className="text-sm text-gray-600">New customers over time</p>
@@ -155,7 +155,7 @@ export default function AnalyticsPage() {
                 { period: 'Last Week', customers: 38, growth: '+8%' },
                 { period: 'This Month', customers: 156, growth: '+23%' }
               ].map((item, index) => (
-                <div key={index} className="flex items-center justify-between p-3 bg-muted rounded-lg">
+                <div key={index} className="flex items-center justify-between p-3 bg-background rounded-lg shadow-sm">
                   <div>
                     <div className="font-medium text-gray-900">{item.period}</div>
                     <div className="text-sm text-gray-600">{item.customers} customers</div>
@@ -171,7 +171,7 @@ export default function AnalyticsPage() {
           </div>
 
           {/* Job Success Rate */}
-          <div className="bg-card rounded-sm p-6">
+          <div className="bg-card rounded-sm p-6 border border-primary/10">
             <div className="mb-6">
               <h3 className="text-lg font-semibold text-gray-900">Job Success Rate</h3>
               <p className="text-sm text-gray-600">Completion and cancellation metrics</p>
@@ -193,7 +193,7 @@ export default function AnalyticsPage() {
           </div>
 
           {/* Revenue by Region */}
-          <div className="bg-card rounded-sm p-6">
+          <div className="bg-card rounded-sm p-6 border border-primary/10">
             <div className="mb-6">
               <h3 className="text-lg font-semibold text-gray-900">Revenue by Region</h3>
               <p className="text-sm text-gray-600">Geographic distribution</p>

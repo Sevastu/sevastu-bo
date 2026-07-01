@@ -30,7 +30,7 @@ export function CatalogDashboardCards({ stats }: { stats: CatalogOverview | Cata
 
     return (
         <div className="w-full grid gap-6 grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
-            <Card className="border-none bg-card rounded-lg">
+            <Card className="border border-primary/10 bg-card rounded-lg">
                 <CardContent className="p-6">
                     <div className="flex items-center justify-between">
                         <div>
@@ -44,7 +44,7 @@ export function CatalogDashboardCards({ stats }: { stats: CatalogOverview | Cata
                 </CardContent>
             </Card>
 
-            <Card className="border-none bg-card rounded-lg">
+            <Card className="border border-primary/10 bg-card rounded-lg">
                 <CardContent className="p-6">
                     <div className="flex items-center justify-between">
                         <div>
@@ -58,7 +58,7 @@ export function CatalogDashboardCards({ stats }: { stats: CatalogOverview | Cata
                 </CardContent>
             </Card>
 
-            <Card className="border-none bg-card rounded-lg">
+            <Card className="border border-primary/10 bg-card rounded-lg">
                 <CardContent className="p-6">
                     <div className="flex items-center justify-between">
                         <div>
@@ -72,7 +72,7 @@ export function CatalogDashboardCards({ stats }: { stats: CatalogOverview | Cata
                 </CardContent>
             </Card>
 
-            <Card className="border-none bg-card rounded-lg">
+            <Card className="border border-primary/10 bg-card rounded-lg">
                 <CardContent className="p-6">
                     <div className="flex items-center justify-between">
                         <div>
@@ -86,7 +86,7 @@ export function CatalogDashboardCards({ stats }: { stats: CatalogOverview | Cata
                 </CardContent>
             </Card>
 
-            <Card className="border-none bg-card rounded-lg">
+            <Card className="border border-primary/10 bg-card rounded-lg">
                 <CardContent className="p-6">
                     <div className="flex items-center justify-between">
                         <div>
