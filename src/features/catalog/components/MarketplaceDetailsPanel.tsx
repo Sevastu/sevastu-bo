@@ -100,7 +100,7 @@ export function MarketplaceDetailsPanel({
     };
 
     return (
-        <div className="flex flex-col h-full bg-card rounded-lg shadow-sm relative overflow-hidden">
+        <div className="flex flex-col h-full bg-card rounded-lg border border-primary/10 relative overflow-hidden">
 
             {/* Hero Header */}
             <div className="bg-card px-4 py-4 flex flex-col gap-4 relative overflow-hidden border-b-1 border-b-blue-900/20 mb-2">
