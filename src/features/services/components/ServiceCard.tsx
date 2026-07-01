@@ -128,6 +128,9 @@ export function ServiceCard({ service, categoryName, onEdit, onDelete }: Service
                         <Button variant="outline" size="sm" onClick={() => onEdit(service)} className="rounded-lg h-9 px-4 text-sm font-medium border-slate-200 hover:bg-slate-50 hover:text-slate-900 shadow-sm">
                             Edit
                         </Button>
+                        <Button variant="outline" size="sm" onClick={() => router.push(`/sub-services?serviceId=${service._id}`)} className="rounded-lg h-9 px-4 py-2 text-sm font-medium border-slate-200 hover:bg-slate-50 hover:text-slate-900 shadow-sm">
+                            Sub-services
+                        </Button>
                     </div>
                     <div className="text-[12px] font-medium text-slate-400 flex items-center">
                         {service.updatedAt ? timeAgo(service.updatedAt) : 'Just now'}

@@ -65,11 +65,11 @@ export function CatalogTree({
             {tree.map(({ category, services }) => {
                 const catExpanded = expandedCategories[category._id] ?? true;
                 return (
-                    <Card key={category._id} className="overflow-hidden py-0">
-                        <div className="flex items-start gap-2 border-b border-border/60 bg-muted/20 px-4 py-3">
+                    <Card key={category._id} className="overflow-hidden py-0 bg-red-500">
+                        <div className="flex items-start gap-2 border border-primary px-4 py-3">
                             <button
                                 type="button"
-                                className="mt-0.5 rounded-md p-0.5 text-muted-foreground hover:bg-muted"
+                                className="mt-0.5 rounded-md p-0.5 text-muted-foreground"
                                 onClick={() => onToggleCategory(category._id)}
                                 aria-expanded={catExpanded}
                             >

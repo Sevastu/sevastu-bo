@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import type { CatalogEntityType } from "@/features/services/types";
@@ -19,6 +19,7 @@ import {
     Tag,
     Star
 } from "lucide-react";
+import { getCategoryId } from "../utils";
 
 interface CatalogTreeNode {
     _id: string;
@@ -111,6 +112,8 @@ export function ModernCatalogTree({
 }: ModernCatalogTreeProps) {
     const [hoveredCategory, setHoveredCategory] = useState<string | null>(null);
     const [hoveredService, setHoveredService] = useState<string | null>(null);
+    const openTimer = useRef<NodeJS.Timeout | null>(null);
+    const closeTimer = useRef<NodeJS.Timeout | null>(null); 
 
     if (tree.length === 0) {
         return (
@@ -136,8 +139,42 @@ export function ModernCatalogTree({
             onReorder(type, newList.map(item => item._id));
         }
     };
-
+    
     const isSearching = searchQuery.trim().length > 0;
+
+    const handleCategoryMouseEnter = (categoryId: string) => {
+        if (closeTimer.current) {
+            clearTimeout(closeTimer.current);
+        }
+        openTimer.current = setTimeout(() => {
+            setHoveredCategory(categoryId);
+        }, 200);
+    };
+    const handleCategoryMouseLeave = () => {
+        if (openTimer.current) {
+            clearTimeout(openTimer.current);
+        }
+        closeTimer.current = setTimeout(() => {
+            setHoveredCategory(null);
+        }, 200);
+    };
+
+    const handleServiceMouseEnter = (serviceId: string) => {
+        if (closeTimer.current) {
+            clearTimeout(closeTimer.current);
+        }
+        openTimer.current = setTimeout(() => {
+            setHoveredService(serviceId);
+        }, 200);
+    };
+    const handleServiceMouseLeave = () => {
+        if (openTimer.current) {
+            clearTimeout(openTimer.current);
+        }
+        closeTimer.current = setTimeout(() => {
+            setHoveredService(null);
+        }, 200);
+    };
 
     return (
         <div className="space-y-4">
@@ -145,18 +182,22 @@ export function ModernCatalogTree({
                 const catExpanded = (expandedCategories[category._id] ?? false) || hoveredCategory === category._id;
                 return (
                     <Card key={category._id} 
-                          className="overflow-hidden shadow-sm bg-primary/20 border border-border rounded-lg"
-                          onMouseEnter={() => setHoveredCategory(category._id)}
-                          onMouseLeave={() => setHoveredCategory(null)}
+                          className="overflow-hidden bg-amber-200 ring-2 ring-primary/10 rounded-lg"
+                          onMouseEnter={() => handleCategoryMouseEnter(category._id)}
+                          onMouseLeave={() => handleCategoryMouseLeave()}
                     >
                         <div
-                            className="flex items-center gap-5 bg-primary/20 hover:shadow-md hover:shadow-blue-500 px-4 py-3 cursor-pointer transition-colors"
+                            className="flex items-center gap-5 px-4 py-3 cursor-pointer"
                             onClick={() => onSelectNode('category', category)}
                         >
                             <button
                                 type="button"
-                                className="rounded-md p-1 text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
-                                onClick={(e) => { e.stopPropagation(); onToggleCategory(category._id); }}
+                                className="rounded-md p-1 text-muted-foreground transition-colors"
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    setHoveredCategory(null);
+                                    onToggleCategory(category._id);
+                                }}
                             >
                                 {catExpanded ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
                             </button>
@@ -205,10 +246,10 @@ export function ModernCatalogTree({
                                         {category.services.map((service, srvIndex) => {
                                             const srvExpanded = (expandedServices[service._id] ?? false) || hoveredService === service._id;
                                             return (
-                                                <div key={service._id} 
-                                                     className="relative rounded-lg bg-primary/15 shadow-sm hover:border-indigo-500/30 transition-colors"
-                                                     onMouseEnter={() => setHoveredService(service._id)}
-                                                     onMouseLeave={() => setHoveredService(null)}
+                                                <div key={service._id}
+                                                     className="relative rounded-lg bg-primary/20 transition-colors"
+                                                     onMouseEnter={() => handleServiceMouseEnter(service._id)}
+                                                     onMouseLeave={() => handleServiceMouseLeave()}
                                                 >
                                                     {/* Horizontal branch for Service */}
                                                     <div className="absolute -left-6 top-6 w-6 h-px" />
@@ -220,7 +261,11 @@ export function ModernCatalogTree({
                                                         <button
                                                             type="button"
                                                             className="rounded-md p-1 text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
-                                                            onClick={(e) => { e.stopPropagation(); onToggleService(service._id); }}
+                                                            onClick={(e) => {
+                                                                e.stopPropagation();
+                                                                setHoveredService(null);
+                                                                onToggleService(service._id);
+                                                            }}
                                                         >
                                                             {srvExpanded ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
                                                         </button>
