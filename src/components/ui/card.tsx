@@ -12,7 +12,7 @@ function Card({
       data-slot="card"
       data-size={size}
       className={cn(
-        "hover:-translate-y-1 transition-color duration-300",
+        "bg-card border border-border rounded-xl transition-all duration-300",
         className
       )}
       {...props}
@@ -84,7 +84,7 @@ function CardFooter({ className, ...props }: React.ComponentProps<"div">) {
     <div
       data-slot="card-footer"
       className={cn(
-        "flex items-center rounded-b-sm bg-muted/50 p-4 group-data-[size=sm]/card:p-3",
+        "flex items-center rounded-b-xl bg-muted/30 p-4 group-data-[size=sm]/card:p-3",
         className
       )}
       {...props}
