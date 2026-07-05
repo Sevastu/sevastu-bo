@@ -140,7 +140,7 @@ export default function DashboardPage() {
             </div>
 
             {/* Recent Activity */}
-            <Card className="rounded-sm p-6 bg-card border border-primary/10">
+            <Card className="rounded-sm p-6 bg-card border border-primary/10 shadow-sm">
                 <div className="flex items-center justify-between mb-6">
                     <h3 className="text-lg font-semibold tracking-tight flex items-center gap-2">
                         <Briefcase className="w-5 h-5 text-primary" />

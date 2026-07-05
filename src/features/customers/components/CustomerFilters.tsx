@@ -38,8 +38,8 @@ export function CustomerFilters({
     ];
 
     return (
-        <div className="sticky top-0 z-30 backdrop-blur-md mb-4 mt-4">
-            <div className="bg-card rounded-2xl shadow-sm border border-slate-200 p-4">
+        <div className="backdrop-blur-md mb-4 mt-4">
+            <div className="bg-card rounded-lg shadow-sm border border-border/20 0 p-4">
                 <div className="flex flex-col gap-4">
                     <div className="flex flex-col xl:flex-row gap-4 items-center justify-between">
                         <div className="relative flex-1 w-full max-w-md">

@@ -182,7 +182,7 @@ export function ModernCatalogTree({
                 const catExpanded = (expandedCategories[category._id] ?? false) || hoveredCategory === category._id;
                 return (
                     <Card key={category._id} 
-                          className="overflow-hidden bg-amber-200 ring-2 ring-primary/10 rounded-lg"
+                          className="overflow-hidden bg-amber-200 ring-2 ring-border/20 shadow-sm rounded-lg"
                           onMouseEnter={() => handleCategoryMouseEnter(category._id)}
                           onMouseLeave={() => handleCategoryMouseLeave()}
                     >
@@ -247,7 +247,7 @@ export function ModernCatalogTree({
                                             const srvExpanded = (expandedServices[service._id] ?? false) || hoveredService === service._id;
                                             return (
                                                 <div key={service._id}
-                                                     className="relative rounded-lg bg-primary/20 transition-colors"
+                                                     className="relative rounded-lg bg-primary/20 shadow-sm border border-border/20 transition-colors"
                                                      onMouseEnter={() => handleServiceMouseEnter(service._id)}
                                                      onMouseLeave={() => handleServiceMouseLeave()}
                                                 >
@@ -318,7 +318,7 @@ export function ModernCatalogTree({
                                                                     {service.subServices.map((sub, subIndex) => (
                                                                         <div
                                                                             key={sub._id}
-                                                                            className="relative flex items-center justify-between gap-2 rounded-md border border-border/40 bg-card p-2.5 hover:border-purple-500/30 hover:shadow-sm cursor-pointer transition-all group"
+                                                                            className="relative flex items-center justify-between gap-2 rounded-md border border-border/20 bg-card p-2.5 hover:border-purple-500/30 hover:shadow-md cursor-pointer transition-all group shadow-sm"
                                                                             onClick={() => onSelectNode('subService', sub)}
                                                                         >
                                                                             {/* Horizontal branch for SubService */}

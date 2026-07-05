@@ -17,7 +17,7 @@ interface WorkerTableProps {
 
 export function WorkerTable({ workers, onRowClick, onViewProfile, onReview }: WorkerTableProps) {
     return (
-        <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+        <div className="bg-card rounded-lg shadow-sm border border-border/20 overflow-hidden">
             <div className="overflow-x-auto">
                 <table className="w-full text-sm text-left">
                     <thead className="bg-slate-50 text-slate-500 font-medium border-b border-slate-200">

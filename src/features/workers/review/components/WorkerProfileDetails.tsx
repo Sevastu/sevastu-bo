@@ -7,7 +7,7 @@ export const WorkerProfileDetails = memo(function WorkerProfileDetails({ profile
     if (!profile) return null;
 
     return (
-        <div className="bg-card rounded-2xl border border-slate-200 shadow-sm overflow-hidden h-full">
+        <div className="bg-card rounded-lg border border-border/20 shadow-sm overflow-hidden h-full">
             <div className="px-6 py-4 border-b border-slate-200 bg-slate-50/50 flex items-center gap-2">
                 <User className="w-5 h-5 text-blue-600" />
                 <h3 className="text-sm font-bold text-slate-800 uppercase tracking-wider">Profile Information</h3>
