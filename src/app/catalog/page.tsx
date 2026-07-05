@@ -399,7 +399,7 @@ export default function CatalogPage() {
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
                 {/* LEFT PANEL (70%) */}
                 <div className="lg:col-span-8 flex flex-col gap-4">
-                    <div className="flex flex-col sm:flex-row gap-12 items-center bg-card p-4 rounded-lg">
+                    <div className="flex flex-col sm:flex-row gap-12 items-center bg-card p-4 rounded-lg shadow-sm border border-border/20">
                         <div className="relative w-full">
                             <Search className="absolute left-2 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                             <Input

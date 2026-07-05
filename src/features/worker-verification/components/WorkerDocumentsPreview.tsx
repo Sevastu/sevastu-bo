@@ -42,13 +42,13 @@ export const WorkerDocumentsPreview = memo(function WorkerDocumentsPreview({
 
       <button
         onClick={onViewDocuments}
-        className="w-full text-left p-3 bg-slate-50 rounded-xl border border-slate-200 hover:border-blue-300 hover:bg-blue-50/50 transition-all group"
+        className="w-full text-left p-3 bg-slate-100 rounded-sm border border-border/20 hover:border-blue-300 hover:bg-blue-50/50 transition-all group"
       >
         <div className="flex items-center justify-between mb-1.5">
-          <span className="text-sm font-bold text-slate-900 group-hover:text-blue-700 transition-colors">
+          <span className="text-sm font-bold text-primary group-hover:text-blue-800 transition-colors">
             {WORKER_VERIFICATION_CONSTANTS.VIEW_ALL_DOCUMENTS}
           </span>
-          <Eye size={16} className="text-slate-400 group-hover:text-blue-600 transition-colors" />
+          <Eye size={16} className="text-primary group-hover:text-blue-800 transition-colors" />
         </div>
         <div className="text-xs text-slate-500">
           {WORKER_VERIFICATION_CONSTANTS.DOCUMENTS_SUBTITLE}

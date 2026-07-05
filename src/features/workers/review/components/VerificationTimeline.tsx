@@ -13,7 +13,7 @@ export const VerificationTimeline = memo(function VerificationTimeline({ profile
     const events = useMemo(() => generateTimeline(profile, ocr, kyc), [profile, ocr, kyc]);
 
     return (
-        <div className="bg-card rounded-2xl border border-slate-200 shadow-sm p-6 h-full">
+        <div className="bg-card rounded-lg border border-border/20 shadow-sm p-6 h-full">
             <h3 className="text-lg font-bold text-slate-900 mb-6 flex items-center gap-2">
                 Verification Timeline
             </h3>

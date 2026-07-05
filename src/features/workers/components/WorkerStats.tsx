@@ -10,7 +10,7 @@ interface WorkerStatsCardProps {
 
 export function WorkerStats({ title, value, icon, subtitle, iconClassName = "text-blue-600 bg-blue-50" }: WorkerStatsCardProps) {
     return (
-        <div className="bg-white rounded-2xl p-6 shadow-[0_2px_10px_rgba(0,0,0,0.02)] border border-slate-100 flex">
+        <div className="bg-card rounded-lg p-6 shadow-sm border border-border/20 flex">
             <div className="flex justify-around items-start mr-6">
                 <div className={`p-3 rounded-xl ${iconClassName}`}>
                     {icon}

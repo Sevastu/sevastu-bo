@@ -103,7 +103,9 @@ export function WorkerReviewPanel({
                 isRefreshing={isLoading || isTriggeringOcr}
                 profile={profile}
                 ocr={ocr}
-            />
+                />
+                
+            
             <div className="flex-1 max-w-[1400px] mx-auto w-full space-y-6">
 
                 {/* 2. Quick Statistics */}

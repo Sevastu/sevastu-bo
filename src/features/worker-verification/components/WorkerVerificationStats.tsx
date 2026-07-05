@@ -9,7 +9,7 @@ interface WorkerVerificationStatsProps {
 export const WorkerVerificationStats = memo(function WorkerVerificationStats({ stats }: WorkerVerificationStatsProps) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
-      <div className="bg-amber-50/50 border border-amber-100 rounded-2xl p-5 shadow-sm transition-all hover:shadow-md hover:bg-amber-50">
+      <div className="bg-amber-50/50 border border-amber-100 rounded-lg p-5 shadow-sm transition-all hover:shadow-md hover:bg-amber-50">
         <div className="flex items-center justify-between">
           <div>
             <p className="text-xs font-bold text-amber-600/80 uppercase tracking-wider mb-1">Pending Reviews</p>
@@ -21,7 +21,7 @@ export const WorkerVerificationStats = memo(function WorkerVerificationStats({ s
         </div>
       </div>
       
-      <div className="bg-emerald-50/50 border border-emerald-100 rounded-2xl p-5 shadow-sm transition-all hover:shadow-md hover:bg-emerald-50">
+      <div className="bg-emerald-50/50 border border-emerald-100 rounded-lg p-5 shadow-sm transition-all hover:shadow-md hover:bg-emerald-50">
         <div className="flex items-center justify-between">
           <div>
             <p className="text-xs font-bold text-emerald-600/80 uppercase tracking-wider mb-1">Approved</p>
@@ -33,7 +33,7 @@ export const WorkerVerificationStats = memo(function WorkerVerificationStats({ s
         </div>
       </div>
       
-      <div className="bg-rose-50/50 border border-rose-100 rounded-2xl p-5 shadow-sm transition-all hover:shadow-md hover:bg-rose-50">
+      <div className="bg-rose-50/50 border border-rose-100 rounded-lg p-5 shadow-sm transition-all hover:shadow-md hover:bg-rose-50">
         <div className="flex items-center justify-between">
           <div>
             <p className="text-xs font-bold text-rose-600/80 uppercase tracking-wider mb-1">Rejected</p>
@@ -45,7 +45,7 @@ export const WorkerVerificationStats = memo(function WorkerVerificationStats({ s
         </div>
       </div>
       
-      <div className="bg-slate-50/50 border border-slate-200 rounded-2xl p-5 shadow-sm transition-all hover:shadow-md hover:bg-slate-50">
+      <div className="bg-slate-50/50 border border-slate-200 rounded-lg p-5 shadow-sm transition-all hover:shadow-md hover:bg-slate-50">
         <div className="flex items-center justify-between">
           <div>
             <p className="text-xs font-bold text-slate-600/80 uppercase tracking-wider mb-1">Total Workers</p>
@@ -57,7 +57,7 @@ export const WorkerVerificationStats = memo(function WorkerVerificationStats({ s
         </div>
       </div>
 
-      <div className="bg-blue-50/50 border border-blue-100 rounded-2xl p-5 shadow-sm transition-all hover:shadow-md hover:bg-blue-50">
+      <div className="bg-blue-50/50 border border-blue-100 rounded-lg p-5 shadow-sm transition-all hover:shadow-md hover:bg-blue-50">
         <div className="flex items-center justify-between">
           <div>
             <p className="text-xs font-bold text-blue-600/80 uppercase tracking-wider mb-1">Success Rate</p>

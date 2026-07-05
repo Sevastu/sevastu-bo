@@ -19,7 +19,7 @@ export const OCRDashboard = memo(function OCRDashboard({ ocr, profile, isTrigger
     const maskedAadhaar = ocr?.aadhaarLast4 ? `XXXX-XXXX-${ocr.aadhaarLast4}` : 'N/A';
 
     return (
-        <div className="bg-card rounded-2xl border border-slate-200 shadow-sm flex flex-col h-full">
+        <div className="bg-card rounded-lg border border-border/20 shadow-sm flex flex-col h-full">
             <div className="px-6 py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div className="flex items-center gap-2">
                     <Activity className="w-5 h-5 text-blue-600" />

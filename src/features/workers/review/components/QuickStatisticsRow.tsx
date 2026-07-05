@@ -60,7 +60,7 @@ export const QuickStatisticsRow = memo(function QuickStatisticsRow({ profile }: 
                 return (
                     <div 
                         key={index} 
-                        className="bg-card rounded-xl border border-slate-200 p-4 shadow-sm flex flex-col items-center justify-center text-center hover:-translate-y-1 hover:shadow-md transition-all duration-200"
+                        className="bg-card rounded-lg border border-border/20  p-4 shadow-sm flex flex-col items-center justify-center text-center hover:-translate-y-1 hover:shadow-md transition-all duration-200"
                     >
                         <div className={`p-2 rounded-lg ${stat.bg} ${stat.color} mb-2`}>
                             <Icon className="w-5 h-5" />

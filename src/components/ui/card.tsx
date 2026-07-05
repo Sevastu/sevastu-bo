@@ -12,7 +12,7 @@ function Card({
       data-slot="card"
       data-size={size}
       className={cn(
-        "bg-card border border-border rounded-xl transition-all duration-300",
+        "bg-card rounded-lg transition-all duration-300",
         className
       )}
       {...props}

@@ -14,7 +14,7 @@ interface SubServiceCardProps {
 
 export function SubServiceCard({ subService, onEdit, onToggleStatus, isAdmin }: SubServiceCardProps) {
     return (
-        <Card className="border-slate-200 shadow-sm hover:shadow-md transition-shadow duration-200 rounded-2xl overflow-hidden bg-white mb-4 lg:hidden">
+        <Card className="border-border/20 shadow-sm hover:shadow-md transition-shadow duration-200 rounded-lg overflow-hidden bg-card mb-4 lg:hidden">
             <CardContent className="p-5">
                 <div className="flex justify-between items-start mb-4">
                     <div>

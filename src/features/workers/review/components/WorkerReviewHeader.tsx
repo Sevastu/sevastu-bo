@@ -37,6 +37,9 @@ export const WorkerReviewHeader = memo(function WorkerReviewHeader({
                     <ArrowLeft className="h-4 w-4 mr-2" />
                     Back to List
                 </Button>
+                <div className='border border-border/20 p-2 rounded-lg bg-primary/10 shadow-sm'>
+                    <h2 className='text-primary font-semibold text-center'>Worker Review Profile</h2>
+                </div>
                 <Button 
                     variant="outline" 
                     onClick={onRefresh}
@@ -49,7 +52,7 @@ export const WorkerReviewHeader = memo(function WorkerReviewHeader({
             </div>
 
             {/* Scrollable Hero Content */}
-            <div className="bg-card flex flex-col rounded-2xl border border-slate-200 shadow-sm">
+            <div className="bg-card flex flex-col rounded-lg border border-border/20 shadow-sm">
                 <div className="p-6 flex flex-col lg:flex-row justify-center gap-8 items-center">
                 {/* Left side: Photo & Details */}
                 <div className="flex flex-col sm:flex-row gap-8 flex-1">

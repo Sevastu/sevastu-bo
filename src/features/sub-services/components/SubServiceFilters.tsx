@@ -25,7 +25,7 @@ export function SubServiceFilters({ filters, setFilters, services }: SubServiceF
     const hasActiveFilters = filters.search !== '' || filters.parentService !== 'all' || filters.status !== 'all' || filters.priceType !== 'all';
 
     return (
-        <div className="bg-card p-4 rounded-2xl border border-slate-200 shadow-sm mb-6 flex flex-col md:flex-row gap-4 items-center justify-between sticky top-4 z-10">
+        <div className="bg-card p-4 rounded-lg border border-border/20 shadow-sm mb-6 flex flex-col md:flex-row gap-4 items-center justify-between sticky top-4 z-10">
             <div className="relative w-full md:w-96 debounce={300}">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                 <Input
