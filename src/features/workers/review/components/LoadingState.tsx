@@ -19,7 +19,7 @@ export const LoadingState = memo(function LoadingState() {
 
             {/* Profile Summary Skeleton */}
             <div className="grid grid-cols-1 lg:grid-cols-[300px_1fr] gap-6">
-                <div className="bg-white p-6 rounded-2xl border border-slate-200 h-64 flex flex-col items-center justify-center">
+                <div className="bg-card p-6 rounded-lg border border-border/20 shadow-sm h-64 flex flex-col items-center justify-center">
                     <div className="w-32 h-32 bg-slate-200 rounded-full mb-4" />
                     <div className="w-32 h-5 bg-slate-200 rounded-md" />
                 </div>

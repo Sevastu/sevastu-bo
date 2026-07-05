@@ -45,7 +45,7 @@ export function MarketplaceDetailsPanel({
 
     if (!node || !type) {
         return (
-            <div className="h-full flex flex-col items-center justify-center p-8 text-center bg-slate-200/50 border border-slate-200 rounded-xl m-4">
+            <div className="h-full flex flex-col items-center justify-center p-8 text-center bg-card border border-border/20 rounded-lg m-4">
                 <div className="h-12 w-12 rounded-full bg-slate-100 flex items-center justify-center mb-4">
                     <Info className="h-6 w-6 text-slate-400" />
                 </div>

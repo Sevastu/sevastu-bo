@@ -18,7 +18,7 @@ interface WorkerCardProps {
 export function WorkerCard({ worker, onClick, onViewProfile, onReview }: WorkerCardProps) {
     return (
         <div 
-            className="group bg-white rounded-2xl shadow-[0_4px_20px_rgba(41,52,61,0.04)] border border-slate-100 overflow-hidden hover:-translate-y-1 hover:border-blue-500 hover:shadow-lg transition-all duration-300 ease-out flex flex-col h-full cursor-pointer"
+            className="group bg-card rounded-lg shadow-sm border border-border/20 overflow-hidden hover:-translate-y-1 hover:shadow-lg transition-all duration-300 ease-out flex flex-col h-full cursor-pointer"
             onClick={() => onClick(worker)}
         >
             <div className="p-6 pb-4 flex items-start justify-between">

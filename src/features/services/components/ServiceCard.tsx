@@ -44,7 +44,7 @@ export function ServiceCard({ service, categoryName, onEdit, onDelete }: Service
     ];
 
     return (
-        <div className="group bg-card rounded-md mt-2 shadow-[0_4px_20px_rgba(41,52,61,0.04)] border border-slate-100 overflow-hidden hover:-translate-y-1 hover:border-blue-500 hover:shadow-lg transition-all duration-300 ease-out flex flex-col h-full">
+        <div className="group bg-card rounded-lg mt-2 shadow-sm border border-border/20 overflow-hidden hover:-translate-y-1 hover:shadow-lg transition-all duration-300 ease-out flex flex-col h-full">
             {/* Image Header */}
             <div className="relative h-44 bg-slate-100 overflow-hidden shrink-0">
                 <img
@@ -88,7 +88,7 @@ export function ServiceCard({ service, categoryName, onEdit, onDelete }: Service
                         </h3>
                     </div>
                     <Dropdown
-                        className="w-48 bg-white shadow-lg rounded-xl border border-slate-100 z-20 overflow-hidden"
+                        className="w-48 bg-card shadow-sm rounded-lg border border-border/20 z-20 overflow-hidden"
                         trigger={
                             <button className="p-1.5 text-slate-400 hover:text-slate-700 hover:bg-slate-50 rounded-lg transition-colors -mr-2">
                                 <MoreVertical className="w-5 h-5" />
@@ -110,7 +110,7 @@ export function ServiceCard({ service, categoryName, onEdit, onDelete }: Service
                 </p>
 
                 {/* Metrics */}
-                <div className="flex gap-3 mb-6 bg-slate-200/50 rounded-xl p-3 border border-slate-100/50">
+                <div className="flex gap-3 mb-6 shadow-sm rounded-lg p-3 border border-border/20">
                     <div className="flex-1 text-center">
                         <div className="text-xl font-bold text-slate-700">{subServiceCount}</div>
                         <div className="text-[11px] text-slate-500 uppercase tracking-wider font-semibold mt-0.5">Sub-services</div>

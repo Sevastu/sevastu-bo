@@ -16,7 +16,7 @@ export const WorkerVerificationFilters = memo(function WorkerVerificationFilters
   onStatusChange
 }: WorkerVerificationFiltersProps) {
   return (
-    <div className="bg-card rounded-2xl p-4 border border-slate-200 shadow-sm sticky top-0 z-10">
+    <div className="bg-card rounded-lg p-4 border border-border/20 shadow-sm">
       <div className="flex flex-col lg:flex-row gap-4">
         {/* Search */}
         <div className="flex-1">

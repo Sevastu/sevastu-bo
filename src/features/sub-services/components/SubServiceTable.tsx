@@ -72,7 +72,7 @@ export function SubServiceTable({ data, onEdit, onToggleStatus, isAdmin }: SubSe
     ];
 
     return (
-        <div className="hidden lg:block bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+        <div className="hidden lg:block bg-card rounded-lg border border-border/20 shadow-sm overflow-hidden">
             <DataTable
                 data={data}
                 columns={columns}

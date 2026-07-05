@@ -44,7 +44,7 @@ export function CategoryCard({ category, onEdit, onDelete }: CategoryCardProps) 
     ];
 
     return (
-        <div className="group bg-card rounded-sm shadow-[0_4px_20px_rgba(41,52,61,0.04)] border border-slate-100 overflow-hidden hover:-translate-y-1 hover:border-blue-500 hover:shadow-lg transition-all duration-300 ease-out flex flex-col h-full">
+        <div className="group bg-card rounded-lg shadow-sm border border-border/20 overflow-hidden hover:-translate-y-1 hover: hover:shadow-lg transition-all duration-300 ease-out flex flex-col h-full">
             {/* Image Header */}
             <div className="relative aspect-[16/9] bg-slate-100 overflow-hidden shrink-0">
                 <img
@@ -107,7 +107,7 @@ export function CategoryCard({ category, onEdit, onDelete }: CategoryCardProps) 
                 </p>
 
                 {/* Metrics */}
-                <div className="flex gap-3 mb-6 bg-slate-50/50 rounded-xl p-3 border border-slate-100/50">
+                <div className="flex gap-3 mb-6 rounded-lg p-3 border border-border/20">
                     <div className="flex-1 text-center">
                         <div className="text-xl font-bold text-slate-700">{serviceCount}</div>
                         <div className="text-[11px] text-slate-500 uppercase tracking-wider font-semibold mt-0.5">Services</div>

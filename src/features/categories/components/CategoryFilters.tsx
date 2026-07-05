@@ -44,7 +44,7 @@ export function CategoryFilters({
     ];
 
     return (
-        <div className="sticky top-0 z-30 backdrop-blur-md mt-4 mb-4 bg-card rounded-2xl shadow-sm border border-slate-200 p-4">
+        <div className="backdrop-blur-md mt-4 mb-4 bg-card rounded-lg shadow-sm border border-border/20 p-4">
             <div className="">
                 <div className="flex flex-col xl:flex-row gap-4 items-center justify-between">
                     <div className="relative flex-1 w-full max-w-md">

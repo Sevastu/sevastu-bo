@@ -43,7 +43,7 @@ export const DocumentsSection = memo(function DocumentsSection({
 
     if (!hasDocuments) {
         return (
-            <div className="rounded-2xl border border-dashed border-slate-300 bg-red-200 p-10 text-center shadow-sm">
+            <div className="rounded-lg border border-dashed border-slate-300 bg-red-200 p-10 text-center shadow-sm">
                 <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-slate-100">
                     <FileText className="h-7 w-7 text-slate-400" />
                 </div>
@@ -70,7 +70,7 @@ export const DocumentsSection = memo(function DocumentsSection({
                     </h3>
                 </div>
 
-                <span className="rounded-full bg-blue-50 px-3 py-1 text-xs font-semibold text-blue-700">
+                <span className="rounded-lg bg-blue-50 px-3 py-1 text-xs font-semibold text-blue-700">
                     {Number(Boolean(frontKey)) + Number(Boolean(backKey))} Documents
                 </span>
             </div>
