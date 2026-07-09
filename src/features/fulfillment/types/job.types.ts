@@ -11,28 +11,26 @@ export enum JobStatus {
 
 export interface Job {
   id: string;
-  customerId: string;
-  customerName?: string;
-  customerPhone?: string;
-  categoryId: string;
-  categoryName?: string;
-  serviceId: string;
-  serviceName?: string;
-  subServiceId: string;
-  subServiceName?: string;
+  customer?: { id: string; name?: string; phone?: string; email?: string };
+  category?: { id: string; name?: string };
+  service?: { id: string; name?: string };
+  subService?: { id: string; name?: string };
   serviceDescription?: string;
   address: string;
   coordinates: number[];
   preferredSchedule: string;
   status: JobStatus;
-  currentAssignmentId?: string;
-  assignedWorkerName?: string;
-  assignmentStatus?: string;
-  assignedAt?: string;
+  assignment?: {
+    id: string;
+    worker?: { id: string; name?: string; phone?: string };
+    status: string;
+    assignedAt?: string;
+  } | null;
   confirmedSchedule?: string;
   estimatedDuration?: number;
   createdAt: string;
   updatedAt: string;
+  history?: any[];
 }
 
 export interface CreateJobRequest {

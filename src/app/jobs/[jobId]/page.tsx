@@ -169,11 +169,11 @@ export default function JobDetailPage({ params }: JobDetailPageProps) {
           <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <p className="text-xs text-muted-foreground uppercase tracking-widest">Customer Name</p>
-              <p className="text-sm font-medium mt-1">{job.customerName || '-'}</p>
+              <p className="text-sm font-medium mt-1">{job.customer?.name || '-'}</p>
             </div>
             <div>
               <p className="text-xs text-muted-foreground uppercase tracking-widest">Phone</p>
-              <p className="text-sm font-medium mt-1">{job.customerPhone || '-'}</p>
+              <p className="text-sm font-medium mt-1">{job.customer?.phone || '-'}</p>
             </div>
             <div className="md:col-span-2">
               <p className="text-xs text-muted-foreground uppercase tracking-widest">Address</p>
@@ -200,15 +200,17 @@ export default function JobDetailPage({ params }: JobDetailPageProps) {
           <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <p className="text-xs text-muted-foreground uppercase tracking-widest">Category</p>
-              <p className="text-sm font-medium mt-1">{job.categoryName || '-'}</p>
+              <p className="text-sm font-medium mt-1">{job.category?.name || '-'}</p>
             </div>
             <div>
               <p className="text-xs text-muted-foreground uppercase tracking-widest">Service</p>
-              <p className="text-sm font-medium mt-1">{job.serviceName || '-'}</p>
+              <p className="text-sm font-medium mt-1">{job.service?.name || '-'}</p>
             </div>
             <div>
               <p className="text-xs text-muted-foreground uppercase tracking-widest">Sub Service</p>
-              <p className="text-sm font-medium mt-1">{job.subServiceName || '-'}</p>
+              <p className="text-sm font-medium mt-1">
+                {job.subService?.name || '-'}
+              </p>
             </div>
             <div>
               <p className="text-xs text-muted-foreground uppercase tracking-widest">Description</p>
@@ -227,16 +229,20 @@ export default function JobDetailPage({ params }: JobDetailPageProps) {
           <CardContent className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
               <p className="text-xs text-muted-foreground uppercase tracking-widest">Assigned Worker</p>
-              <p className="text-sm font-medium mt-1">{job.assignedWorkerName || '-'}</p>
+              <p className="text-sm font-medium mt-1">{job.assignment?.worker?.name || '-'}</p>
             </div>
             <div>
               <p className="text-xs text-muted-foreground uppercase tracking-widest">Assignment Status</p>
-              <p className="text-sm font-medium mt-1">{job.assignmentStatus || '-'}</p>
+              <p className="text-sm font-medium mt-1">
+                {job.assignment?.status || '-'}
+              </p>
             </div>
             <div>
               <p className="text-xs text-muted-foreground uppercase tracking-widest">Assigned Time</p>
               <p className="text-sm font-medium mt-1">
-                {job.assignedAt ? formatDate(new Date(job.assignedAt), "dd MMM, hh:mm a") : '-'}
+                {job.assignment?.assignedAt
+                  ? formatDate(new Date(job.assignment.assignedAt), "dd MMM, hh:mm a") 
+                  : '-'}
               </p>
             </div>
           </CardContent>

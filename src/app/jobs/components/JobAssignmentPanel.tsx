@@ -10,7 +10,7 @@ import { cn } from "@/lib/utils";
 
 interface JobAssignmentPanelProps {
     jobId: string;
-    currentWorkerId: string;
+    currentWorkerId?: string;
     jobStatus: JobStatus;
     onAssigned: () => void;
 }

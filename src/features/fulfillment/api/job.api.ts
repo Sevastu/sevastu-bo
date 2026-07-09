@@ -3,14 +3,15 @@ import { Job, CreateJobRequest, UpdateJobRequest, JobListResponse } from '../typ
 
 export class JobApi {
   async getJobs(params?: { status?: string; customerId?: string; page?: number; limit?: number; sort?: string; order?: string }): Promise<JobListResponse> {
-    const res = await apiClient.get('/jobs', { params });
+    const res = await apiClient.get('/admin/jobs', { params });
     const body = res.data as
       | Job[]
       | {
-          success?: boolean;
-          data?: Job[];
-          pagination?: { total: number; page?: number; limit?: number };
-        };
+        success?: boolean;
+        data?: Job[];
+        pagination?: { total: number; page?: number; limit?: number };
+      };
+    // console.log("response", body);
 
     let rows: any[] = [];
     if (Array.isArray(body)) {
@@ -34,27 +35,31 @@ export class JobApi {
   }
 
   async getJob(jobId: string): Promise<Job> {
-    const res = await apiClient.get<Job>(`/jobs/${jobId}`);
+    const res = await apiClient.get<Job>(`/admin/jobs/${jobId}`);
     const data = res.data as any;
-    // Map _id to id for MongoDB compatibility
+
+    // If it's wrapped in a success/data object, extract it
+    const jobData = (data && data.success !== undefined && data.data) ? data.data : data;
+
+    // console.log("job data", jobData);
     return {
-      ...data,
-      id: data.id || data._id,
+      ...jobData,
+      id: jobData.id || jobData._id,
     };
   }
 
   async createJob(payload: CreateJobRequest): Promise<Job> {
-    const res = await apiClient.post<Job>('/jobs', payload);
+    const res = await apiClient.post<Job>('/admin/jobs', payload);
     return res.data;
   }
 
   async updateJob(jobId: string, payload: UpdateJobRequest): Promise<Job> {
-    const res = await apiClient.patch<Job>(`/jobs/${jobId}`, payload);
+    const res = await apiClient.patch<Job>(`/admin/jobs/${jobId}`, payload);
     return res.data;
   }
 
   async cancelJob(jobId: string): Promise<Job> {
-    const res = await apiClient.patch<Job>(`/jobs/${jobId}/cancel`);
+    const res = await apiClient.patch<Job>(`/admin/jobs/${jobId}/cancel`);
     return res.data;
   }
 }

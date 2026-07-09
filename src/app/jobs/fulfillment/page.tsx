@@ -14,6 +14,7 @@ import { formatDate } from "@/lib/date-utils";
 import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
 import { jobStatusColors } from "@/lib/status-colors";
+import { JobKpiCards } from "../components/JobKpiCards";
 
 const jobApi = new JobApi();
 
@@ -61,7 +62,7 @@ export default function FulfillmentJobListPage() {
         limit,
         sort: sortConfig.field,
         order: sortConfig.order,
-      });
+      } as any);
       setData(res.data);
       setTotal(res.pagination.total);
     } catch (err) {
@@ -98,38 +99,36 @@ export default function FulfillmentJobListPage() {
       )
     },
     {
-      key: "customerId",
+      key: "customer",
       label: "Customer",
       render: (item: Job) => (
-        <span className="font-medium text-sm">
-          {item.customerId ? `Customer #${item.customerId.slice(-4)}` : '-'}
-        </span>
+        <span className="font-medium text-sm">{item.customer?.name ?? "-"}</span>
       )
     },
     {
-      key: "categoryId",
+      key: "category",
       label: "Category",
       render: (item: Job) => (
         <span className="font-medium text-sm">
-          {item.categoryId ? `Category #${item.categoryId.slice(-4)}` : '-'}
+          {item.category?.name ?? '-'}
         </span>
       )
     },
     {
-      key: "serviceId",
+      key: "service",
       label: "Service",
       render: (item: Job) => (
         <span className="font-medium text-sm">
-          {item.serviceId ? `Service #${item.serviceId.slice(-4)}` : '-'}
+          {item.service?.name ?? '-'}
         </span>
       )
     },
     {
-      key: "subServiceId",
+      key: "subService",
       label: "Sub Service",
       render: (item: Job) => (
         <span className="font-medium text-sm">
-          {item.subServiceId ? `Sub #${item.subServiceId.slice(-4)}` : '-'}
+          {item.subService?.name ?? '-'}
         </span>
       )
     },
@@ -143,11 +142,11 @@ export default function FulfillmentJobListPage() {
       )
     },
     {
-      key: "currentAssignmentId",
+      key: "assignment",
       label: "Assigned Worker",
       render: (item: Job) => (
         <span className="font-medium text-sm">
-          {item.currentAssignmentId ? `Worker #${item.currentAssignmentId.slice(-4)}` : '-'}
+          {item.assignment?.worker?.name ?? '-'}
         </span>
       )
     },
@@ -198,6 +197,17 @@ export default function FulfillmentJobListPage() {
 
   const totalPages = Math.ceil(total / limit) || 1;
 
+  const stats = React.useMemo(() => {
+    return {
+      total: total,
+      cancelled: data.filter(job => job.status === JobStatus.CANCELLED).length,
+      assigned: data.filter(job => job.status === JobStatus.ASSIGNED).length,
+      inProgress: data.filter(job => job.status === JobStatus.IN_PROGRESS).length,
+      open: data.filter(job => job.status === JobStatus.CREATED).length,
+      completed: data.filter(job => job.status === JobStatus.COMPLETED).length,
+    };
+  }, [data, total]);
+
   return (
     <AppLayout>
       <div className="flex flex-col gap-8">
@@ -207,6 +217,8 @@ export default function FulfillmentJobListPage() {
             <p className="text-muted-foreground text-lg">Monitor and manage all service requests.</p>
           </div>
         </div>
+
+        <JobKpiCards stats={stats} loading={loading} />
 
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4 p-4 rounded-3xl bg-muted/30 border border-border/50">
           <div className="relative">
@@ -269,7 +281,7 @@ export default function FulfillmentJobListPage() {
           page={page}
           limit={limit}
           onPageChange={setPage}
-          onSearch={() => {}}
+          onSearch={() => { }}
         />
       </div>
     </AppLayout>

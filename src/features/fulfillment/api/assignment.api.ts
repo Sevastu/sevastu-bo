@@ -15,7 +15,7 @@ export class AssignmentApi {
   // }
 
   async createAssignment(jobId: string, workerId: string): Promise<Assignment> {
-    const res = await apiClient.post<Assignment>(`/jobs/${jobId}/assign/${workerId}`);
+    const res = await apiClient.post<Assignment>(`/admin/jobs/${jobId}/assign/${workerId}`);
     return res.data;
   }
 
@@ -26,22 +26,22 @@ export class AssignmentApi {
   // }
 
   async acceptAssignment(assignmentId: string): Promise<Assignment> {
-    const res = await apiClient.post<Assignment>(`/assignments/${assignmentId}/accept`);
+    const res = await apiClient.post<Assignment>(`/admin/assignments/${assignmentId}/accept`);
     return res.data;
   }
 
   async startAssignment(assignmentId: string): Promise<Assignment> {
-    const res = await apiClient.post<Assignment>(`/assignments/${assignmentId}/start`);
+    const res = await apiClient.post<Assignment>(`/admin/assignments/${assignmentId}/start`);
     return res.data;
   }
 
   async completeAssignment(assignmentId: string): Promise<Assignment> {
-    const res = await apiClient.post<Assignment>(`/assignments/${assignmentId}/complete`);
+    const res = await apiClient.post<Assignment>(`/admin/assignments/${assignmentId}/complete`);
     return res.data;
   }
 
   async cancelAssignment(assignmentId: string): Promise<Assignment> {
-    const res = await apiClient.post<Assignment>(`/assignments/${assignmentId}/cancel`);
+    const res = await apiClient.post<Assignment>(`/admin/assignments/${assignmentId}/cancel`);
     return res.data;
   }
 

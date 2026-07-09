@@ -3,13 +3,14 @@ import { Job, JobFilters, JobStats, JobStatus, MatchedWorker } from './types';
 
 export const fetchJobs = async (filters: JobFilters & { page?: number; limit?: number }) => {
     const res = await apiClient.get('/admin/jobs', { params: filters });
+    console.log("response", res.data);
     const body = res.data as
         | Job[]
         | {
-              success?: boolean;
-              data?: Job[];
-              pagination?: { total: number; page?: number; limit?: number };
-          };
+            success?: boolean;
+            data?: Job[];
+            pagination?: { total: number; page?: number; limit?: number };
+        };
 
     let rows: Job[] = [];
     if (Array.isArray(body)) {
@@ -30,12 +31,12 @@ export const fetchJobStats = async (): Promise<JobStats> => {
     // Derive counts from the existing /admin/jobs endpoint using per-status
     // pagination queries (limit=1) — no dedicated stats endpoint needed.
     const [total, cancelled, assigned, inProgress, open, completed] = await Promise.all([
-        fetchJobs({ status: 'all',                    page: 1, limit: 1 }).then(r => r.pagination.total),
-        fetchJobs({ status: JobStatus.CANCELLED,      page: 1, limit: 1 }).then(r => r.pagination.total),
-        fetchJobs({ status: JobStatus.ASSIGNED,       page: 1, limit: 1 }).then(r => r.pagination.total),
-        fetchJobs({ status: JobStatus.IN_PROGRESS,    page: 1, limit: 1 }).then(r => r.pagination.total),
-        fetchJobs({ status: JobStatus.OPEN,           page: 1, limit: 1 }).then(r => r.pagination.total),
-        fetchJobs({ status: JobStatus.COMPLETED,      page: 1, limit: 1 }).then(r => r.pagination.total),
+        fetchJobs({ status: 'all', page: 1, limit: 1 }).then(r => r.pagination.total),
+        fetchJobs({ status: JobStatus.CANCELLED, page: 1, limit: 1 }).then(r => r.pagination.total),
+        fetchJobs({ status: JobStatus.ASSIGNED, page: 1, limit: 1 }).then(r => r.pagination.total),
+        fetchJobs({ status: JobStatus.IN_PROGRESS, page: 1, limit: 1 }).then(r => r.pagination.total),
+        fetchJobs({ status: JobStatus.OPEN, page: 1, limit: 1 }).then(r => r.pagination.total),
+        fetchJobs({ status: JobStatus.COMPLETED, page: 1, limit: 1 }).then(r => r.pagination.total),
     ]);
 
     return { total, cancelled, assigned, inProgress, open, completed };
@@ -47,17 +48,17 @@ export const fetchJobById = async (id: string) => {
 };
 
 export const cancelJob = async (id: string, reason: string) => {
-    const res = await apiClient.patch<Job>(`/admin/jobs/${id}/status`, { 
+    const res = await apiClient.patch<Job>(`/admin/jobs/${id}/status`, {
         status: JobStatus.CANCELLED,
-        context: reason 
+        context: reason
     });
     return res.data;
 };
 
 export const updateJobStatus = async (id: string, status: JobStatus, context?: string) => {
-    const res = await apiClient.patch<Job>(`/admin/jobs/${id}/status`, { 
+    const res = await apiClient.patch<Job>(`/admin/jobs/${id}/status`, {
         status,
-        context 
+        context
     });
     return res.data;
 };
@@ -68,7 +69,7 @@ export const fetchBestWorkers = async (id: string) => {
         success?: boolean;
         data?: MatchedWorker[];
     };
-    
+
     return body.data || [];
 };
 

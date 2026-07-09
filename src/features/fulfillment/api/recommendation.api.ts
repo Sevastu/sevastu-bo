@@ -3,7 +3,7 @@ import { Recommendation } from '../types/recommendation.types';
 
 export class RecommendationApi {
   async getRecommendations(jobId: string): Promise<Recommendation[]> {
-    const res = await apiClient.get<Recommendation[]>(`/jobs/${jobId}/recommendations`);
+    const res = await apiClient.get<Recommendation[]>(`/admin/jobs/${jobId}/recommendations`);
     return res.data;
   }
 
@@ -14,12 +14,12 @@ export class RecommendationApi {
   // }
 
   async acceptRecommendation(jobId: string, recommendationId: string): Promise<Recommendation> {
-    const res = await apiClient.post<Recommendation>(`/jobs/${jobId}/recommendations/${recommendationId}/accept`);
+    const res = await apiClient.post<Recommendation>(`/admin/jobs/${jobId}/recommendations/${recommendationId}/accept`);
     return res.data;
   }
 
   async declineRecommendation(jobId: string, recommendationId: string): Promise<Recommendation> {
-    const res = await apiClient.post<Recommendation>(`/jobs/${jobId}/recommendations/${recommendationId}/decline`);
+    const res = await apiClient.post<Recommendation>(`/admin/jobs/${jobId}/recommendations/${recommendationId}/decline`);
     return res.data;
   }
 

@@ -15,7 +15,7 @@ export class ScheduleApi {
   // }
 
   async createSchedule(jobId: string, payload: { workerId: string; scheduledStart: string; scheduledEnd: string }): Promise<Schedule> {
-    const res = await apiClient.post<Schedule>(`/jobs/${jobId}/schedule`, payload);
+    const res = await apiClient.post<Schedule>(`/admin/jobs/${jobId}/schedule`, payload);
     return res.data;
   }
 
@@ -42,7 +42,7 @@ export class ScheduleApi {
 
   // Backend endpoint: GET /jobs/:jobId/schedule
   async getScheduleByJob(jobId: string): Promise<Schedule> {
-    const res = await apiClient.get<Schedule>(`/jobs/${jobId}/schedule`);
+    const res = await apiClient.get<Schedule>(`/admin/jobs/${jobId}/schedule`);
     return res.data;
   }
 
