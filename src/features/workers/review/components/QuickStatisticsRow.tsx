@@ -12,44 +12,44 @@ export const QuickStatisticsRow = memo(function QuickStatisticsRow({ profile }: 
             label: 'Rating',
             value: profile?.rating ? `${profile.rating}` : 'N/A',
             icon: Star,
-            color: 'text-amber-500',
-            bg: 'bg-amber-50'
+            color: 'text-warning',
+            bg: 'bg-warning/10'
         },
         {
             label: 'Total Jobs',
             value: profile?.completedJobs || '0',
             icon: Package,
-            color: 'text-blue-500',
-            bg: 'bg-blue-50'
+            color: 'text-primary',
+            bg: 'bg-primary/10'
         },
         {
             label: 'Base Price',
             // @ts-ignore - assuming basePrice exists or falling back
             value: profile?.basePrice ? `₹${profile.basePrice}` : 'N/A',
             icon: IndianRupee,
-            color: 'text-emerald-500',
-            bg: 'bg-emerald-50'
+            color: 'text-success',
+            bg: 'bg-success/10'
         },
         {
             label: 'Travel Dist.',
             value: profile?.travelDistance ? `${profile.travelDistance} km` : 'N/A',
             icon: MapPin,
-            color: 'text-rose-500',
-            bg: 'bg-rose-50'
+            color: 'text-destructive',
+            bg: 'bg-destructive/10'
         },
         {
             label: 'Skills',
             value: profile?.skills?.length || '0',
             icon: Wrench,
-            color: 'text-indigo-500',
-            bg: 'bg-indigo-50'
+            color: 'text-primary',
+            bg: 'bg-primary/10'
         },
         {
             label: 'Availability',
             value: profile?.availability ? 'Online' : 'Offline',
             icon: Clock,
-            color: profile?.availability ? 'text-emerald-500' : 'text-slate-500',
-            bg: profile?.availability ? 'bg-emerald-50' : 'bg-slate-50'
+            color: profile?.availability ? 'text-success' : 'text-muted-foreground',
+            bg: profile?.availability ? 'bg-success/10' : 'bg-muted'
         }
     ];
 
@@ -65,10 +65,10 @@ export const QuickStatisticsRow = memo(function QuickStatisticsRow({ profile }: 
                         <div className={`p-2 rounded-lg ${stat.bg} ${stat.color} mb-2`}>
                             <Icon className="w-5 h-5" />
                         </div>
-                        <div className="text-xl font-bold text-slate-900 leading-tight">
+                        <div className="text-xl font-bold text-foreground leading-tight">
                             {stat.value}
                         </div>
-                        <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider mt-1">
+                        <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mt-1">
                             {stat.label}
                         </div>
                     </div>

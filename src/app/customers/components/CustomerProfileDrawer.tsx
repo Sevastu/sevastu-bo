@@ -75,7 +75,7 @@ export function CustomerProfileDrawer({ customerId, isOpen, onClose }: CustomerP
         <>
             {/* Backdrop */}
             <div 
-                className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-50 transition-all duration-300 ease-out"
+                className="fixed inset-0 bg-foreground/40 backdrop-blur-sm z-50 transition-all duration-300 ease-out"
                 onClick={onClose}
             />
             
@@ -84,11 +84,11 @@ export function CustomerProfileDrawer({ customerId, isOpen, onClose }: CustomerP
                 isOpen ? 'translate-x-0' : 'translate-x-full'
             }`}>
                 {/* Header */}
-                <div className="flex items-center justify-between p-4 bg-white border-b border-slate-200 sticky top-0 z-10 shadow-[0_4px_20px_-10px_rgba(0,0,0,0.05)]">
-                    <h2 className="text-lg font-bold text-slate-900">Customer Profile</h2>
+                <div className="flex items-center justify-between p-4 bg-card border-b border-border sticky top-0 z-10 shadow-[0_4px_20px_-10px_rgba(0,0,0,0.05)]">
+                    <h2 className="text-lg font-bold text-foreground">Customer Profile</h2>
                     <button
                         onClick={onClose}
-                        className="p-1.5 rounded-xl hover:bg-slate-100 text-slate-400 hover:text-slate-600 transition-all focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="p-1.5 rounded-xl hover:bg-muted text-muted-foreground hover:text-foreground transition-all focus:outline-none focus:ring-2 focus:ring-primary"
                     >
                         <X className="w-5 h-5" />
                     </button>

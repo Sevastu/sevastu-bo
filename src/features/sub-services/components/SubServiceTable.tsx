@@ -18,14 +18,14 @@ export function SubServiceTable({ data, onEdit, onToggleStatus, isAdmin }: SubSe
             key: "name",
             label: "Sub-Service",
             render: (item: SubService) => (
-                <div className="font-semibold text-slate-900">{item.name}</div>
+                <div className="font-semibold text-foreground">{item.name}</div>
             )
         },
         {
             key: "serviceId",
             label: "Parent Service",
             render: (item: SubService) => (
-                <div className="text-slate-600">
+                <div className="text-muted-foreground">
                     {typeof item.serviceId === 'string' ? item.serviceId : item.serviceId?.name}
                 </div>
             )
@@ -50,7 +50,7 @@ export function SubServiceTable({ data, onEdit, onToggleStatus, isAdmin }: SubSe
             key: "createdAt",
             label: "Added On",
             render: (item: SubService) => (
-                <div className="text-slate-500 text-sm">
+                <div className="text-muted-foreground text-sm">
                     {item.createdAt ? new Date(item.createdAt).toLocaleDateString('en-IN', {
                         day: 'numeric', month: 'short', year: 'numeric'
                     }) : '-'}

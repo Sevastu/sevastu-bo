@@ -19,7 +19,7 @@ export function timeAgo(dateString: string) {
     return Math.floor(seconds) + ' seconds ago';
 }
 
-export const renderIcon = (iconName?: string, className: string = "w-5 h-5 text-blue-600") => {
+export const renderIcon = (iconName?: string, className: string = "w-5 h-5 text-primary") => {
     if (!iconName) return React.createElement(LucideIcons.Briefcase, { className });
     const Icon = (LucideIcons as any)[iconName];
     return Icon ? React.createElement(Icon, { className }) : React.createElement(LucideIcons.Briefcase, { className });

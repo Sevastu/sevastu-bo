@@ -9,12 +9,12 @@ export const WorkerServices = memo(function WorkerServices({ services }: WorkerS
 
   return (
     <div className="mb-4">
-      <div className="text-sm font-semibold text-slate-700 mb-2">Services</div>
+      <div className="text-sm font-semibold text-foreground mb-2">Services</div>
       <div className="flex flex-wrap gap-2">
         {services.map((service, index) => (
           <span
             key={`${service}-${index}`}
-            className="px-2.5 py-1 bg-blue-50 text-blue-700 text-xs font-semibold rounded-lg border border-blue-100"
+            className="px-2.5 py-1 bg-primary/10 text-primary text-xs font-semibold rounded-lg border border-primary/20"
           >
             {service}
           </span>

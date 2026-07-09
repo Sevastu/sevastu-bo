@@ -1,7 +1,7 @@
 import React from 'react';
 import * as LucideIcons from 'lucide-react';
 
-export const renderIcon = (iconName?: string, className: string = "w-5 h-5 text-blue-600") => {
+export const renderIcon = (iconName?: string, className: string = "w-5 h-5 text-primary") => {
     if (!iconName) return React.createElement(LucideIcons.Package, { className });
     const Icon = (LucideIcons as any)[iconName];
     return Icon ? React.createElement(Icon, { className }) : React.createElement(LucideIcons.Package, { className });

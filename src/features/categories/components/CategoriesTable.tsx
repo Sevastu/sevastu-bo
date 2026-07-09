@@ -17,18 +17,18 @@ export function CategoriesTable({ categories, onEdit, onDelete }: CategoriesTabl
     const router = useRouter();
 
     const getActions = (category: Category) => [
-        { label: "Edit Category", icon: Edit, action: () => onEdit(category), className: "text-slate-700 hover:bg-slate-50" },
-        { label: "View Services", icon: Layers, action: () => router.push(`/services?categoryId=${category._id}`), className: "text-slate-700 hover:bg-slate-50" },
-        { label: "Duplicate Category", icon: Copy, action: () => {}, className: "text-slate-700 hover:bg-slate-50" },
-        { label: "Archive Category", icon: Archive, action: () => {}, className: "text-slate-700 hover:bg-slate-50" },
-        { label: "Delete Category", icon: Trash2, action: () => onDelete(category), className: "text-red-600 hover:bg-red-50" }
+        { label: "Edit Category", icon: Edit, action: () => onEdit(category), className: "text-foreground hover:bg-muted" },
+        { label: "View Services", icon: Layers, action: () => router.push(`/services?categoryId=${category._id}`), className: "text-foreground hover:bg-muted" },
+        { label: "Duplicate Category", icon: Copy, action: () => {}, className: "text-foreground hover:bg-muted" },
+        { label: "Archive Category", icon: Archive, action: () => {}, className: "text-foreground hover:bg-muted" },
+        { label: "Delete Category", icon: Trash2, action: () => onDelete(category), className: "text-destructive hover:bg-destructive/10" }
     ];
 
     return (
-        <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+        <div className="bg-card rounded-2xl shadow-sm border border-border overflow-hidden">
             <div className="overflow-x-auto">
                 <table className="w-full text-sm text-left">
-                    <thead className="bg-slate-50 text-slate-500 font-medium border-b border-slate-200">
+                    <thead className="bg-muted text-muted-foreground font-medium border-b border-border">
                         <tr>
                             <th className="px-6 py-4 rounded-tl-2xl">Category</th>
                             <th className="px-6 py-4">Status</th>
@@ -38,12 +38,12 @@ export function CategoriesTable({ categories, onEdit, onDelete }: CategoriesTabl
                             <th className="px-6 py-4 text-right rounded-tr-2xl">Actions</th>
                         </tr>
                     </thead>
-                    <tbody className="divide-y divide-slate-100">
+                    <tbody className="divide-y divide-border">
                         {categories.map(category => (
-                            <tr key={category._id} className="hover:bg-slate-50/80 transition-colors group">
+                            <tr key={category._id} className="hover:bg-muted/80 transition-colors group">
                                 <td className="px-6 py-4">
                                     <div className="flex items-center gap-4">
-                                        <div className="w-10 h-10 rounded-lg overflow-hidden shrink-0 border border-slate-200">
+                                        <div className="w-10 h-10 rounded-lg overflow-hidden shrink-0 border border-border">
                                             <img
                                                 src={category.imageUrl || FALLBACK_IMAGE}
                                                 alt={category.name}
@@ -52,11 +52,11 @@ export function CategoriesTable({ categories, onEdit, onDelete }: CategoriesTabl
                                             />
                                         </div>
                                         <div>
-                                            <div className="font-semibold text-slate-900 group-hover:text-blue-600 transition-colors flex items-center gap-1.5">
+                                            <div className="font-semibold text-foreground group-hover:text-primary transition-colors flex items-center gap-1.5">
                                                 <div className="w-4 h-4 opacity-70">{renderIcon(category.icon || category.iconKey, "w-full h-full")}</div>
                                                 {category.name}
                                             </div>
-                                            <div className="text-xs text-slate-500 mt-0.5">
+                                            <div className="text-xs text-muted-foreground mt-0.5">
                                                 {category.description ? (
                                                     <span className="line-clamp-1 max-w-[200px]">{category.description}</span>
                                                 ) : 'No description'}
@@ -65,24 +65,24 @@ export function CategoriesTable({ categories, onEdit, onDelete }: CategoriesTabl
                                     </div>
                                 </td>
                                 <td className="px-6 py-4">
-                                    <Badge variant="secondary" className={`text-[11px] font-medium px-2 py-0.5 rounded-md ${category.status === 'active' ? 'bg-green-100 text-green-700 hover:bg-green-100 border-none' : 'bg-slate-100 text-slate-600 hover:bg-slate-100 border-none'}`}>
+                                    <Badge variant="secondary" className={`text-[11px] font-medium px-2 py-0.5 rounded-md ${category.status === 'active' ? 'bg-success/10 text-success hover:bg-success/10 border-none' : 'bg-muted text-muted-foreground hover:bg-muted border-none'}`}>
                                         {category.status === 'active' ? 'Active' : 'Inactive'}
                                     </Badge>
                                 </td>
-                                <td className="px-6 py-4 text-center font-medium text-slate-700">
+                                <td className="px-6 py-4 text-center font-medium text-foreground">
                                     {category.serviceCount || 0}
                                 </td>
-                                <td className="px-6 py-4 text-center font-medium text-slate-700">
+                                <td className="px-6 py-4 text-center font-medium text-foreground">
                                     {category.subServiceCount || 0}
                                 </td>
-                                <td className="px-6 py-4 text-slate-500 text-xs font-medium">
+                                <td className="px-6 py-4 text-muted-foreground text-xs font-medium">
                                     {category.createdAt ? timeAgo(category.createdAt) : '-'}
                                 </td>
                                 <td className="px-6 py-4 text-right">
                                     <Dropdown
-                                        className="w-48 bg-white shadow-lg rounded-xl border border-slate-100 z-20 overflow-hidden"
+                                        className="w-48 bg-card shadow-lg rounded-xl border border-border z-20 overflow-hidden"
                                         trigger={
-                                            <button className="p-2 text-slate-400 hover:text-slate-700 hover:bg-white hover:shadow-sm rounded-lg transition-all border border-transparent hover:border-slate-200">
+                                            <button className="p-2 text-muted-foreground hover:text-foreground hover:bg-card hover:shadow-sm rounded-lg transition-all border border-transparent hover:border-border">
                                                 <MoreVertical className="w-4 h-4" />
                                             </button>
                                         }

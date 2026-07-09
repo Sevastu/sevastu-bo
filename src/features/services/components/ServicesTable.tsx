@@ -17,18 +17,18 @@ export function ServicesTable({ services, getCategoryName, onEdit, onDelete }: S
     const router = useRouter();
 
     const getActions = (service: Service) => [
-        { label: "Edit Service", icon: Edit, action: () => onEdit(service), className: "text-slate-700 hover:bg-slate-50" },
-        { label: "View Sub-services", icon: Layers, action: () => router.push(`/sub-services?serviceId=${service._id}`), className: "text-slate-700 hover:bg-slate-50" },
-        { label: "Duplicate Service", icon: Copy, action: () => {}, className: "text-slate-700 hover:bg-slate-50" },
-        { label: "Archive Service", icon: Archive, action: () => {}, className: "text-slate-700 hover:bg-slate-50" },
-        { label: "Delete Service", icon: Trash2, action: () => onDelete(service), className: "text-red-600 hover:bg-red-50" }
+        { label: "Edit Service", icon: Edit, action: () => onEdit(service), className: "text-foreground hover:bg-muted" },
+        { label: "View Sub-services", icon: Layers, action: () => router.push(`/sub-services?serviceId=${service._id}`), className: "text-foreground hover:bg-muted" },
+        { label: "Duplicate Service", icon: Copy, action: () => {}, className: "text-foreground hover:bg-muted" },
+        { label: "Archive Service", icon: Archive, action: () => {}, className: "text-foreground hover:bg-muted" },
+        { label: "Delete Service", icon: Trash2, action: () => onDelete(service), className: "text-destructive hover:bg-destructive/10" }
     ];
 
     return (
-        <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+        <div className="bg-card rounded-2xl shadow-sm border border-border overflow-hidden">
             <div className="overflow-x-auto">
                 <table className="w-full text-sm text-left">
-                    <thead className="bg-slate-50 text-slate-500 font-medium border-b border-slate-200">
+                    <thead className="bg-muted text-muted-foreground font-medium border-b border-border">
                         <tr>
                             <th className="px-6 py-4 rounded-tl-2xl">Service</th>
                             <th className="px-6 py-4">Category</th>
@@ -39,12 +39,12 @@ export function ServicesTable({ services, getCategoryName, onEdit, onDelete }: S
                             <th className="px-6 py-4 text-right rounded-tr-2xl">Actions</th>
                         </tr>
                     </thead>
-                    <tbody className="divide-y divide-slate-100">
+                    <tbody className="divide-y divide-border">
                         {services.map(service => (
-                            <tr key={service._id} className="hover:bg-slate-50/80 transition-colors group">
+                            <tr key={service._id} className="hover:bg-muted/80 transition-colors group">
                                 <td className="px-6 py-4">
                                     <div className="flex items-center gap-4">
-                                        <div className="w-10 h-10 rounded-lg overflow-hidden shrink-0 border border-slate-200">
+                                        <div className="w-10 h-10 rounded-lg overflow-hidden shrink-0 border border-border">
                                             <img
                                                 src={service.imageUrl || FALLBACK_IMAGE}
                                                 alt={service.name}
@@ -53,10 +53,10 @@ export function ServicesTable({ services, getCategoryName, onEdit, onDelete }: S
                                             />
                                         </div>
                                         <div>
-                                            <div className="font-semibold text-slate-900 group-hover:text-blue-600 transition-colors">
+                                            <div className="font-semibold text-foreground group-hover:text-primary transition-colors">
                                                 {service.name}
                                             </div>
-                                            <div className="text-xs text-slate-500 flex items-center mt-0.5">
+                                            <div className="text-xs text-muted-foreground flex items-center mt-0.5">
                                                 <div className="w-3 h-3 mr-1 opacity-50">{renderIcon(service.icon, "w-full h-full")}</div>
                                                 {service.description ? (
                                                     <span className="line-clamp-1 max-w-[200px]">{service.description}</span>
@@ -66,29 +66,29 @@ export function ServicesTable({ services, getCategoryName, onEdit, onDelete }: S
                                     </div>
                                 </td>
                                 <td className="px-6 py-4">
-                                    <Badge variant="outline" className="text-[11px] uppercase font-semibold tracking-wider text-blue-600 bg-blue-50 border-blue-100">
+                                    <Badge variant="outline" className="text-[11px] uppercase font-semibold tracking-wider text-primary bg-primary/10 border-primary/20">
                                         {getCategoryName(service.categoryId)}
                                     </Badge>
                                 </td>
                                 <td className="px-6 py-4">
-                                    <Badge variant="secondary" className={`text-[11px] font-medium px-2 py-0.5 rounded-md ${service.isActive ? 'bg-green-100 text-green-700 hover:bg-green-100 border-none' : 'bg-slate-100 text-slate-600 hover:bg-slate-100 border-none'}`}>
+                                    <Badge variant="secondary" className={`text-[11px] font-medium px-2 py-0.5 rounded-md ${service.isActive ? 'bg-success/10 text-success hover:bg-success/10 border-none' : 'bg-muted text-muted-foreground hover:bg-muted border-none'}`}>
                                         {service.isActive ? 'Active' : 'Inactive'}
                                     </Badge>
                                 </td>
-                                <td className="px-6 py-4 text-center font-medium text-slate-700">
+                                <td className="px-6 py-4 text-center font-medium text-foreground">
                                     {service.subServiceCount || 0}
                                 </td>
-                                <td className="px-6 py-4 text-center font-medium text-slate-700">
+                                <td className="px-6 py-4 text-center font-medium text-foreground">
                                     {service.activeWorkerCount || 0}
                                 </td>
-                                <td className="px-6 py-4 text-slate-500 text-xs font-medium">
+                                <td className="px-6 py-4 text-muted-foreground text-xs font-medium">
                                     {service.updatedAt ? timeAgo(service.updatedAt) : 'Just now'}
                                 </td>
                                 <td className="px-6 py-4 text-right">
                                     <Dropdown
-                                        className="w-48 bg-white shadow-lg rounded-xl border border-slate-100 z-20 overflow-hidden"
+                                        className="w-48 bg-card shadow-lg rounded-xl border border-border z-20 overflow-hidden"
                                         trigger={
-                                            <button className="p-2 text-slate-400 hover:text-slate-700 hover:bg-white hover:shadow-sm rounded-lg transition-all border border-transparent hover:border-slate-200">
+                                            <button className="p-2 text-muted-foreground hover:text-foreground hover:bg-card hover:shadow-sm rounded-lg transition-all border border-transparent hover:border-border">
                                                 <MoreVertical className="w-4 h-4" />
                                             </button>
                                         }

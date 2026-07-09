@@ -18,8 +18,8 @@ export function SubServiceCard({ subService, onEdit, onToggleStatus, isAdmin }: 
             <CardContent className="p-5">
                 <div className="flex justify-between items-start mb-4">
                     <div>
-                        <h3 className="text-lg font-bold text-slate-900 mb-1">{subService.name}</h3>
-                        <p className="text-sm text-slate-500 font-medium">
+                        <h3 className="text-lg font-bold text-foreground mb-1">{subService.name}</h3>
+                        <p className="text-sm text-muted-foreground font-medium">
                             {typeof subService.serviceId === 'string' ? subService.serviceId : subService.serviceId?.name}
                         </p>
                     </div>
@@ -31,19 +31,19 @@ export function SubServiceCard({ subService, onEdit, onToggleStatus, isAdmin }: 
                     />
                 </div>
                 
-                <div className="grid grid-cols-2 gap-4 mt-6 pt-4 border-t border-slate-100">
+                <div className="grid grid-cols-2 gap-4 mt-6 pt-4 border-t border-border">
                     <div>
-                        <p className="text-xs text-slate-500 font-medium uppercase tracking-wider mb-1">Pricing</p>
+                        <p className="text-xs text-muted-foreground font-medium uppercase tracking-wider mb-1">Pricing</p>
                         <PriceBadge basePrice={subService.basePrice} priceType={subService.priceType} />
                     </div>
                     <div>
-                        <p className="text-xs text-slate-500 font-medium uppercase tracking-wider mb-2">Status</p>
+                        <p className="text-xs text-muted-foreground font-medium uppercase tracking-wider mb-2">Status</p>
                         <SubServiceStatusBadge isActive={subService.isActive} />
                     </div>
                 </div>
                 
-                <div className="mt-4 pt-4 border-t border-slate-100">
-                    <p className="text-xs text-slate-400">
+                <div className="mt-4 pt-4 border-t border-border">
+                    <p className="text-xs text-muted-foreground">
                         Added {subService.createdAt ? new Date(subService.createdAt).toLocaleDateString('en-IN', {
                             day: 'numeric', month: 'short', year: 'numeric'
                         }) : '-'}

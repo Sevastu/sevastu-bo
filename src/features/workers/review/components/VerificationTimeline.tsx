@@ -14,7 +14,7 @@ export const VerificationTimeline = memo(function VerificationTimeline({ profile
 
     return (
         <div className="bg-card rounded-lg border border-border/20 shadow-sm p-6 h-full">
-            <h3 className="text-lg font-bold text-slate-900 mb-6 flex items-center gap-2">
+            <h3 className="text-lg font-bold text-foreground mb-6 flex items-center gap-2">
                 Verification Timeline
             </h3>
             <div className="pl-2">

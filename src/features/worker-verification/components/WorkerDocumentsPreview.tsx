@@ -26,14 +26,14 @@ export const WorkerDocumentsPreview = memo(function WorkerDocumentsPreview({
   return (
     <div className="mb-4">
       <div className="flex items-center justify-between mb-2">
-        <div className="text-sm font-semibold text-slate-700">Documents</div>
+        <div className="text-sm font-semibold text-foreground">Documents</div>
         {missingCount > 0 ? (
-          <div className="flex items-center text-xs font-semibold text-amber-600 bg-amber-50 px-2 py-0.5 rounded-md">
+          <div className="flex items-center text-xs font-semibold text-warning bg-warning/10 px-2 py-0.5 rounded-md">
             <FileWarning size={12} className="mr-1" />
             {missingCount} Missing
           </div>
         ) : (
-          <div className="flex items-center text-xs font-semibold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-md">
+          <div className="flex items-center text-xs font-semibold text-success bg-success/10 px-2 py-0.5 rounded-md">
             <FileCheck size={12} className="mr-1" />
             Complete
           </div>
@@ -42,15 +42,15 @@ export const WorkerDocumentsPreview = memo(function WorkerDocumentsPreview({
 
       <button
         onClick={onViewDocuments}
-        className="w-full text-left p-3 bg-slate-100 rounded-sm border border-border/20 hover:border-blue-300 hover:bg-blue-50/50 transition-all group"
+        className="w-full text-left p-3 bg-muted rounded-sm border border-border/20 hover:border-primary/30 hover:bg-primary/10 transition-all group"
       >
         <div className="flex items-center justify-between mb-1.5">
-          <span className="text-sm font-bold text-primary group-hover:text-blue-800 transition-colors">
+          <span className="text-sm font-bold text-primary group-hover:text-primary/80 transition-colors">
             {WORKER_VERIFICATION_CONSTANTS.VIEW_ALL_DOCUMENTS}
           </span>
-          <Eye size={16} className="text-primary group-hover:text-blue-800 transition-colors" />
+          <Eye size={16} className="text-primary group-hover:text-primary/80 transition-colors" />
         </div>
-        <div className="text-xs text-slate-500">
+        <div className="text-xs text-muted-foreground">
           {WORKER_VERIFICATION_CONSTANTS.DOCUMENTS_SUBTITLE}
         </div>
       </button>

@@ -20,28 +20,28 @@ export const CustomerBookingCard = memo(function CustomerBookingCard({
         : 'Unknown Date';
 
     let statusVariant: 'default' | 'secondary' | 'success' | 'destructive' | 'outline' = 'secondary';
-    let statusClass = 'bg-slate-100 text-slate-800';
+    let statusClass = 'bg-muted text-foreground';
 
     if (booking.status === 'completed') {
         statusVariant = 'success';
-        statusClass = 'bg-green-100 text-green-800';
+        statusClass = 'bg-success/10 text-success';
     } else if (booking.status === 'pending') {
         statusVariant = 'secondary';
-        statusClass = 'bg-yellow-100 text-yellow-800';
+        statusClass = 'bg-warning/10 text-warning';
     } else if (booking.status === 'cancelled') {
         statusVariant = 'destructive';
-        statusClass = 'bg-red-100 text-red-800';
+        statusClass = 'bg-destructive/10 text-destructive';
     }
 
     return (
-        <div className="bg-slate-50/50 rounded-xl p-4 border border-slate-100 shadow-sm transition-all hover:bg-slate-50 hover:border-slate-200">
+        <div className="bg-muted/50 rounded-xl p-4 border border-border shadow-sm transition-all hover:bg-muted hover:border-border">
             <div className="flex items-center justify-between">
                 <div>
-                    <p className="text-sm font-bold text-slate-900">{booking.serviceType || 'Unknown Service'}</p>
-                    <p className="text-xs text-slate-500 mt-1">{formattedDate}</p>
+                    <p className="text-sm font-bold text-foreground">{booking.serviceType || 'Unknown Service'}</p>
+                    <p className="text-xs text-muted-foreground mt-1">{formattedDate}</p>
                 </div>
                 <div className="text-right flex flex-col items-end gap-1.5">
-                    <p className="text-sm font-bold text-slate-900">
+                    <p className="text-sm font-bold text-foreground">
                         {formatCurrency(booking.amount)}
                     </p>
                     <Badge variant={statusVariant} className={`text-[10px] uppercase font-semibold tracking-wider px-2 py-0 border-none ${statusClass}`}>

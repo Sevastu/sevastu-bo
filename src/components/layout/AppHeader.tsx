@@ -34,7 +34,7 @@ export function AppHeader({ user, onToggleSidebar, onLogout }: AppHeaderProps) {
                 <div className="flex items-center gap-4 min-w-0 flex-1">
                     <button
                         onClick={onToggleSidebar}
-                        className="lg:hidden p-2 -ml-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 shrink-0 text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white transition-colors"
+                        className="lg:hidden p-2 -ml-2 rounded-lg hover:bg-muted shrink-0 text-muted-foreground hover:text-foreground transition-colors"
                         aria-label="Open Sidebar"
                     >
                         <Menu className="w-4 h-4" />

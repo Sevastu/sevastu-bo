@@ -182,7 +182,7 @@ export function ModernCatalogTree({
                 const catExpanded = (expandedCategories[category._id] ?? false) || hoveredCategory === category._id;
                 return (
                     <Card key={category._id} 
-                          className="overflow-hidden bg-amber-200 ring-2 ring-border/20 shadow-sm rounded-lg"
+                          className="overflow-hidden bg-warning/20 ring-2 ring-border/20 shadow-sm rounded-lg"
                           onMouseEnter={() => handleCategoryMouseEnter(category._id)}
                           onMouseLeave={() => handleCategoryMouseLeave()}
                     >
@@ -201,7 +201,7 @@ export function ModernCatalogTree({
                             >
                                 {catExpanded ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
                             </button>
-                            <div className="h-8 w-8 rounded-lg bg-blue-100 flex items-center justify-center shrink-0">
+                            <div className="h-8 w-8 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
                                 <Layers className="h-4 w-4 text-primary" />
                             </div>
                             <div className="min-w-0 flex-1 flex flex-col">
@@ -318,15 +318,15 @@ export function ModernCatalogTree({
                                                                     {service.subServices.map((sub, subIndex) => (
                                                                         <div
                                                                             key={sub._id}
-                                                                            className="relative flex items-center justify-between gap-2 rounded-md border border-border/20 bg-card p-2.5 hover:border-purple-500/30 hover:shadow-md cursor-pointer transition-all group shadow-sm"
+                                                                            className="relative flex items-center justify-between gap-2 rounded-md border border-border/20 bg-card p-2.5 hover:border-primary/30 hover:shadow-md cursor-pointer transition-all group shadow-sm"
                                                                             onClick={() => onSelectNode('subService', sub)}
                                                                         >
                                                                             {/* Horizontal branch for SubService */}
                                                                             <div className="absolute -left-4 top-1/2 w-4 h-px" />
                                                                             
                                                                             <div className="flex items-center gap-3 flex-1 min-w-0">
-                                                                                <div className="h-6 w-6 rounded bg-purple-100 flex items-center justify-center shrink-0">
-                                                                                    <Tag className="h-3 w-3 text-purple-600 dark:text-purple-400" />
+                                                                                <div className="h-6 w-6 rounded bg-primary/10 flex items-center justify-center shrink-0">
+                                                                                    <Tag className="h-3 w-3 text-primary" />
                                                                                 </div>
                                                                                 <div className="min-w-0 flex-1 flex flex-col">
                                                                                     <div className="flex items-center gap-2">
@@ -348,8 +348,8 @@ export function ModernCatalogTree({
 
                                                                             <div className="flex flex-col items-end gap-1 shrink-0 ml-2">
                                                                                 <div className="flex items-center gap-1 h-5">
-                                                                                    {sub.marketplace?.featured && <Badge variant="secondary" className="text-[9px] h-4 px-1.5 bg-yellow-100 text-yellow-800 dark:bg-yellow-900/50 dark:text-yellow-300 border-yellow-200">Featured</Badge>}
-                                                                                    {sub.marketplace?.popular && <Badge variant="secondary" className="text-[9px] h-4 px-1.5 bg-blue-100 text-blue-800 dark:bg-blue-900/50 dark:text-blue-300 border-blue-200">Popular</Badge>}
+                                                                                    {sub.marketplace?.featured && <Badge variant="secondary" className="text-[9px] h-4 px-1.5 bg-warning/10 text-warning border-warning/20">Featured</Badge>}
+                                                                                    {sub.marketplace?.popular && <Badge variant="secondary" className="text-[9px] h-4 px-1.5 bg-primary/10 text-primary border-primary/20">Popular</Badge>}
                                                                                 </div>
                                                                                 <div className="flex items-center gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity" onClick={e => e.stopPropagation()}>
                                                                                     {isAdmin && !isSearching && (
@@ -393,8 +393,8 @@ function StatusBadge({ active }: { active: boolean }) {
         <span className={cn(
             "inline-flex items-center rounded-full px-1.5 py-0.5 text-[10px] font-medium border",
             active
-                ? "border-emerald-200 bg-emerald-50 text-emerald-700 dark:text-emerald-400"
-                : "border-rose-200 bg-rose-50 text-rose-700 dark:text-rose-400"
+                ? "border-success/20 bg-success/10 text-success"
+                : "border-destructive/20 bg-destructive/10 text-destructive"
         )}>
             {active ? "Active" : "Inactive"}
         </span>

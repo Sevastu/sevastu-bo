@@ -18,9 +18,9 @@ export const CustomerBookingsList = memo(function CustomerBookingsList({
     return (
         <div className="space-y-4">
             <div className="flex items-center justify-between">
-                <h4 className="text-xs font-bold text-slate-400 uppercase tracking-widest">Recent Bookings</h4>
+                <h4 className="text-xs font-bold text-muted-foreground uppercase tracking-widest">Recent Bookings</h4>
                 {bookings && bookings.length > 5 && (
-                    <button className="text-xs font-semibold text-blue-600 hover:text-blue-700 transition-colors">
+                    <button className="text-xs font-semibold text-primary hover:text-primary/80 transition-colors">
                         View All
                     </button>
                 )}
@@ -32,12 +32,12 @@ export const CustomerBookingsList = memo(function CustomerBookingsList({
                         <CustomerBookingCard key={booking.id} booking={booking} />
                     ))
                 ) : (
-                    <div className="bg-slate-50/50 rounded-xl p-8 border border-slate-100 flex flex-col items-center justify-center text-center shadow-sm">
-                        <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-sm border border-slate-100 mb-3">
-                            <CalendarX className="w-5 h-5 text-slate-300" />
+                    <div className="bg-muted/50 rounded-xl p-8 border border-border flex flex-col items-center justify-center text-center shadow-sm">
+                        <div className="w-12 h-12 bg-card rounded-full flex items-center justify-center shadow-sm border border-border mb-3">
+                            <CalendarX className="w-5 h-5 text-muted-foreground" />
                         </div>
-                        <p className="text-sm font-medium text-slate-600">No recent bookings found</p>
-                        <p className="text-xs text-slate-400 mt-1">This customer hasn't made any bookings yet.</p>
+                        <p className="text-sm font-medium text-foreground">No recent bookings found</p>
+                        <p className="text-xs text-muted-foreground mt-1">This customer hasn't made any bookings yet.</p>
                     </div>
                 )}
             </div>

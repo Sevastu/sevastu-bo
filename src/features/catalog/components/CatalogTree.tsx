@@ -65,7 +65,7 @@ export function CatalogTree({
             {tree.map(({ category, services }) => {
                 const catExpanded = expandedCategories[category._id] ?? true;
                 return (
-                    <Card key={category._id} className="overflow-hidden py-0 bg-red-500">
+                    <Card key={category._id} className="overflow-hidden py-0 bg-destructive">
                         <div className="flex items-start gap-2 border border-primary px-4 py-3">
                             <button
                                 type="button"

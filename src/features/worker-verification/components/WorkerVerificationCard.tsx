@@ -28,17 +28,17 @@ export const WorkerVerificationCard = memo(function WorkerVerificationCard({
         <div className="flex items-center gap-4">
           <WorkerAvatar photoUrl={worker.photoUrl} name={worker.name} />
           <div>
-            <h3 className="text-lg font-bold text-slate-900 leading-tight">{worker.name}</h3>
-            <p className="text-xs text-slate-500 font-mono mt-0.5 mb-2">ID: {worker.id}</p>
+            <h3 className="text-lg font-bold text-foreground leading-tight">{worker.name}</h3>
+            <p className="text-xs text-muted-foreground font-mono mt-0.5 mb-2">ID: {worker.id}</p>
             <VerificationStatusBadge status={worker.verificationStatus} />
           </div>
         </div>
         <div className="text-right">
-          <div className="flex items-center justify-end gap-1 text-sm font-bold text-slate-700 bg-amber-50 px-2 py-1 rounded-lg">
-            <Star size={14} className="text-amber-400 fill-amber-400" />
+          <div className="flex items-center justify-end gap-1 text-sm font-bold text-foreground bg-warning/10 px-2 py-1 rounded-lg">
+            <Star size={14} className="text-warning fill-warning" />
             {worker.rating}
           </div>
-          <div className="text-xs font-semibold text-slate-500 mt-2 uppercase tracking-wider">{worker.experience}</div>
+          <div className="text-xs font-semibold text-muted-foreground mt-2 uppercase tracking-wider">{worker.experience}</div>
         </div>
       </div>
 

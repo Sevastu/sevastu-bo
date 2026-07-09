@@ -39,7 +39,7 @@ export function ImageUpload({ value, onChange, label = "Upload Image" }: ImageUp
                         <button
                             type="button"
                             onClick={() => onChange("")}
-                            className="absolute -top-2 -right-2 bg-destructive text-white rounded-full p-0.5 shadow-sm"
+                            className="absolute -top-2 -right-2 bg-destructive text-destructive-foreground rounded-full p-0.5 shadow-sm"
                         >
                             <X className="w-3 h-3" />
                         </button>

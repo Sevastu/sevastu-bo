@@ -10,12 +10,12 @@ interface CustomerEmptyStateProps {
 
 export function CustomerEmptyState({ onClearFilters, onAddCustomer, hasFilters }: CustomerEmptyStateProps) {
     return (
-        <div className="text-center py-20 bg-white rounded-2xl shadow-sm border border-slate-100 flex flex-col items-center justify-center mt-2">
-            <div className="w-20 h-20 bg-slate-50 rounded-full flex items-center justify-center mb-6">
-                <Users className="w-10 h-10 text-slate-300" />
+        <div className="text-center py-20 bg-card rounded-2xl shadow-sm border border-border flex flex-col items-center justify-center mt-2">
+            <div className="w-20 h-20 bg-muted rounded-full flex items-center justify-center mb-6">
+                <Users className="w-10 h-10 text-muted-foreground" />
             </div>
-            <h3 className="text-xl font-semibold text-slate-900 mb-2">No customers found</h3>
-            <p className="text-slate-500 mb-8 max-w-sm text-center">
+            <h3 className="text-xl font-semibold text-foreground mb-2">No customers found</h3>
+            <p className="text-muted-foreground mb-8 max-w-sm text-center">
                 {hasFilters 
                     ? "We couldn't find any customers matching your current filters. Try adjusting your search, status, or date range." 
                     : "There are no customers in the system yet. Add your first customer to get started."}
@@ -25,7 +25,7 @@ export function CustomerEmptyState({ onClearFilters, onAddCustomer, hasFilters }
                     <Button
                         variant="outline"
                         onClick={onClearFilters}
-                        className="rounded-xl border-slate-200 text-slate-700 hover:bg-slate-50"
+                        className="rounded-xl border-border text-foreground hover:bg-muted"
                     >
                         Clear All Filters
                     </Button>
@@ -33,7 +33,7 @@ export function CustomerEmptyState({ onClearFilters, onAddCustomer, hasFilters }
                 {onAddCustomer && (
                     <Button
                         onClick={onAddCustomer}
-                        className="bg-blue-600 hover:bg-blue-700 text-white rounded-xl shadow-sm"
+                        className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl shadow-sm"
                     >
                         Add Customer
                     </Button>

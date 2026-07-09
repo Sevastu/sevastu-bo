@@ -8,7 +8,7 @@ interface WorkerAvatarProps {
 
 export function WorkerAvatar({ photoUrl, name, className = "w-10 h-10" }: WorkerAvatarProps) {
     return (
-        <div className={`${className} rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center shrink-0 overflow-hidden`}>
+        <div className={`${className} rounded-full bg-muted border border-border flex items-center justify-center shrink-0 overflow-hidden`}>
             {photoUrl ? (
                 <img 
                     src={photoUrl} 
@@ -21,7 +21,7 @@ export function WorkerAvatar({ photoUrl, name, className = "w-10 h-10" }: Worker
                 />
             ) : null}
             <span 
-                className="text-slate-500 font-semibold"
+                className="text-muted-foreground font-semibold"
                 style={{ display: photoUrl ? 'none' : 'flex' }}
             >
                 {name?.charAt(0).toUpperCase() || 'W'}

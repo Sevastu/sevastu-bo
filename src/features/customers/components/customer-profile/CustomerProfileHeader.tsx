@@ -28,10 +28,10 @@ export const CustomerProfileHeader = memo(function CustomerProfileHeader({
                 isOnline={isOnline} 
             />
             <div className="flex-1 min-w-0">
-                <h3 className="text-xl font-bold text-slate-900 leading-tight truncate">
+                <h3 className="text-xl font-bold text-foreground leading-tight truncate">
                     {name || 'Unknown Customer'}
                 </h3>
-                <p className="text-sm text-slate-500 mt-0.5 truncate">
+                <p className="text-sm text-muted-foreground mt-0.5 truncate">
                     {email || 'No email provided'}
                 </p>
                 <div className="flex items-center space-x-2 mt-2 flex-wrap gap-y-2">

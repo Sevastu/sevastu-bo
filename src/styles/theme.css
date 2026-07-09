@@ -1,38 +1,33 @@
 :root {
-  /* Core Color Variables - Light Theme */
-  /* --color-bg: #e3f2f4; */
-  --color-bg: #f7fbff;
-  --color-bg-secondary: #d6e5ff;
-  /* --color-card: #f9ffff; */
-  --color-card: #fffcfd;
-  /* --color-primary: #FF007F; */
-    --color-primary: #2563EB;
-  --color-primary-hover: #0d3bba;
-  --color-text:#000000;
-  --color-text-secondary: #3d4043;
-  --color-text-muted: #777b81;
-  --color-border: #708090;
-  --color-border-hover: #496389;
-  --color-input: #d5dced;
-  --color-focus: #55a7ee;
-  --color-focus-ring: rgba(23, 103, 232, 0.2);
-  /* State Colors */
-  --color-success: #21c139;
-  --color-warning: #e8cc13;
-  --color-error: #e82727;
+  --color-bg: #f8fafc;
+  --color-bg-secondary: #eef5ff;
+  --color-card: #ffffff;
+  --color-text: #0f172a;
+  --color-text-secondary: #475569;
+  --color-text-muted: #64748b;
+  --color-primary: #2563eb;
+  --color-primary-hover: #1d4ed8;
+  --color-border: #e2e8f0;
+  --color-border-hover: #cbd5e1;
+  --color-input: #ffffff;
+  --color-focus: #3b82f6;
+  --color-focus-ring: rgba(37, 99, 235, 0.2);
+  --color-success: #22c55e;
+  --color-warning: #f59e0b;
+  --color-error: #ef4444;
   --color-destructive: var(--color-error);
-  
-  /* Component Colors */
-  --color-muted: #cfe3fa;
-  --color-muted-foreground: #424044;
-  --color-accent: #F59E0B;
-  --color-accent-foreground: #0f172a;
-  
-  /* Gradient Colors #e0f2fe */
-  --color-gradient-from: #0d68c2;
-  --color-gradient-to: #af0345;
-  
-  /* Theme tokens used by Tailwind */
+  --color-muted: #f1f5f9;
+  --color-muted-foreground: #64748b;
+  --color-accent: #2563eb;
+  --color-accent-foreground: #ffffff;
+  --color-sidebar: #ffffff;
+  --color-sidebar-hover: #f8fafc;
+  --color-header: #ffffff;
+  --color-table-header: #f8fafc;
+  --color-table-row-hover: #eff6ff;
+  --color-shadow: rgba(15, 23, 42, 0.08);
+  --color-gradient-from: #2563eb;
+  --color-gradient-to: #3b82f6;
   --background: var(--color-bg);
   --background-secondary: var(--color-bg-secondary);
   --foreground: var(--color-text);
@@ -53,35 +48,44 @@
 }
 
 .dark {
-  /* Core Color Variables - Dark Theme */
-  --color-bg: #1e1e1e;
-  --color-bg-secondary: #2c2c2d;
-  --color-card: #2d2d2d;
-  --color-text: #cfd6dc;
-  --color-text-secondary: #b5b7b9;
+  --color-bg: #0f172a;
+  --color-bg-secondary: #111827;
+  --color-card: #1e293b;
+  --color-text: #f8fafc;
+  --color-text-secondary: #cbd5e1;
   --color-text-muted: #94a3b8;
-  --color-primary: #044cb8;
-  --color-primary-hover: #1391ad;
+  --color-primary: #3b82f6;
+  --color-primary-hover: #60a5fa;
   --color-border: #334155;
   --color-border-hover: #475569;
   --color-input: #1e293b;
   --color-focus: #60a5fa;
-  --color-focus-ring: rgba(96, 165, 250, 0.2);
-  
-  /* State Colors - Dark versions */
-  --color-success: #10b981;
-  --color-warning: #f59e0b;
-  --color-error: #f87171;
+  --color-focus-ring: rgba(96, 165, 250, 0.25);
+  --color-success: #22c55e;
+  --color-warning: #fbbf24;
+  --color-error: #ef4444;
   --color-destructive: var(--color-error);
-  
-  /* Component Colors - Dark versions */
-  --color-muted: #444345;
-  --color-muted-foreground: #c7cacd;
-  --color-accent: #0c65ea;
-  --color-accent-foreground: #bed319;
-  
-  /* Gradient Colors - Dark versions */
-  --color-gradient-from: #242323;
-  --color-gradient-to: #000000;
-  
+  --color-muted: #273549;
+  --color-muted-foreground: #94a3b8;
+  --color-accent: #2563eb;
+  --color-accent-foreground: #ffffff;
+  --color-gradient-from: #1e293b;
+  --color-gradient-to: #0f172a;
+  --background: var(--color-bg);
+  --background-secondary: var(--color-bg-secondary);
+  --foreground: var(--color-text);
+  --card: var(--color-card);
+  --border: var(--color-border);
+  --input: var(--color-input);
+  --ring: var(--color-focus);
+  --primary: var(--color-primary);
+  --secondary: var(--color-muted);
+  --accent: var(--color-accent);
+  --muted: var(--color-muted);
+  --muted-foreground: var(--color-muted-foreground);
+  --accent-foreground: var(--color-accent-foreground);
+  --destructive: var(--color-destructive);
+  --success: var(--color-success);
+  --warning: var(--color-warning);
+  --error: var(--color-error);
 }

@@ -86,7 +86,7 @@ export function CategoryModal({ isOpen, onClose, onSaved, category }: CategoryMo
         <form onSubmit={handleSubmit} className="space-y-6 py-4">
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2 col-span-2 sm:col-span-1">
-              <Label htmlFor="name">Category Name <span className="text-red-500">*</span></Label>
+              <Label htmlFor="name">Category Name <span className="text-destructive">*</span></Label>
               <Input 
                 id="name" 
                 value={formData.name} 
@@ -107,7 +107,7 @@ export function CategoryModal({ isOpen, onClose, onSaved, category }: CategoryMo
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="description">Description <span className="text-red-500">*</span></Label>
+            <Label htmlFor="description">Description <span className="text-destructive">*</span></Label>
             <Textarea 
               id="description" 
               value={formData.description} 
@@ -131,7 +131,7 @@ export function CategoryModal({ isOpen, onClose, onSaved, category }: CategoryMo
           <div className="flex items-center justify-between border rounded-xl p-4">
             <div className="space-y-0.5">
               <Label>Status</Label>
-              <p className="text-sm text-slate-500">
+              <p className="text-sm text-muted-foreground">
                 {formData.status === 'active' ? 'Category is visible.' : 'Category is hidden.'}
               </p>
             </div>
@@ -145,7 +145,7 @@ export function CategoryModal({ isOpen, onClose, onSaved, category }: CategoryMo
             <Button type="button" variant="outline" onClick={onClose} disabled={isSubmitting}>
               Cancel
             </Button>
-            <Button type="submit" className="bg-blue-600 hover:bg-blue-700 text-white rounded-xl" disabled={isSubmitting}>
+            <Button type="submit" className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl" disabled={isSubmitting}>
               {isSubmitting ? 'Saving...' : 'Save Category'}
             </Button>
           </DialogFooter>

@@ -74,10 +74,10 @@ export function MarketplaceManagementDrawer({
 
     return (
         <Sheet open={open} onOpenChange={onOpenChange}>
-            <SheetContent className="w-full sm:w-[540px] md:w-[600px] p-0 flex flex-col h-full bg-slate-50 dark:bg-zinc-950 border-l">
+            <SheetContent className="w-full sm:w-[540px] md:w-[600px] p-0 flex flex-col h-full bg-muted border-l">
                 
                 {/* Hero Header */}
-                <div className="bg-white dark:bg-zinc-900 px-6 py-8 flex flex-col gap-4 relative overflow-hidden">
+                <div className="bg-card px-6 py-8 flex flex-col gap-4 relative overflow-hidden">
                     {/* Decorative Background */}
                     <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none" />
                     
@@ -89,7 +89,7 @@ export function MarketplaceManagementDrawer({
                                 <ChevronRight className="h-3 w-3" />
                                 <span>{type.replace(/([A-Z])/g, ' $1').trim()}</span>
                             </div>
-                            <SheetTitle className="text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-100">
+                            <SheetTitle className="text-2xl font-bold tracking-tight text-foreground">
                                 {node.name}
                             </SheetTitle>
                             {('slug' in node && node.slug) && (
@@ -101,13 +101,13 @@ export function MarketplaceManagementDrawer({
                         </div>
                         <Badge 
                             variant={node.isActive ? "default" : "secondary"} 
-                            className={`px-3 py-1 rounded-full text-xs font-semibold ${node.isActive ? 'bg-emerald-100 text-emerald-700 hover:bg-emerald-200 dark:bg-emerald-900/50 dark:text-emerald-400' : ''}`}
+                            className={`px-3 py-1 rounded-full text-xs font-semibold ${node.isActive ? 'bg-success/10 text-success hover:bg-success/20' : ''}`}
                         >
                             {node.isActive ? "Active" : "Inactive"}
                         </Badge>
                     </div>
 
-                    <p className="text-sm text-slate-600 dark:text-slate-400 max-w-[90%] leading-relaxed relative z-10">
+                    <p className="text-sm text-muted-foreground max-w-[90%] leading-relaxed relative z-10">
                         {node.description || ('shortDescription' in node && node.shortDescription) || "No description provided."}
                     </p>
                 </div>
@@ -117,20 +117,20 @@ export function MarketplaceManagementDrawer({
                     
                     {/* Metadata Section */}
                     {/* <section>
-                        <h4 className="text-sm font-bold text-slate-900 dark:text-slate-100 mb-4 flex items-center gap-2">
+                        <h4 className="text-sm font-bold text-foreground mb-4 flex items-center gap-2">
                             <Activity className="h-4 w-4 text-primary" />
                             System Metadata
                         </h4>
                         <div className="grid grid-cols-2 gap-3">
-                            <div className="bg-white dark:bg-zinc-900 p-3 rounded-xl border border-slate-200 dark:border-zinc-800 flex items-center gap-3">
-                                <div className="p-2 bg-slate-100 dark:bg-zinc-800 rounded-lg"><Calendar className="h-4 w-4 text-slate-500" /></div>
+                            <div className="bg-card p-3 rounded-xl border border-border flex items-center gap-3">
+                                <div className="p-2 bg-muted rounded-lg"><Calendar className="h-4 w-4 text-muted-foreground" /></div>
                                 <div>
                                     <p className="text-[10px] uppercase font-semibold text-muted-foreground tracking-wider">Created</p>
                                     <p className="text-sm font-medium">{formatDate(node.createdAt)}</p>
                                 </div>
                             </div>
-                            <div className="bg-white dark:bg-zinc-900 p-3 rounded-xl border border-slate-200 dark:border-zinc-800 flex items-center gap-3">
-                                <div className="p-2 bg-slate-100 dark:bg-zinc-800 rounded-lg"><Hash className="h-4 w-4 text-slate-500" /></div>
+                            <div className="bg-card p-3 rounded-xl border border-border flex items-center gap-3">
+                                <div className="p-2 bg-muted rounded-lg"><Hash className="h-4 w-4 text-muted-foreground" /></div>
                                 <div>
                                     <p className="text-[10px] uppercase font-semibold text-muted-foreground tracking-wider">Sort Order</p>
                                     <p className="text-sm font-medium">{node.order}</p>
@@ -142,14 +142,14 @@ export function MarketplaceManagementDrawer({
                     {/* Assets Section */}
                     {(type === 'category' || type === 'service') && (
                         <section>
-                            <h4 className="text-sm font-bold text-slate-900 dark:text-slate-100 mb-4 flex items-center gap-2">
+                            <h4 className="text-sm font-bold text-foreground mb-4 flex items-center gap-2">
                                 <ImageIcon className="h-4 w-4 text-primary" />
                                 Media Assets
                             </h4>
-                            <div className="bg-white dark:bg-zinc-900 rounded-xl border border-slate-200 dark:border-zinc-800 p-4">
+                            <div className="bg-card rounded-xl border border-border p-4">
                                 {('iconUrl' in node && node.iconUrl) ? (
                                     <div className="flex items-center gap-4">
-                                        <div className="relative w-16 h-16 rounded-lg overflow-hidden border bg-slate-50 dark:bg-zinc-950 p-2">
+                                        <div className="relative w-16 h-16 rounded-lg overflow-hidden border bg-muted p-2">
                                             <Image src={node.iconUrl} alt={node.name} fill className="object-contain p-1" />
                                         </div>
                                         <div className="flex-1">
@@ -169,10 +169,10 @@ export function MarketplaceManagementDrawer({
                                     </div>
                                 ) : (
                                     <div className="flex flex-col items-center justify-center py-6 text-center">
-                                        <div className="h-10 w-10 rounded-full bg-slate-100 dark:bg-zinc-800 flex items-center justify-center mb-3">
-                                            <ImageIcon className="h-5 w-5 text-slate-400" />
+                                        <div className="h-10 w-10 rounded-full bg-muted flex items-center justify-center mb-3">
+                                            <ImageIcon className="h-5 w-5 text-muted-foreground" />
                                         </div>
-                                        <p className="text-sm font-medium text-slate-700 dark:text-slate-300">No media uploaded</p>
+                                        <p className="text-sm font-medium text-foreground">No media uploaded</p>
                                         <p className="text-xs text-muted-foreground mt-1 max-w-[250px]">Upload an image or icon to make this {type} visually appealing in the app.</p>
                                     </div>
                                 )}
@@ -184,28 +184,28 @@ export function MarketplaceManagementDrawer({
                     {type === 'subService' && (
                         <section className="space-y-8">
                             <div>
-                                <h4 className="text-sm font-bold text-slate-900 dark:text-slate-100 mb-4 flex items-center gap-2">
+                                <h4 className="text-sm font-bold text-foreground mb-4 flex items-center gap-2">
                                     <TrendingUp className="h-4 w-4 text-primary" />
                                     Economics & Operations
                                 </h4>
                                 <div className="grid grid-cols-2 gap-4">
                                     {/* Pricing Metric Card */}
-                                    <div className="bg-white dark:bg-zinc-900 rounded-xl border border-slate-200 dark:border-zinc-800 p-5 shadow-sm relative overflow-hidden">
+                                    <div className="bg-card rounded-xl border border-border p-5 shadow-sm relative overflow-hidden">
                                         <div className="absolute top-0 right-0 p-3 opacity-10"><IndianRupee className="h-12 w-12" /></div>
                                         <div className="flex items-center gap-2 mb-2">
-                                            <Badge variant="outline" className="text-[10px] uppercase tracking-wider font-semibold bg-slate-50 dark:bg-zinc-950">
+                                            <Badge variant="outline" className="text-[10px] uppercase tracking-wider font-semibold bg-muted">
                                                 {('priceType' in node) ? node.priceType : 'Fixed'} Price
                                             </Badge>
                                         </div>
                                         <p className="text-[11px] font-medium text-muted-foreground uppercase tracking-wider mb-1 mt-4">Base Price</p>
                                         <div className="flex items-end gap-1">
-                                            <span className="text-xl font-semibold text-slate-500">₹</span>
-                                            <span className="text-3xl font-bold tracking-tight text-slate-900 dark:text-white">
+                                            <span className="text-xl font-semibold text-muted-foreground">₹</span>
+                                            <span className="text-3xl font-bold tracking-tight text-foreground">
                                                 {('basePrice' in node) ? node.basePrice : 0}
                                             </span>
                                         </div>
                                         {('pricing' in node && node.pricing) && (
-                                            <div className="flex items-center gap-3 mt-4 pt-4 border-t border-slate-100 dark:border-zinc-800 text-xs font-medium text-muted-foreground">
+                                            <div className="flex items-center gap-3 mt-4 pt-4 border-t border-border text-xs font-medium text-muted-foreground">
                                                 {node.pricing.minimumPrice && <span>Min: ₹{node.pricing.minimumPrice}</span>}
                                                 {node.pricing.maximumPrice && <span>Max: ₹{node.pricing.maximumPrice}</span>}
                                             </div>
@@ -213,17 +213,17 @@ export function MarketplaceManagementDrawer({
                                     </div>
 
                                     {/* Duration Metric Card */}
-                                    <div className="bg-white dark:bg-zinc-900 rounded-xl border border-slate-200 dark:border-zinc-800 p-5 shadow-sm relative overflow-hidden">
+                                    <div className="bg-card rounded-xl border border-border p-5 shadow-sm relative overflow-hidden">
                                         <div className="absolute top-0 right-0 p-3 opacity-10"><Clock className="h-12 w-12" /></div>
-                                        <Badge variant="outline" className="text-[10px] uppercase tracking-wider font-semibold bg-slate-50 dark:bg-zinc-950 mb-2">
+                                        <Badge variant="outline" className="text-[10px] uppercase tracking-wider font-semibold bg-muted mb-2">
                                             Execution
                                         </Badge>
                                         <p className="text-[11px] font-medium text-muted-foreground uppercase tracking-wider mb-1 mt-4">Est. Duration</p>
                                         <div className="flex items-baseline gap-1.5">
-                                            <span className="text-3xl font-bold tracking-tight text-slate-900 dark:text-white">
+                                            <span className="text-3xl font-bold tracking-tight text-foreground">
                                                 {('estimatedDurationMinutes' in node) ? node.estimatedDurationMinutes : 60}
                                             </span>
-                                            <span className="text-sm font-semibold text-slate-500">minutes</span>
+                                            <span className="text-sm font-semibold text-muted-foreground">minutes</span>
                                         </div>
                                     </div>
                                 </div>
@@ -231,19 +231,19 @@ export function MarketplaceManagementDrawer({
 
                             {/* Marketplace Visibility Flags */}
                             <div>
-                                <h4 className="text-sm font-bold text-slate-900 dark:text-slate-100 mb-4 flex items-center justify-between">
+                                <h4 className="text-sm font-bold text-foreground mb-4 flex items-center justify-between">
                                     <div className="flex items-center gap-2">
                                         <Star className="h-4 w-4 text-primary" />
                                         Marketplace Positioning
                                     </div>
                                 </h4>
-                                <div className="bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 rounded-xl divide-y divide-slate-100 dark:divide-zinc-800 overflow-hidden shadow-sm">
+                                <div className="bg-card border border-border rounded-xl divide-y divide-border overflow-hidden shadow-sm">
                                     
-                                    <div className="p-4 flex items-center justify-between hover:bg-slate-50 dark:hover:bg-zinc-800/50 transition-colors">
+                                    <div className="p-4 flex items-center justify-between hover:bg-muted transition-colors">
                                         <div className="space-y-1 pr-4">
                                             <div className="flex items-center gap-2">
-                                                <span className="text-sm font-semibold text-slate-900 dark:text-slate-100">Featured Placement</span>
-                                                {('marketplace' in node && node.marketplace?.featured) && <CheckCircle2 className="h-3 w-3 text-emerald-500" />}
+                                                <span className="text-sm font-semibold text-foreground">Featured Placement</span>
+                                                {('marketplace' in node && node.marketplace?.featured) && <CheckCircle2 className="h-3 w-3 text-success" />}
                                             </div>
                                             <p className="text-xs text-muted-foreground leading-snug">Pin this service to the top of homepage discovery feeds.</p>
                                         </div>
@@ -254,11 +254,11 @@ export function MarketplaceManagementDrawer({
                                         />
                                     </div>
 
-                                    <div className="p-4 flex items-center justify-between hover:bg-slate-50 dark:hover:bg-zinc-800/50 transition-colors">
+                                    <div className="p-4 flex items-center justify-between hover:bg-muted transition-colors">
                                         <div className="space-y-1 pr-4">
                                             <div className="flex items-center gap-2">
-                                                <span className="text-sm font-semibold text-slate-900 dark:text-slate-100">Popular Badge</span>
-                                                {('marketplace' in node && node.marketplace?.popular) && <CheckCircle2 className="h-3 w-3 text-blue-500" />}
+                                                <span className="text-sm font-semibold text-foreground">Popular Badge</span>
+                                                {('marketplace' in node && node.marketplace?.popular) && <CheckCircle2 className="h-3 w-3 text-primary" />}
                                             </div>
                                             <p className="text-xs text-muted-foreground leading-snug">Add a 'Popular' highlight to drive higher conversion rates.</p>
                                         </div>
@@ -269,11 +269,11 @@ export function MarketplaceManagementDrawer({
                                         />
                                     </div>
 
-                                    <div className="p-4 flex items-center justify-between hover:bg-slate-50 dark:hover:bg-zinc-800/50 transition-colors">
+                                    <div className="p-4 flex items-center justify-between hover:bg-muted transition-colors">
                                         <div className="space-y-1 pr-4">
                                             <div className="flex items-center gap-2">
-                                                <span className="text-sm font-semibold text-slate-900 dark:text-slate-100">Search Indexing</span>
-                                                {('marketplace' in node && node.marketplace?.searchable) && <CheckCircle2 className="h-3 w-3 text-emerald-500" />}
+                                                <span className="text-sm font-semibold text-foreground">Search Indexing</span>
+                                                {('marketplace' in node && node.marketplace?.searchable) && <CheckCircle2 className="h-3 w-3 text-success" />}
                                             </div>
                                             <p className="text-xs text-muted-foreground leading-snug">Allow customers to find this via the global search bar.</p>
                                         </div>
@@ -289,30 +289,30 @@ export function MarketplaceManagementDrawer({
 
                             {/* SEO Optimization */}
                             <div>
-                                <h4 className="text-sm font-bold text-slate-900 dark:text-slate-100 mb-4 flex items-center gap-2">
+                                <h4 className="text-sm font-bold text-foreground mb-4 flex items-center gap-2">
                                     <Globe className="h-4 w-4 text-primary" />
                                     Search Engine Optimization
                                 </h4>
                                 {('seo' in node && (node.seo?.metaTitle || node.seo?.metaDescription)) ? (
-                                    <div className="p-5 bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 rounded-xl shadow-sm">
-                                        <p className="text-blue-600 dark:text-blue-400 font-medium text-lg hover:underline cursor-pointer truncate mb-0.5">
+                                    <div className="p-5 bg-card border border-border rounded-xl shadow-sm">
+                                        <p className="text-primary font-medium text-lg hover:underline cursor-pointer truncate mb-0.5">
                                             {node.seo.metaTitle || node.name}
                                         </p>
                                         <div className="flex items-center gap-1.5 mb-2">
-                                            <span className="text-emerald-700 dark:text-emerald-500 text-sm font-medium">sevastu.com</span>
-                                            <ChevronRight className="h-3 w-3 text-slate-400" />
-                                            <span className="text-slate-500 text-sm">{node.slug || '...'}</span>
+                                            <span className="text-success text-sm font-medium">sevastu.com</span>
+                                            <ChevronRight className="h-3 w-3 text-muted-foreground" />
+                                            <span className="text-muted-foreground text-sm">{node.slug || '...'}</span>
                                         </div>
-                                        <p className="text-sm text-slate-600 dark:text-slate-400 line-clamp-2 leading-relaxed">
+                                        <p className="text-sm text-muted-foreground line-clamp-2 leading-relaxed">
                                             {node.seo.metaDescription || node.shortDescription || node.description}
                                         </p>
                                     </div>
                                 ) : (
-                                    <div className="flex flex-col items-center justify-center py-8 text-center bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 border-dashed rounded-xl">
-                                        <div className="h-10 w-10 rounded-full bg-slate-100 dark:bg-zinc-800 flex items-center justify-center mb-3">
-                                            <Search className="h-5 w-5 text-slate-400" />
+                                    <div className="flex flex-col items-center justify-center py-8 text-center bg-card border border-border border-dashed rounded-xl">
+                                        <div className="h-10 w-10 rounded-full bg-muted flex items-center justify-center mb-3">
+                                            <Search className="h-5 w-5 text-muted-foreground" />
                                         </div>
-                                        <p className="text-sm font-medium text-slate-700 dark:text-slate-300">No SEO data configured</p>
+                                        <p className="text-sm font-medium text-foreground">No SEO data configured</p>
                                         <p className="text-xs text-muted-foreground mt-1 max-w-[250px]">Add a meta title and description to improve external search rankings.</p>
                                     </div>
                                 )}
@@ -322,7 +322,7 @@ export function MarketplaceManagementDrawer({
                 </div>
 
                 {/* Sticky Action Footer */}
-                <div className="border-t bg-white dark:bg-zinc-950 p-4 flex items-center justify-between shadow-[0_-4px_10px_rgba(0,0,0,0.02)]">
+                <div className="border-t bg-card p-4 flex items-center justify-between shadow-[0_-4px_10px_rgba(0,0,0,0.02)]">
                     <Button 
                         variant="outline" 
                         onClick={() => onEdit?.(type, node._id)} 
@@ -336,10 +336,10 @@ export function MarketplaceManagementDrawer({
                         <Button 
                             variant="secondary" 
                             onClick={handleStatusToggle} 
-                            className="gap-2 shadow-sm bg-slate-100 hover:bg-slate-200 dark:bg-zinc-800 dark:hover:bg-zinc-700"
+                            className="gap-2 shadow-sm bg-muted hover:bg-muted/80"
                             disabled={updating}
                         >
-                            {updating ? <Loader2 className="h-4 w-4 animate-spin" /> : <PowerOff className={`h-4 w-4 ${node.isActive ? 'text-rose-500' : 'text-emerald-500'}`} />}
+                            {updating ? <Loader2 className="h-4 w-4 animate-spin" /> : <PowerOff className={`h-4 w-4 ${node.isActive ? 'text-destructive' : 'text-success'}`} />}
                             {node.isActive ? 'Deactivate' : 'Activate'}
                         </Button>
                         <Button 

@@ -20,7 +20,7 @@ export function SidebarLogo({ desktopSidebarCollapsed, isMobile, onCloseMobile, 
         <div className={cn(LAYOUT.HEADER_HEIGHT, "flex items-center transition-all duration-300", isCollapsed ? "justify-center" : "justify-between px-6")}>
             {!isCollapsed && (
                 <div className="flex items-center gap-3 overflow-hidden">
-                    <div className="h-10 w-10 shrink-0 rounded-xl text-white flex items-center justify-center font-bold">
+                    <div className="h-10 w-10 shrink-0 rounded-xl text-primary-foreground flex items-center justify-center font-bold">
                         <img src={logo.src} alt="Sevastu" className="w-10 h-10" />
                     </div>
 

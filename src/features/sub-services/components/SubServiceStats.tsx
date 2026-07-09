@@ -20,36 +20,36 @@ export function SubServiceStats({ stats }: SubServiceStatsProps) {
                 title="Total Sub-Services"
                 value={stats.total}
                 icon={Layers}
-                colorClass="text-blue-600"
-                bgClass="bg-blue-50"
+                colorClass="text-primary"
+                bgClass="bg-primary/10"
             />
             <SubServiceStatCard
                 title="Active"
                 value={stats.active}
                 icon={CheckCircle2}
-                colorClass="text-emerald-600"
-                bgClass="bg-emerald-50"
+                colorClass="text-success"
+                bgClass="bg-success/10"
             />
             <SubServiceStatCard
                 title="Inactive"
                 value={stats.inactive}
                 icon={XCircle}
-                colorClass="text-red-600"
-                bgClass="bg-red-50"
+                colorClass="text-destructive"
+                bgClass="bg-destructive/10"
             />
             <SubServiceStatCard
                 title="Fixed / Range"
                 value={`${stats.fixed} / ${stats.range}`}
                 icon={Tag}
-                colorClass="text-purple-600"
-                bgClass="bg-purple-50"
+                colorClass="text-primary"
+                bgClass="bg-primary/10"
             />
             <SubServiceStatCard
                 title="Avg Base Price"
                 value={`₹${stats.avgBasePrice}`}
                 icon={IndianRupee}
-                colorClass="text-amber-600"
-                bgClass="bg-amber-50"
+                colorClass="text-warning"
+                bgClass="bg-warning/10"
             />
         </div>
     );

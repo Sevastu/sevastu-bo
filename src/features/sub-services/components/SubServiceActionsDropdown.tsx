@@ -19,21 +19,21 @@ export function SubServiceActionsDropdown({ subService, onEdit, onToggleStatus, 
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="sm" className="h-8 w-8 p-0 rounded-lg hover:bg-slate-100">
-                    <MoreVertical className="w-4 h-4 text-slate-500" />
+                <Button variant="ghost" size="sm" className="h-8 w-8 p-0 rounded-lg hover:bg-muted">
+                    <MoreVertical className="w-4 h-4 text-muted-foreground" />
                 </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-48 rounded-xl border-slate-200 shadow-lg">
+            <DropdownMenuContent align="end" className="w-48 rounded-xl border-border shadow-lg">
                 <DropdownMenuItem onClick={() => onEdit(subService)} className="cursor-pointer py-2.5">
-                    <Edit2 className="w-4 h-4 mr-2 text-slate-500" />
-                    <span className="font-medium text-slate-700">Edit Details</span>
+                    <Edit2 className="w-4 h-4 mr-2 text-muted-foreground" />
+                    <span className="font-medium text-foreground">Edit Details</span>
                 </DropdownMenuItem>
                 
-                <DropdownMenuSeparator className="bg-slate-100" />
+                <DropdownMenuSeparator className="bg-border" />
                 
                 <DropdownMenuItem onClick={() => onToggleStatus(subService._id, subService.isActive)} className="cursor-pointer py-2.5">
-                    <Power className={`w-4 h-4 mr-2 ${subService.isActive ? 'text-amber-500' : 'text-emerald-500'}`} />
-                    <span className="font-medium text-slate-700">
+                    <Power className={`w-4 h-4 mr-2 ${subService.isActive ? 'text-warning' : 'text-success'}`} />
+                    <span className="font-medium text-foreground">
                         {subService.isActive ? 'Deactivate' : 'Activate'}
                     </span>
                 </DropdownMenuItem>
