@@ -29,7 +29,7 @@ export const Analytics: React.FC = () => {
       value: '$125,430',
       change: '+18%',
       changeType: 'increase' as const,
-      icon: <DollarSign className="text-green-600" />,
+      icon: <DollarSign className="text-success" />,
       color: 'green' as const
     },
     {
@@ -37,7 +37,7 @@ export const Analytics: React.FC = () => {
       value: '8,234',
       change: '+12%',
       changeType: 'increase' as const,
-      icon: <Users className="text-blue-600" />,
+      icon: <Users className="text-primary" />,
       color: 'blue' as const
     },
     {
@@ -45,7 +45,7 @@ export const Analytics: React.FC = () => {
       value: '2,456',
       change: '+8%',
       changeType: 'increase' as const,
-      icon: <Briefcase className="text-purple-600" />,
+      icon: <Briefcase className="text-primary" />,
       color: 'purple' as const
     },
     {
@@ -53,7 +53,7 @@ export const Analytics: React.FC = () => {
       value: '$51.20',
       change: '-2%',
       changeType: 'decrease' as const,
-      icon: <TrendingUp className="text-orange-600" />,
+      icon: <TrendingUp className="text-warning" />,
       color: 'orange' as const
     }
   ];
@@ -87,27 +87,21 @@ export const Analytics: React.FC = () => {
   return (
     <AppLayout>
       <div className="space-y-6">
-        {/* Header */}
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-[var(--color-text)]">Analytics</h1>
-            <p className="text-[var(--color-text-secondary)]">Comprehensive insights into your marketplace performance</p>
+            <h1 className="text-3xl font-bold tracking-tight text-foreground">Analytics</h1>
+            <p className="text-muted-foreground mt-1">
+              Overview of platform performance and metrics.
+            </p>
           </div>
           <div className="flex items-center gap-3">
-            {/* Time Range Selector */}
-            <select
-              value={timeRange}
-              onChange={(e) => setTimeRange(e.target.value)}
-              className="px-4 py-2 border border-[var(--color-border)] rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] focus:border-transparent bg-[var(--color-card)] text-[var(--color-text)]"
-            >
-              <option value="7d">Last 7 days</option>
-              <option value="30d">Last 30 days</option>
-              <option value="90d">Last 90 days</option>
-              <option value="1y">Last year</option>
+            <select className="px-4 py-2 bg-card border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-ring">
+              <option>Last 7 days</option>
+              <option>Last 30 days</option>
+              <option>Last 90 days</option>
+              <option>Year to date</option>
             </select>
-            
-            {/* Export Button */}
-            <button className="flex items-center gap-2 px-4 py-2 bg-[var(--color-primary)] text-white rounded-lg hover:bg-[var(--color-primary)] transition-colors">
+            <button className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors">
               <Download size={16} />
               Export Report
             </button>

@@ -101,7 +101,7 @@ export const Settings: React.FC = () => {
         {/* Header */}
         <div>
           <h1 className="mt-2 text-3xl font-bold tracking-tight text-muted-foreground">Settings</h1>
-          <p className="text-gray-500 text-lg">Manage your account and application preferences</p>
+          <p className="text-muted-foreground text-lg">Manage your account and application preferences</p>
         </div>
 
         <div className="flex gap-6">
@@ -114,8 +114,8 @@ export const Settings: React.FC = () => {
                   onClick={() => setActiveTab(tab.id)}
                   className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 ${
                     activeTab === tab.id
-                      ? 'bg-blue-50 text-blue-600 border-l-4 border-blue-600'
-                      : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                      ? 'bg-primary/10 text-primary border-l-4 border-primary'
+                      : 'text-muted-foreground hover:bg-muted hover:text-foreground'
                   }`}
                 >
                   {tab.icon}
@@ -132,7 +132,7 @@ export const Settings: React.FC = () => {
               <div className="bg-card rounded-md p-4">
                 <div>
                   <h2 className="text-2xl font-semibold tracking-tight text-muted-foreground">Appearance Settings</h2>
-                  <p className="ttext-gray-500 text-md">Customize how application looks and feels</p>
+                  <p className="text-muted-foreground text-md">Customize how application looks and feels</p>
                 </div>
 
                 {/* Theme Selection */}

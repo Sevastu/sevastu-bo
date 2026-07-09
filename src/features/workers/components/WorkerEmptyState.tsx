@@ -10,12 +10,12 @@ interface WorkerEmptyStateProps {
 
 export function WorkerEmptyState({ onClearFilters, onOnboardWorker, hasFilters }: WorkerEmptyStateProps) {
     return (
-        <div className="text-center py-20 bg-white rounded-2xl shadow-sm border border-slate-100 flex flex-col items-center justify-center">
-            <div className="w-20 h-20 bg-slate-50 rounded-full flex items-center justify-center mb-6">
-                <Users className="w-10 h-10 text-slate-300" />
+        <div className="text-center py-20 bg-card rounded-2xl shadow-sm border border-border flex flex-col items-center justify-center">
+            <div className="w-20 h-20 bg-muted rounded-full flex items-center justify-center mb-6">
+                <Users className="w-10 h-10 text-muted-foreground" />
             </div>
-            <h3 className="text-xl font-semibold text-slate-900 mb-2">No workers found</h3>
-            <p className="text-slate-500 mb-8 max-w-sm text-center">
+            <h3 className="text-xl font-semibold text-foreground mb-2">No workers found</h3>
+            <p className="text-muted-foreground mb-8 max-w-sm text-center">
                 {hasFilters 
                     ? "We couldn't find any workers matching your current filters. Try adjusting your search or status." 
                     : "There are no workers in the system yet. Onboard your first worker to get started."}
@@ -25,7 +25,7 @@ export function WorkerEmptyState({ onClearFilters, onOnboardWorker, hasFilters }
                     <Button
                         variant="outline"
                         onClick={onClearFilters}
-                        className="rounded-xl border-slate-200 text-slate-700 hover:bg-slate-50"
+                        className="rounded-xl border-border text-foreground hover:bg-muted"
                     >
                         Clear Filters
                     </Button>
@@ -33,7 +33,7 @@ export function WorkerEmptyState({ onClearFilters, onOnboardWorker, hasFilters }
                 {onOnboardWorker && (
                     <Button
                         onClick={onOnboardWorker}
-                        className="bg-blue-600 hover:bg-blue-700 text-white rounded-xl shadow-sm"
+                        className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl shadow-sm"
                     >
                         Onboard Worker
                     </Button>

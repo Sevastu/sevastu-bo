@@ -17,13 +17,13 @@ export const DocumentCard = memo(function DocumentCard({ title, objectKey, icon:
         <div className="bg-card rounded-lg border border-border/20 shadow-sm p-5 hover:shadow-md transition-shadow">
             <div className="flex items-start justify-between mb-4 gap-4">
                 <div className="flex items-center gap-3">
-                    <div className="p-2.5 bg-blue-50 rounded-lg border border-blue-100">
-                        <Icon className="w-5 h-5 text-blue-600" />
+                    <div className="p-2.5 bg-primary/10 rounded-lg border border-primary/20">
+                        <Icon className="w-5 h-5 text-primary" />
                     </div>
                     <div>
-                        <h4 className="text-sm font-bold text-slate-900">{title}</h4>
+                        <h4 className="text-sm font-bold text-foreground">{title}</h4>
                         {uploadDate && (
-                            <p className="text-xs text-slate-500 font-medium mt-0.5 flex items-center gap-1">
+                            <p className="text-xs text-muted-foreground font-medium mt-0.5 flex items-center gap-1">
                                 <Clock className="w-3 h-3" /> {new Date(uploadDate).toLocaleDateString()}
                             </p>
                         )}
@@ -31,7 +31,7 @@ export const DocumentCard = memo(function DocumentCard({ title, objectKey, icon:
                 </div>
                 {ocrStatus && (
                     <div className={`px-2 py-1 rounded-lg border text-xs font-bold flex items-center gap-1 ${
-                        isCompleted ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 'bg-slate-50 text-slate-600 border-slate-200'
+                        isCompleted ? 'bg-success/10 text-success border-success/20' : 'bg-muted text-muted-foreground border-border'
                     }`}>
                         {isCompleted ? <CheckCircle2 className="w-3 h-3" /> : <AlertCircle className="w-3 h-3" />}
                         {ocrStatus.toUpperCase()}

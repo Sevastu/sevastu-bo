@@ -23,9 +23,9 @@ export const WorkerVerificationPagination = memo(function WorkerVerificationPagi
   if (totalItems === 0) return null;
 
   return (
-    <div className="flex flex-col sm:flex-row items-center justify-between gap-4 py-4 px-6 bg-white rounded-2xl border border-slate-200 shadow-sm mt-6">
-      <div className="text-sm text-slate-500 font-medium">
-        Showing <span className="font-bold text-slate-900">{start}</span> to <span className="font-bold text-slate-900">{end}</span> of <span className="font-bold text-slate-900">{totalItems}</span> Workers
+    <div className="flex flex-col sm:flex-row items-center justify-between gap-4 py-4 px-6 bg-card rounded-2xl border border-border shadow-sm mt-6">
+      <div className="text-sm text-muted-foreground font-medium">
+        Showing <span className="font-bold text-foreground">{start}</span> to <span className="font-bold text-foreground">{end}</span> of <span className="font-bold text-foreground">{totalItems}</span> Workers
       </div>
       <div className="flex items-center gap-2">
         <Button
@@ -33,12 +33,12 @@ export const WorkerVerificationPagination = memo(function WorkerVerificationPagi
           size="sm"
           onClick={() => onPageChange(currentPage - 1)}
           disabled={currentPage === 1}
-          className="rounded-lg border-slate-200 text-slate-700 hover:bg-slate-50"
+          className="rounded-lg border-border text-foreground hover:bg-muted"
         >
           <ChevronLeft className="w-4 h-4 mr-1" />
           Previous
         </Button>
-        <div className="text-sm font-bold text-slate-700 px-4">
+        <div className="text-sm font-bold text-foreground px-4">
           Page {currentPage} of {totalPages}
         </div>
         <Button
@@ -46,7 +46,7 @@ export const WorkerVerificationPagination = memo(function WorkerVerificationPagi
           size="sm"
           onClick={() => onPageChange(currentPage + 1)}
           disabled={currentPage === totalPages}
-          className="rounded-lg border-slate-200 text-slate-700 hover:bg-slate-50"
+          className="rounded-lg border-border text-foreground hover:bg-muted"
         >
           Next
           <ChevronRight className="w-4 h-4 ml-1" />

@@ -11,22 +11,22 @@ export function CustomerDateFilter({ dateRange, onChange }: CustomerDateFilterPr
     return (
         <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2">
             <div className="flex items-center gap-2 bg-card border border-border/20 rounded-lg shadow-sm px-3 h-10 w-full sm:w-auto">
-                <Calendar className="w-4 h-4 text-slate-400" />
+                <Calendar className="w-4 h-4 text-muted-foreground" />
                 <input
                     type="date"
                     value={dateRange?.from || ''}
                     onChange={(e) => onChange({ ...dateRange, from: e.target.value })}
-                    className="bg-transparent border-none outline-none text-sm text-slate-700 w-full"
+                    className="bg-transparent border-none outline-none text-sm text-foreground w-full"
                     title="From Date"
                 />
             </div>
-            <span className="text-slate-400 hidden sm:inline">-</span>
-            <div className="flex items-center gap-2 bg-slate-100 border border-slate-200 rounded-xl px-3 h-10 w-full sm:w-auto">
+            <span className="text-muted-foreground hidden sm:inline">-</span>
+            <div className="flex items-center gap-2 bg-muted border border-border rounded-xl px-3 h-10 w-full sm:w-auto">
                 <input
                     type="date"
                     value={dateRange?.to || ''}
                     onChange={(e) => onChange({ ...dateRange, to: e.target.value })}
-                    className="bg-transparent border-none outline-none text-sm text-slate-700 w-full"
+                    className="bg-transparent border-none outline-none text-sm text-foreground w-full"
                     title="To Date"
                 />
             </div>
@@ -34,7 +34,7 @@ export function CustomerDateFilter({ dateRange, onChange }: CustomerDateFilterPr
                 <Button
                     onClick={() => onChange(undefined)}
                     variant="ghost"
-                    className="text-slate-500 hover:text-slate-700 h-10 px-3"
+                    className="text-muted-foreground hover:text-foreground h-10 px-3"
                 >
                     Clear Dates
                 </Button>

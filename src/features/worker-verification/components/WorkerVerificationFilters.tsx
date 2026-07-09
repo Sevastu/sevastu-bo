@@ -21,18 +21,18 @@ export const WorkerVerificationFilters = memo(function WorkerVerificationFilters
         {/* Search */}
         <div className="flex-1">
           <div className="relative">
-            <Search className="absolute left-3.5 top-1/2 transform -translate-y-1/2 text-slate-400 w-5 h-5" />
+            <Search className="absolute left-3.5 top-1/2 transform -translate-y-1/2 text-muted-foreground w-5 h-5" />
             <input
               type="text"
               placeholder="Search workers by name, email, or ID..."
               value={searchTerm}
               onChange={(e) => onSearchChange(e.target.value)}
-              className="w-full pl-11 pr-10 py-2.5 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 bg-slate-100 transition-all text-sm font-medium text-slate-900"
+              className="w-full pl-11 pr-10 py-2.5 border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary bg-muted transition-all text-sm font-medium text-foreground"
             />
             {searchTerm && (
               <button 
                 onClick={() => onSearchChange('')}
-                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-foreground"
               >
                 <X size={16} />
               </button>
@@ -45,7 +45,7 @@ export const WorkerVerificationFilters = memo(function WorkerVerificationFilters
           <select
             value={statusFilter}
             onChange={(e) => onStatusChange(e.target.value as WorkerProfileStatus | 'all')}
-            className="w-full px-4 py-2.5 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 bg-slate-100 text-sm font-medium text-slate-700 appearance-none"
+            className="w-full px-4 py-2.5 border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary bg-muted text-sm font-medium text-foreground appearance-none"
           >
             <option value="all">All Status</option>
             <option value={WorkerProfileStatus.UNDER_REVIEW}>Under Review</option>
@@ -57,7 +57,7 @@ export const WorkerVerificationFilters = memo(function WorkerVerificationFilters
         </div>
 
         {/* More Filters Button */}
-        <button className="flex items-center justify-center gap-2 px-6 py-2.5 bg-slate-100 text-slate-700 rounded-xl hover:bg-slate-200 transition-colors text-sm font-bold shadow-sm">
+        <button className="flex items-center justify-center gap-2 px-6 py-2.5 bg-muted text-foreground rounded-xl hover:bg-muted-foreground/10 transition-colors text-sm font-bold shadow-sm">
           <Filter size={16} />
           More Filters
         </button>

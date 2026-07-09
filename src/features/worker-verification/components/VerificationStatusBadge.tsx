@@ -8,28 +8,28 @@ interface VerificationStatusBadgeProps {
 
 export const VerificationStatusBadge = memo(function VerificationStatusBadge({ status }: VerificationStatusBadgeProps) {
   let label = 'Unknown';
-  let variantClass = 'bg-slate-100 text-slate-800';
+  let variantClass = 'bg-muted text-foreground';
 
   switch (status) {
     case WorkerProfileStatus.VERIFIED:
       label = 'Verified';
-      variantClass = 'bg-emerald-100 text-emerald-800';
+      variantClass = 'bg-success/10 text-success';
       break;
     case WorkerProfileStatus.UNDER_REVIEW:
       label = 'Under Review';
-      variantClass = 'bg-blue-100 text-blue-800';
+      variantClass = 'bg-primary/10 text-primary';
       break;
     case WorkerProfileStatus.KYC_PENDING:
       label = 'KYC Pending';
-      variantClass = 'bg-amber-100 text-amber-800';
+      variantClass = 'bg-warning/10 text-warning';
       break;
     case WorkerProfileStatus.REJECTED:
       label = 'Rejected';
-      variantClass = 'bg-rose-100 text-rose-800';
+      variantClass = 'bg-destructive/10 text-destructive';
       break;
     case WorkerProfileStatus.DRAFT:
       label = 'Draft';
-      variantClass = 'bg-slate-100 text-slate-800';
+      variantClass = 'bg-muted text-foreground';
       break;
     default:
       label = status;

@@ -38,10 +38,10 @@ export function WorkerFilters({
             <div className="bg-card rounded-lg shadow-sm border border-border/20 p-4">
                 <div className="flex flex-col xl:flex-row gap-4 items-center justify-between">
                     <div className="relative flex-1 w-full max-w-md">
-                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                         <Input
                             placeholder="Search by name, email, city, or ID..."
-                            className="pl-9 w-full bg-slate-50 border-slate-200 rounded-xl h-10 focus-visible:ring-blue-500"
+                            className="pl-9 w-full bg-muted border-border rounded-xl h-10 focus-visible:ring-ring"
                             value={searchQuery}
                             onChange={e => onSearchChange(e.target.value)}
                         />
@@ -60,25 +60,25 @@ export function WorkerFilters({
                             <Button 
                                 variant="ghost" 
                                 onClick={onClearFilters}
-                                className="text-slate-500 hover:text-slate-700 h-10 px-3 hidden md:flex"
+                                className="text-muted-foreground hover:text-foreground h-10 px-3 hidden md:flex"
                             >
                                 Clear
                             </Button>
                         )}
 
-                        <div className="h-6 w-px bg-slate-200 hidden sm:block mx-1"></div>
+                        <div className="h-6 w-px bg-border hidden sm:block mx-1"></div>
 
-                        <div className="flex bg-slate-100 p-1 rounded-xl">
+                        <div className="flex bg-muted p-1 rounded-xl">
                             <button
                                 onClick={() => onViewModeChange('grid')}
-                                className={`p-1.5 rounded-lg transition-all ${viewMode === 'grid' ? 'bg-white shadow-sm text-blue-600' : 'text-slate-500 hover:text-slate-700'}`}
+                                className={`p-1.5 rounded-lg transition-all ${viewMode === 'grid' ? 'bg-card shadow-sm text-primary' : 'text-muted-foreground hover:text-foreground'}`}
                                 aria-label="Grid View"
                             >
                                 <LayoutGrid className="w-4 h-4" />
                             </button>
                             <button
                                 onClick={() => onViewModeChange('table')}
-                                className={`p-1.5 rounded-lg transition-all ${viewMode === 'table' ? 'bg-white shadow-sm text-blue-600' : 'text-slate-500 hover:text-slate-700'}`}
+                                className={`p-1.5 rounded-lg transition-all ${viewMode === 'table' ? 'bg-card shadow-sm text-primary' : 'text-muted-foreground hover:text-foreground'}`}
                                 aria-label="Table View"
                             >
                                 <List className="w-4 h-4" />

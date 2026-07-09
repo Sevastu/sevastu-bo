@@ -80,8 +80,8 @@ export default function AnalyticsPage() {
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="mt-2 text-3xl font-bold tracking-tight text-muted-foreground">Analytics</h1>
-            <p className="text-gray-500 text-lg">Comprehensive insights into your marketplace performance</p>
+            <h1 className="mt-2 text-3xl font-bold tracking-tight text-foreground">Analytics</h1>
+            <p className="text-muted-foreground text-lg">Comprehensive insights into your marketplace performance</p>
           </div>
           <div className="flex items-center gap-3">
             {/* Time Range Selector */}

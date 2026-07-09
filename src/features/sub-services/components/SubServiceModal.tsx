@@ -95,12 +95,12 @@ export function SubServiceModal({ isOpen, onClose, onSubmit, services, initialDa
     return (
         <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
             <DialogContent className="sm:max-w-[500px] rounded-2xl p-0 overflow-hidden outline-none">
-                <div className="px-6 py-5 border-b border-slate-100 bg-slate-50/50">
+                <div className="px-6 py-5 border-b border-border bg-muted/50">
                     <DialogHeader>
-                        <DialogTitle className="text-xl font-bold text-slate-900">
+                        <DialogTitle className="text-xl font-bold text-foreground">
                             {isEditing ? 'Edit Sub-Service' : 'Add New Sub-Service'}
                         </DialogTitle>
-                        <DialogDescription className="text-slate-500 mt-1">
+                        <DialogDescription className="text-muted-foreground mt-1">
                             {isEditing 
                                 ? 'Update the details of this sub-service offering.' 
                                 : 'Create a new specific sub-service for a parent category.'}
@@ -124,8 +124,8 @@ export function SubServiceModal({ isOpen, onClose, onSubmit, services, initialDa
                             onBlur={() => setTouched(prev => ({ ...prev, name: true }))}
                             className={`rounded-xl h-11 transition-shadow ${
                                 touched.name && errors.name 
-                                    ? 'border-red-300 focus-visible:ring-red-500' 
-                                    : 'border-slate-200 focus-visible:ring-blue-500'
+                                    ? 'border-destructive focus-visible:ring-destructive' 
+                                    : 'border-border focus-visible:ring-ring'
                             }`}
                             aria-invalid={!!errors.name}
                         />
@@ -145,8 +145,8 @@ export function SubServiceModal({ isOpen, onClose, onSubmit, services, initialDa
                                 id="serviceId"
                                 className={`rounded-xl h-11 transition-shadow ${
                                     touched.serviceId && errors.serviceId 
-                                        ? 'border-red-300 focus:ring-red-500' 
-                                        : 'border-slate-200 focus:ring-blue-500'
+                                        ? 'border-destructive focus:ring-destructive' 
+                                        : 'border-border focus:ring-ring'
                                 }`}
                                 aria-invalid={!!errors.serviceId}
                             >
@@ -176,8 +176,8 @@ export function SubServiceModal({ isOpen, onClose, onSubmit, services, initialDa
                                 onBlur={() => setTouched(prev => ({ ...prev, basePrice: true }))}
                                 className={`rounded-xl h-11 transition-shadow ${
                                     touched.basePrice && errors.basePrice 
-                                        ? 'border-red-300 focus-visible:ring-red-500' 
-                                        : 'border-slate-200 focus-visible:ring-blue-500'
+                                        ? 'border-destructive focus-visible:ring-destructive' 
+                                        : 'border-border focus-visible:ring-ring'
                                 }`}
                                 aria-invalid={!!errors.basePrice}
                             />
@@ -198,7 +198,7 @@ export function SubServiceModal({ isOpen, onClose, onSubmit, services, initialDa
                             >
                                 <SelectTrigger 
                                     id="priceType"
-                                    className="rounded-xl border-slate-200 focus:ring-blue-500 h-11 transition-shadow"
+                                    className="rounded-xl border-border focus:ring-primary h-11 transition-shadow"
                                 >
                                     <SelectValue placeholder="Select type" />
                                 </SelectTrigger>
@@ -210,19 +210,19 @@ export function SubServiceModal({ isOpen, onClose, onSubmit, services, initialDa
                         </FieldWrapper>
                     </div>
 
-                    <div className="px-6 py-4 border-t border-slate-100 bg-slate-50/50 -mx-6 -mb-6 flex justify-end gap-3 mt-8">
+                    <div className="px-6 py-4 border-t border-border bg-muted/50 -mx-6 -mb-6 flex justify-end gap-3 mt-8">
                         <Button
                             type="button"
                             variant="outline"
                             onClick={onClose}
-                            className="rounded-xl border-slate-200 text-slate-700 bg-white hover:bg-slate-50 h-11 px-5"
+                            className="rounded-xl border-border text-foreground bg-card hover:bg-muted h-11 px-5"
                         >
                             Cancel
                         </Button>
                         <Button
                             type="submit"
                             disabled={loading || !isFormValid}
-                            className="rounded-xl bg-blue-600 hover:bg-blue-700 text-white min-w-[120px] h-11 px-5 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="rounded-xl bg-primary hover:bg-primary/90 text-primary-foreground min-w-[120px] h-11 px-5 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                             {loading && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
                             {isEditing ? 'Save Changes' : 'Create Sub-Service'}
@@ -250,13 +250,13 @@ function FieldWrapper({
 }) {
     return (
         <div className="space-y-2 flex flex-col">
-            <Label htmlFor={id} className="text-slate-700 font-medium inline-flex items-center gap-1">
+            <Label htmlFor={id} className="text-foreground font-medium inline-flex items-center gap-1">
                 {label}
-                {required && <span className="text-red-500 font-bold" aria-hidden="true">*</span>}
+                {required && <span className="text-destructive font-bold" aria-hidden="true">*</span>}
             </Label>
             {children}
             {error && (
-                <span className="text-sm text-red-500 mt-1 animate-in slide-in-from-top-1 fade-in duration-200" role="alert">
+                <span className="text-sm text-destructive mt-1 animate-in slide-in-from-top-1 fade-in duration-200" role="alert">
                     {error}
                 </span>
             )}
