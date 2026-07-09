@@ -125,10 +125,10 @@ export const WorkflowProgress: React.FC<WorkflowProgressProps> = ({ job }) => {
                 <div className="flex flex-col items-center">
                   <div className={cn(
                     "w-8 h-8 rounded-full flex items-center justify-center transition-all",
-                    isCompleted && "bg-green-500 text-white",
-                    isCancelled && index === currentStepIndex && "bg-red-500 text-white",
+                    isCompleted && "bg-success text-success-foreground",
+                    isCancelled && index === currentStepIndex && "bg-destructive text-destructive-foreground",
                     isCurrent && !isCompleted && !isCancelled && "bg-primary text-primary-foreground",
-                    isPast && !isCompleted && "bg-green-500 text-white",
+                    isPast && !isCompleted && "bg-success text-success-foreground",
                     isFuture && "bg-muted text-muted-foreground"
                   )}>
                     {isCompleted || isPast ? "✓" : isCurrent ? "●" : "○"}
@@ -136,7 +136,7 @@ export const WorkflowProgress: React.FC<WorkflowProgressProps> = ({ job }) => {
                   {index < workflowSteps.length - 1 && (
                     <div className={cn(
                       "w-0.5 h-8 mt-2",
-                      isPast || isCompleted ? "bg-green-500" : "bg-border"
+                      isPast || isCompleted ? "bg-success" : "bg-border"
                     )} />
                   )}
                 </div>
@@ -146,7 +146,7 @@ export const WorkflowProgress: React.FC<WorkflowProgressProps> = ({ job }) => {
                   <p className={cn(
                     "text-sm font-medium",
                     isCurrent && "text-primary",
-                    isPast && "text-green-500",
+                    isPast && "text-success",
                     isFuture && "text-muted-foreground"
                   )}>
                     {step.label}

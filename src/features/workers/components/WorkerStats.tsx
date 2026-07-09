@@ -8,7 +8,7 @@ interface WorkerStatsCardProps {
     iconClassName?: string;
 }
 
-export function WorkerStats({ title, value, icon, subtitle, iconClassName = "text-blue-600 bg-blue-50" }: WorkerStatsCardProps) {
+export function WorkerStats({ title, value, icon, subtitle, iconClassName = "text-primary bg-primary/10" }: WorkerStatsCardProps) {
     return (
         <div className="bg-card rounded-lg p-6 shadow-sm border border-border/20 flex">
             <div className="flex justify-around items-start mr-6">
@@ -17,9 +17,9 @@ export function WorkerStats({ title, value, icon, subtitle, iconClassName = "tex
                 </div>
             </div>
             <div>
-                <h3 className="text-sm font-medium text-slate-500">{title}</h3>
-                <div className="text-2xl font-bold text-slate-900">{value}</div>
-                {subtitle && <p className="text-xs text-slate-400 mt-2">{subtitle}</p>}
+                <h3 className="text-sm font-medium text-muted-foreground">{title}</h3>
+                <div className="text-2xl font-bold text-foreground">{value}</div>
+                {subtitle && <p className="text-xs text-muted-foreground mt-2">{subtitle}</p>}
             </div>
         </div>
     );

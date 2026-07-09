@@ -14,23 +14,23 @@ function Input({
         `
         h-10 w-full min-w-0
         rounded-xl
-        border border-slate-200
-        bg-white
+        border border-border
+        bg-input
         px-4 py-2
-        text-sm text-slate-900
-        placeholder:text-slate-400
+        text-sm text-foreground
+        placeholder:text-muted-foreground
 
         shadow-sm
         transition-all duration-200
 
-        hover:border-blue-300
-        focus:border-blue-500
-        focus:ring-4 focus:ring-blue-100
+        hover:border-primary/50
+        focus:border-ring
+        focus:ring-4 focus:ring-ring/20
         focus:outline-none
 
         disabled:cursor-not-allowed
-        disabled:bg-slate-50
-        disabled:text-slate-400
+        disabled:bg-muted
+        disabled:text-muted-foreground
         `,
         className
       )}

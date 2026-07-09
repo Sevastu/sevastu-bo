@@ -8,7 +8,7 @@ interface WorkerAvatarProps {
 
 export const WorkerAvatar = memo(function WorkerAvatar({ photoUrl, name }: WorkerAvatarProps) {
   return (
-    <div className="w-16 h-16 rounded-full overflow-hidden bg-slate-100 flex items-center justify-center shrink-0 border border-slate-200">
+    <div className="w-16 h-16 rounded-full overflow-hidden bg-muted flex items-center justify-center shrink-0 border border-border">
       {photoUrl ? (
         <img
           src={photoUrl}
@@ -24,7 +24,7 @@ export const WorkerAvatar = memo(function WorkerAvatar({ photoUrl, name }: Worke
         className="w-full h-full flex items-center justify-center"
         style={{ display: photoUrl ? 'none' : 'flex' }}
       >
-        <User size={32} className="text-slate-400" />
+        <User size={32} className="text-muted-foreground" />
       </div>
     </div>
   );

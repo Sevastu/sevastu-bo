@@ -32,7 +32,7 @@ export function ActiveStatusField({ checked, onChange, disabled }: ActiveStatusF
             >
                 <span
                     className={cn(
-                        "pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition-transform",
+                        "pointer-events-none inline-block h-5 w-5 transform rounded-full bg-card shadow ring-0 transition-transform",
                         checked ? "translate-x-5" : "translate-x-0"
                     )}
                 />

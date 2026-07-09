@@ -183,10 +183,10 @@ function ServicesContent() {
             <div className="max-w-[1600px] mx-auto">
                 {/* Breadcrumbs */}
                 {isCategoryMode && (
-                    <div className="text-sm text-slate-500 mb-6 flex items-center gap-2">
-                        <span className="cursor-pointer hover:text-blue-600 transition-colors" onClick={() => router.push('/categories')}>Categories</span>
-                        <span className="text-slate-300">/</span>
-                        <span className="font-medium text-slate-700">{activeCategory ? activeCategory.name : '...'}</span>
+                    <div className="text-sm text-muted-foreground mb-6 flex items-center gap-2">
+                        <span className="cursor-pointer hover:text-primary transition-colors" onClick={() => router.push('/categories')}>Categories</span>
+                        <span className="text-muted-foreground">/</span>
+                        <span className="font-medium text-foreground">{activeCategory ? activeCategory.name : '...'}</span>
                     </div>
                 )}
 
@@ -255,10 +255,10 @@ function ServicesContent() {
                                 {[...Array(8)].map((_, i) => <ServiceCardSkeleton key={i} />)}
                             </div>
                         ) : (
-                            <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-8 flex justify-center">
+                            <div className="bg-card rounded-2xl shadow-sm border border-border p-8 flex justify-center">
                                 <div className="animate-pulse flex flex-col items-center gap-4">
-                                    <div className="w-12 h-12 bg-slate-100 rounded-full"></div>
-                                    <div className="h-4 w-32 bg-slate-100 rounded"></div>
+                                    <div className="w-12 h-12 bg-muted rounded-full"></div>
+                                    <div className="h-4 w-32 bg-muted rounded"></div>
                                 </div>
                             </div>
                         )
@@ -318,7 +318,7 @@ function ServicesContent() {
 export default function ServicesPage() {
     return (
         <AppLayout>
-            <Suspense fallback={<div className="p-8 flex justify-center text-slate-500">Loading Services Dashboard...</div>}>
+            <Suspense fallback={<div className="p-8 flex justify-center text-muted-foreground">Loading Services Dashboard...</div>}>
                 <ServicesContent />
             </Suspense>
         </AppLayout>

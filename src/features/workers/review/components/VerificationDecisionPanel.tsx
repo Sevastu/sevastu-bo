@@ -26,23 +26,23 @@ export const VerificationDecisionPanel = memo(function VerificationDecisionPanel
     const isProcessing = isApproving || isRejecting;
 
     return (
-        <div className="bg-card border-t rounded-xl border-slate-200 p-4 sm:p-6 bottom-0 shadow-[0_-4px_20px_rgba(0,0,0,0.05)]">
+        <div className="bg-card border-t rounded-xl border-border p-4 sm:p-6 bottom-0 shadow-[0_-4px_20px_rgba(0,0,0,0.05)]">
             <div className="max-w-7xl mx-auto flex flex-col gap-4">
                 {!isCompleted ? (
                     <div className="relative">
-                        <MessageSquare className="absolute left-3 top-3 w-4 h-4 text-slate-400" />
+                        <MessageSquare className="absolute left-3 top-3 w-4 h-4 text-muted-foreground" />
                         <textarea 
                             value={note || ''}
                             onChange={(e) => onNoteChange?.(e.target.value)}
                             placeholder="Add an optional verification note or rejection reason..."
-                            className="w-full pl-9 pr-4 py-3 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 bg-slate-50 text-sm resize-none min-h-[80px]"
+                            className="w-full pl-9 pr-4 py-3 border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 bg-muted text-sm resize-none min-h-[80px]"
                             disabled={isProcessing}
                         />
                     </div>
                 ) : (
-                    <div className="bg-slate-50 p-4 rounded-xl border border-slate-200 text-center">
-                        <p className="text-sm font-semibold text-slate-600">
-                            This profile has already been processed (Current Status: <span className="text-slate-900">{status}</span>).
+                    <div className="bg-muted p-4 rounded-xl border border-border text-center">
+                        <p className="text-sm font-semibold text-foreground">
+                            This profile has already been processed (Current Status: <span className="text-foreground">{status}</span>).
                         </p>
                     </div>
                 )}
@@ -51,7 +51,7 @@ export const VerificationDecisionPanel = memo(function VerificationDecisionPanel
                     <Button 
                         onClick={onReject}
                         disabled={isProcessing || isCompleted}
-                        className="w-full bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 shadow-sm rounded-xl text-base font-bold"
+                        className="w-full bg-destructive/10 hover:bg-destructive/20 text-destructive border border-destructive/20 shadow-sm rounded-xl text-base font-bold"
                     >
                         {isRejecting ? <Loader2 className="w-5 h-5 mr-2 animate-spin" /> : <XSquare className="w-5 h-5 mr-2" />}
                         {isRejecting ? 'Rejecting...' : 'Reject Profile'}
@@ -59,7 +59,7 @@ export const VerificationDecisionPanel = memo(function VerificationDecisionPanel
                     <Button 
                         onClick={onApprove}
                         disabled={isProcessing || isCompleted}
-                        className="w-full bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm rounded-xl text-base font-bold"
+                        className="w-full bg-success hover:bg-success/90 text-primary-foreground shadow-sm rounded-xl text-base font-bold"
                     >
                         {isApproving ? <Loader2 className="w-5 h-5 mr-2 animate-spin" /> : <CheckSquare className="w-5 h-5 mr-2" />}
                         {isApproving ? 'Approving...' : 'Approve Profile'}

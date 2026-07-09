@@ -11,16 +11,16 @@ export function CustomerStatusBadge({ status, className = '' }: CustomerStatusBa
     
     let variant: 'default' | 'secondary' | 'success' | 'destructive' | 'outline' = 'secondary';
     let label = 'Inactive';
-    let customClass = 'bg-slate-100 text-slate-800 border-none hover:bg-slate-100';
+    let customClass = 'bg-muted text-foreground border-none hover:bg-muted';
 
     if (s === 'active') {
         variant = 'success';
         label = 'Active';
-        customClass = 'bg-green-100 text-green-800 border-none hover:bg-green-100';
+        customClass = 'bg-success/10 text-success border-none hover:bg-success/10';
     } else if (s === 'inactive') {
         variant = 'secondary';
         label = 'Inactive';
-        customClass = 'bg-slate-100 text-slate-800 border-none hover:bg-slate-100';
+        customClass = 'bg-muted text-foreground border-none hover:bg-muted';
     }
 
     return (

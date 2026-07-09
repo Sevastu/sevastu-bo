@@ -20,7 +20,7 @@ export function WorkerTable({ workers, onRowClick, onViewProfile, onReview }: Wo
         <div className="bg-card rounded-lg shadow-sm border border-border/20 overflow-hidden">
             <div className="overflow-x-auto">
                 <table className="w-full text-sm text-left">
-                    <thead className="bg-slate-50 text-slate-500 font-medium border-b border-slate-200">
+                    <thead className="bg-muted text-muted-foreground font-medium border-b border-border">
                         <tr>
                             <th className="px-6 py-4 rounded-tl-2xl">Worker</th>
                             <th className="px-6 py-4">Skills</th>
@@ -31,21 +31,21 @@ export function WorkerTable({ workers, onRowClick, onViewProfile, onReview }: Wo
                             <th className="px-6 py-4 text-right rounded-tr-2xl">Actions</th>
                         </tr>
                     </thead>
-                    <tbody className="divide-y divide-slate-100">
+                    <tbody className="divide-y divide-border">
                         {workers.map(worker => (
                             <tr 
                                 key={resolveWorkerUserId(worker)} 
-                                className="hover:bg-slate-50/80 transition-colors cursor-pointer group"
+                                className="hover:bg-muted/80 transition-colors cursor-pointer group"
                                 onClick={() => onRowClick(worker)}
                             >
                                 <td className="px-6 py-4">
                                     <div className="flex items-center gap-4">
                                         <WorkerAvatar photoUrl={worker.photoUrl} name={worker.name} className="w-10 h-10" />
                                         <div>
-                                            <div className="font-semibold text-slate-900 group-hover:text-blue-600 transition-colors">
+                                            <div className="font-semibold text-foreground group-hover:text-primary transition-colors">
                                                 {worker.name || '—'}
                                             </div>
-                                            <div className="text-xs text-slate-500 mt-0.5">
+                                            <div className="text-xs text-muted-foreground mt-0.5">
                                                 {worker.email || '—'}
                                             </div>
                                         </div>
@@ -55,16 +55,16 @@ export function WorkerTable({ workers, onRowClick, onViewProfile, onReview }: Wo
                                     <WorkerSkills skills={worker.skills} />
                                 </td>
                                 <td className="px-6 py-4">
-                                    <div className="flex items-center text-slate-700 text-sm">
-                                        <MapPin className="w-3.5 h-3.5 text-slate-400 mr-1.5" />
+                                    <div className="flex items-center text-foreground text-sm">
+                                        <MapPin className="w-3.5 h-3.5 text-muted-foreground mr-1.5" />
                                         {worker.city && worker.state ? `${worker.city}, ${worker.state}` : '—'}
                                     </div>
                                 </td>
                                 <td className="px-6 py-4">
                                     <div className="flex flex-col items-start gap-1.5">
                                         <WorkerStatusBadge status={worker.profileStatus as string} />
-                                        <div className="flex items-center text-[11px] font-medium text-slate-500">
-                                            <Circle className={`w-2 h-2 mr-1.5 fill-current ${worker.isAvailable ? 'text-green-500' : 'text-slate-300'}`} />
+                                        <div className="flex items-center text-[11px] font-medium text-muted-foreground">
+                                            <Circle className={`w-2 h-2 mr-1.5 fill-current ${worker.isAvailable ? 'text-success' : 'text-muted'}`} />
                                             {worker.isAvailable ? 'Available' : 'Unavailable'}
                                         </div>
                                     </div>
@@ -72,7 +72,7 @@ export function WorkerTable({ workers, onRowClick, onViewProfile, onReview }: Wo
                                 <td className="px-6 py-4">
                                     <WorkerRating rating={worker.rating || worker.averageRating || 0} />
                                 </td>
-                                <td className="px-6 py-4 text-slate-500 text-xs font-medium">
+                                <td className="px-6 py-4 text-muted-foreground text-xs font-medium">
                                     {worker.createdAt || worker.joinedAt ? timeAgo(worker.createdAt || worker.joinedAt) : '—'}
                                 </td>
                                 <td className="px-6 py-4 text-right">

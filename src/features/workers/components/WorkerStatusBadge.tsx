@@ -18,26 +18,26 @@ export function WorkerStatusBadge({ status, className = '' }: WorkerStatusBadgeP
         case 'APPROVED':
             variant = 'success';
             label = 'Verified';
-            customClass = 'bg-green-100 text-green-800 border-none hover:bg-green-100';
+            customClass = 'bg-success/10 text-success border-none hover:bg-success/10';
             break;
         case 'under_review':
         case 'kyc_pending':
             variant = 'secondary';
             label = 'Pending';
-            customClass = 'bg-yellow-100 text-yellow-800 border-none hover:bg-yellow-100';
+            customClass = 'bg-warning/10 text-warning border-none hover:bg-warning/10';
             break;
         case 'rejected':
             variant = 'destructive';
             label = 'Rejected';
-            customClass = 'bg-red-100 text-red-800 border-none hover:bg-red-100';
+            customClass = 'bg-destructive/10 text-destructive border-none hover:bg-destructive/10';
             break;
         case 'draft':
             variant = 'secondary';
             label = 'Draft';
-            customClass = 'bg-slate-100 text-slate-800 border-none hover:bg-slate-100';
+            customClass = 'bg-muted text-foreground border-none hover:bg-muted';
             break;
         default:
-            customClass = 'bg-slate-100 text-slate-800 border-none hover:bg-slate-100';
+            customClass = 'bg-muted text-foreground border-none hover:bg-muted';
             break;
     }
 

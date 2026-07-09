@@ -13,7 +13,7 @@ interface ServiceStatsCardProps {
     iconClassName?: string;
 }
 
-export function ServiceStatsCard({ title, value, icon, subtitle, trend, iconClassName = "text-blue-600 bg-blue-50" }: ServiceStatsCardProps) {
+export function ServiceStatsCard({ title, value, icon, subtitle, trend, iconClassName = "text-primary bg-primary/10" }: ServiceStatsCardProps) {
     return (
         <div className="bg-card rounded-lg p-6 shadow-sm border border-border/20 flex">
             <div className="flex justify-around items-start mr-6">
@@ -21,16 +21,16 @@ export function ServiceStatsCard({ title, value, icon, subtitle, trend, iconClas
                     {icon}
                 </div>
                 {trend && (
-                    <div className={`text-xs font-medium px-2.5 py-1 rounded-full ${trend.isPositive ? 'text-green-700 bg-green-50' : 'text-red-700 bg-red-50'}`}>
+                    <div className={`text-xs font-medium px-2.5 py-1 rounded-full ${trend.isPositive ? 'text-success bg-success/10' : 'text-destructive bg-destructive/10'}`}>
                         {trend.isPositive ? '+' : '-'}{trend.value}%
                     </div>
                 )}
             </div>
             <div>
-                <h3 className="text-sm font-medium text-slate-500">{title}</h3>
-                <div className="text-2xl font-bold text-slate-900">{value}</div>
-                {subtitle && <p className="text-xs text-slate-400 mt-2">{subtitle}</p>}
-                {trend && <p className="text-xs text-slate-400 mt-2">{trend.label}</p>}
+                <h3 className="text-sm font-medium text-muted-foreground">{title}</h3>
+                <div className="text-2xl font-bold text-foreground">{value}</div>
+                {subtitle && <p className="text-xs text-muted-foreground mt-2">{subtitle}</p>}
+                {trend && <p className="text-xs text-muted-foreground mt-2">{trend.label}</p>}
             </div>
         </div>
     );

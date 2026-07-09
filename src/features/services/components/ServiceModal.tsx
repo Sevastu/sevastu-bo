@@ -97,7 +97,7 @@ export function ServiceModal({ isOpen, onClose, onSaved, service, categories, lo
 
   const renderIcon = (iconName: string) => {
     const Icon = (LucideIcons as any)[iconName];
-    return Icon ? <Icon className="w-5 h-5 text-blue-600" /> : <LucideIcons.Package className="w-5 h-5 text-blue-600" />;
+    return Icon ? <Icon className="w-5 h-5 text-primary" /> : <LucideIcons.Package className="w-5 h-5 text-primary" />;
   };
 
   return (
@@ -110,7 +110,7 @@ export function ServiceModal({ isOpen, onClose, onSaved, service, categories, lo
           {/* Form Column */}
           <form id="serviceForm" onSubmit={handleSubmit} className="space-y-6">
             <div className="space-y-2">
-              <Label htmlFor="name">Service Name <span className="text-red-500">*</span></Label>
+              <Label htmlFor="name">Service Name <span className="text-destructive">*</span></Label>
               <Input 
                 id="name" 
                 value={formData.name} 
@@ -123,10 +123,10 @@ export function ServiceModal({ isOpen, onClose, onSaved, service, categories, lo
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="categoryId">Parent Category <span className="text-red-500">*</span></Label>
+              <Label htmlFor="categoryId">Parent Category <span className="text-destructive">*</span></Label>
               <select 
                 id="categoryId"
-                className="w-full h-10 px-3 py-2 rounded-md border border-slate-200 bg-white text-sm"
+                className="w-full h-10 px-3 py-2 rounded-md border border-border bg-card text-sm"
                 value={formData.categoryId as string}
                 onChange={e => handleChange('categoryId', e.target.value)}
                 disabled={!!lockedCategoryId && !service}
@@ -150,8 +150,8 @@ export function ServiceModal({ isOpen, onClose, onSaved, service, categories, lo
 
             <div className="space-y-2">
               <div className="flex justify-between items-center">
-                <Label htmlFor="description">Description <span className="text-red-500">*</span></Label>
-                <span className="text-xs text-slate-400">{formData.description?.length || 0} / 300</span>
+                <Label htmlFor="description">Description <span className="text-destructive">*</span></Label>
+                <span className="text-xs text-muted-foreground">{formData.description?.length || 0} / 300</span>
               </div>
               <Textarea 
                 id="description" 
@@ -165,7 +165,7 @@ export function ServiceModal({ isOpen, onClose, onSaved, service, categories, lo
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="icon">Icon Name <span className="text-red-500">*</span></Label>
+              <Label htmlFor="icon">Icon Name <span className="text-destructive">*</span></Label>
               <Input 
                 id="icon" 
                 value={formData.icon} 
@@ -173,11 +173,11 @@ export function ServiceModal({ isOpen, onClose, onSaved, service, categories, lo
                 placeholder="Sparkles"
                 required
               />
-              <p className="text-xs text-slate-500">E.g., Sparkles, Brush, Zap. (Icon Picker Mock)</p>
+              <p className="text-xs text-muted-foreground">E.g., Sparkles, Brush, Zap. (Icon Picker Mock)</p>
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="imageUrl">Cover Image URL <span className="text-red-500">*</span></Label>
+              <Label htmlFor="imageUrl">Cover Image URL <span className="text-destructive">*</span></Label>
               <Input 
                 id="imageUrl" 
                 value={formData.imageUrl} 
@@ -185,13 +185,13 @@ export function ServiceModal({ isOpen, onClose, onSaved, service, categories, lo
                 placeholder="https://example.com/image.jpg"
                 required
               />
-              <p className="text-xs text-slate-500">Drag-and-drop Image Uploader Mock.</p>
+              <p className="text-xs text-muted-foreground">Drag-and-drop Image Uploader Mock.</p>
             </div>
 
             <div className="flex items-center justify-between border rounded-xl p-4">
               <div className="space-y-0.5">
                 <Label>Status</Label>
-                <p className="text-sm text-slate-500">
+                <p className="text-sm text-muted-foreground">
                   {formData.isActive ? 'Service is active.' : 'Service is hidden.'}
                 </p>
               </div>
@@ -205,8 +205,8 @@ export function ServiceModal({ isOpen, onClose, onSaved, service, categories, lo
           {/* Live Preview Column */}
           <div className="hidden md:block">
             <Label className="mb-4 block">Live Preview</Label>
-            <div className="bg-white rounded-xl shadow-[0_4px_20px_rgba(41,52,61,0.04)] border border-slate-100 overflow-hidden flex flex-col h-[380px]">
-              <div className="relative h-40 bg-slate-100 overflow-hidden shrink-0">
+            <div className="bg-card rounded-xl shadow-[0_4px_20px_rgba(41,52,61,0.04)] border border-border overflow-hidden flex flex-col h-[380px]">
+              <div className="relative h-40 bg-muted overflow-hidden shrink-0">
                 <img 
                   src={formData.imageUrl || 'https://placehold.co/600x400/f8fafc/94a3b8?text=No+Image'} 
                   alt="Preview"
@@ -214,22 +214,22 @@ export function ServiceModal({ isOpen, onClose, onSaved, service, categories, lo
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-60" />
                 <div className="absolute top-3 right-3">
-                  <span className={`px-2 py-1 rounded-md text-[10px] uppercase font-bold tracking-wider ${formData.isActive ? 'bg-green-100 text-green-700' : 'bg-slate-100 text-slate-600'}`}>
+                  <span className={`px-2 py-1 rounded-md text-[10px] uppercase font-bold tracking-wider ${formData.isActive ? 'bg-success/10 text-success' : 'bg-muted text-muted-foreground'}`}>
                     {formData.isActive ? 'Active' : 'Inactive'}
                   </span>
                 </div>
-                <div className="absolute -bottom-6 left-5 w-12 h-12 bg-white rounded-full shadow-md flex items-center justify-center border border-slate-50">
+                <div className="absolute -bottom-6 left-5 w-12 h-12 bg-card rounded-full shadow-md flex items-center justify-center border border-border">
                   {renderIcon(formData.icon || 'Package')}
                 </div>
               </div>
               <div className="pt-8 px-5 pb-5 flex flex-col flex-1">
-                <h3 className="text-[18px] font-semibold text-slate-900 leading-tight">
+                <h3 className="text-[18px] font-semibold text-foreground leading-tight">
                   {formData.name || 'Service Name'}
                 </h3>
-                <p className="text-xs text-blue-600 font-medium mt-1 mb-3">
+                <p className="text-xs text-primary font-medium mt-1 mb-3">
                   {categories.find(c => c._id === formData.categoryId)?.name || 'Parent Category'}
                 </p>
-                <p className="text-[13px] text-slate-500 line-clamp-2">
+                <p className="text-[13px] text-muted-foreground line-clamp-2">
                   {formData.description || 'Service description will appear here.'}
                 </p>
               </div>
@@ -240,7 +240,7 @@ export function ServiceModal({ isOpen, onClose, onSaved, service, categories, lo
           <Button type="button" variant="outline" onClick={handleClose} disabled={isSubmitting}>
             Cancel
           </Button>
-          <Button type="submit" form="serviceForm" className="bg-blue-600 hover:bg-blue-700 text-white rounded-xl" disabled={isSubmitting}>
+          <Button type="submit" form="serviceForm" className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl" disabled={isSubmitting}>
             {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
             {isSubmitting ? 'Saving...' : 'Save Service'}
           </Button>

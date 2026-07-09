@@ -8,18 +8,18 @@ export function WorkerRating({ rating }: { rating: number }) {
     
     for (let i = 0; i < 5; i++) {
         if (i < fullStars) {
-            stars.push(<Star key={i} className="w-3.5 h-3.5 fill-yellow-400 text-yellow-400" />);
+            stars.push(<Star key={i} className="w-3.5 h-3.5 fill-warning text-warning" />);
         } else if (i === fullStars && hasHalfStar) {
-            stars.push(<Star key={i} className="w-3.5 h-3.5 fill-yellow-200 text-yellow-400" />);
+            stars.push(<Star key={i} className="w-3.5 h-3.5 fill-warning/50 text-warning" />);
         } else {
-            stars.push(<Star key={i} className="w-3.5 h-3.5 text-slate-200" />);
+            stars.push(<Star key={i} className="w-3.5 h-3.5 text-muted-foreground" />);
         }
     }
     
     return (
         <div className="flex items-center gap-1.5">
             <div className="flex">{stars}</div>
-            <span className="text-sm font-semibold text-slate-700">{rating > 0 ? rating.toFixed(1) : 'New'}</span>
+            <span className="text-sm font-semibold text-foreground">{rating > 0 ? rating.toFixed(1) : 'New'}</span>
         </div>
     );
 }

@@ -56,7 +56,7 @@ export function DataTable<T>({
                             <tr>
                                 <td colSpan={columns.length} className="px-6 py-12 text-center">
                                     <div className="flex flex-col items-center gap-2">
-                                        <div className="w-6 h-6 border-2 border-theme-text border-t-transparent rounded-full animate-spin" />
+                                        <div className="w-6 h-6 border-2 border-foreground border-t-transparent rounded-full animate-spin" />
                                         <span className="text-muted-foreground font-medium">Fetching data...</span>
                                     </div>
                                 </td>

@@ -28,20 +28,20 @@ export function SubServicePagination({
 
     return (
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mt-6 mb-8 px-2">
-            <div className="text-sm text-slate-500 font-medium">
-                Showing <span className="text-slate-900 font-bold">{startItem}</span> to{' '}
-                <span className="text-slate-900 font-bold">{endItem}</span> of{' '}
-                <span className="text-slate-900 font-bold">{totalItems}</span> Sub-Services
+            <div className="text-sm text-muted-foreground font-medium">
+                Showing <span className="text-foreground font-bold">{startItem}</span> to{' '}
+                <span className="text-foreground font-bold">{endItem}</span> of{' '}
+                <span className="text-foreground font-bold">{totalItems}</span> Sub-Services
             </div>
             
             <div className="flex items-center gap-4">
                 <div className="flex items-center gap-2">
-                    <span className="text-sm text-slate-500">Rows per page</span>
+                    <span className="text-sm text-muted-foreground">Rows per page</span>
                     <Select
                         value={limit.toString()}
                         onValueChange={(val) => onLimitChange(Number(val))}
                     >
-                        <SelectTrigger className="w-[70px] h-9 bg-white border-slate-200 rounded-lg">
+                        <SelectTrigger className="w-[70px] h-9 bg-card border-border rounded-lg">
                             <SelectValue />
                         </SelectTrigger>
                         <SelectContent>
@@ -58,11 +58,11 @@ export function SubServicePagination({
                         size="sm"
                         onClick={() => onPageChange(currentPage - 1)}
                         disabled={currentPage === 1}
-                        className="h-9 w-9 p-0 rounded-lg border-slate-200"
+                        className="h-9 w-9 p-0 rounded-lg border-border"
                     >
                         <ChevronLeft className="w-4 h-4" />
                     </Button>
-                    <div className="text-sm font-medium px-2 text-slate-700">
+                    <div className="text-sm font-medium px-2 text-foreground">
                         Page {currentPage} of {totalPages}
                     </div>
                     <Button
@@ -70,7 +70,7 @@ export function SubServicePagination({
                         size="sm"
                         onClick={() => onPageChange(currentPage + 1)}
                         disabled={currentPage === totalPages || totalPages === 0}
-                        className="h-9 w-9 p-0 rounded-lg border-slate-200"
+                        className="h-9 w-9 p-0 rounded-lg border-border"
                     >
                         <ChevronRight className="w-4 h-4" />
                     </Button>

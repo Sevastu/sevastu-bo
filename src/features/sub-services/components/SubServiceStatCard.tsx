@@ -24,15 +24,15 @@ export function SubServiceStatCard({ title, value, icon: Icon, trend, colorClass
                     </div>
                     {trend && (
                         <div className={`px-2.5 py-1 rounded-full text-xs font-medium ${
-                            trend.isPositive ? 'bg-emerald-100 text-emerald-700' : 'bg-red-100 text-red-700'
+                            trend.isPositive ? 'bg-success/10 text-success' : 'bg-destructive/10 text-destructive'
                         }`}>
                             {trend.isPositive ? '+' : '-'}{Math.abs(trend.value)}%
                         </div>
                     )}
                 </div>
                 <div>
-                    <p className="text-sm font-medium text-slate-500 mb-1">{title}</p>
-                    <h3 className="text-2xl font-bold text-slate-900 tracking-tight">{value}</h3>
+                    <p className="text-sm font-medium text-muted-foreground mb-1">{title}</p>
+                    <h3 className="text-2xl font-bold text-foreground tracking-tight">{value}</h3>
                 </div>
             </CardContent>
         </Card>

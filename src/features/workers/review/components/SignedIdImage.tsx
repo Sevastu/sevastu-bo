@@ -55,10 +55,10 @@ export function SignedIdImage({ objectKey, label, showActions = true }: SignedId
 
     return (
         <div className="space-y-2">
-            <div className="group relative flex min-h-[200px] items-center justify-center overflow-hidden rounded-xl border border-slate-200 bg-slate-50 transition-all duration-200 hover:shadow-md">
-                {loading && <Loader2 className="h-8 w-8 animate-spin text-slate-400" />}
+            <div className="group relative flex min-h-[200px] items-center justify-center overflow-hidden rounded-xl border border-border bg-muted transition-all duration-200 hover:shadow-md">
+                {loading && <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />}
                 {!loading && err && (
-                    <div className="max-w-xs p-4 text-center text-sm text-rose-500 font-medium">
+                    <div className="max-w-xs p-4 text-center text-sm text-destructive font-medium">
                         {err}
                         <div className="mt-3">
                             <Button type="button" variant="outline" size="sm" onClick={load} className="rounded-lg shadow-sm">
@@ -83,21 +83,21 @@ export function SignedIdImage({ objectKey, label, showActions = true }: SignedId
                                         type="button"
                                         variant="secondary"
                                         size="sm"
-                                        className="h-8 w-8 p-0 rounded-lg shadow-sm bg-white hover:bg-slate-100 border border-slate-200"
+                                        className="h-8 w-8 p-0 rounded-lg shadow-sm bg-card hover:bg-muted border border-border"
                                         onClick={() => setIsZoomed(!isZoomed)}
                                         title={isZoomed ? "Zoom Out" : "Zoom In"}
                                     >
-                                        <ZoomIn className="h-4 w-4 text-slate-700" />
+                                        <ZoomIn className="h-4 w-4 text-foreground" />
                                     </Button>
                                     <Button
                                         type="button"
                                         variant="secondary"
                                         size="sm"
-                                        className="h-8 w-8 p-0 rounded-lg shadow-sm bg-white hover:bg-slate-100 border border-slate-200"
+                                        className="h-8 w-8 p-0 rounded-lg shadow-sm bg-card hover:bg-muted border border-border"
                                         onClick={() => window.open(url, '_blank')}
                                         title="Open Full Image"
                                     >
-                                        <ExternalLink className="h-4 w-4 text-slate-700" />
+                                        <ExternalLink className="h-4 w-4 text-foreground" />
                                     </Button>
                                 </div>
                             )}
@@ -105,7 +105,7 @@ export function SignedIdImage({ objectKey, label, showActions = true }: SignedId
                     </>
                 )}
             </div>
-            <p className="text-xs text-center font-semibold text-slate-500 uppercase tracking-wider">{label}</p>
+            <p className="text-xs text-center font-semibold text-muted-foreground uppercase tracking-wider">{label}</p>
         </div>
     );
 }

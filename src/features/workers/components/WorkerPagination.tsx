@@ -36,16 +36,16 @@ export function WorkerPagination({
     }
 
     return (
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mt-8 pt-6 border-t border-slate-200">
-            <div className="text-sm text-slate-500 font-medium">
-                Showing <span className="text-slate-900">{startItem}</span> to <span className="text-slate-900">{endItem}</span> of <span className="text-slate-900">{totalItems}</span> workers
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mt-8 pt-6 border-t border-border">
+            <div className="text-sm text-muted-foreground font-medium">
+                Showing <span className="text-foreground">{startItem}</span> to <span className="text-foreground">{endItem}</span> of <span className="text-foreground">{totalItems}</span> workers
             </div>
             
             <div className="flex items-center gap-1.5">
                 <Button
                     variant="outline"
                     size="icon"
-                    className="w-8 h-8 rounded-lg border-slate-200 bg-white"
+                    className="w-8 h-8 rounded-lg border-border bg-card"
                     onClick={() => onPageChange(currentPage - 1)}
                     disabled={currentPage === 1}
                 >
@@ -54,7 +54,7 @@ export function WorkerPagination({
                 
                 {displayPages.map((p, i) => {
                     if (p === -1) {
-                        return <span key={`ellipsis-${i}`} className="px-2 text-slate-400">...</span>;
+                        return <span key={`ellipsis-${i}`} className="px-2 text-muted-foreground">...</span>;
                     }
                     return (
                         <Button
@@ -62,8 +62,8 @@ export function WorkerPagination({
                             variant={currentPage === p ? "default" : "outline"}
                             className={`w-8 h-8 rounded-lg text-sm font-medium ${
                                 currentPage === p 
-                                    ? 'bg-blue-600 hover:bg-blue-700 text-white border-blue-600 shadow-sm' 
-                                    : 'border-slate-200 bg-white text-slate-600 hover:bg-slate-50'
+                                    ? 'bg-primary hover:bg-primary/90 text-primary-foreground border-primary shadow-sm' 
+                                    : 'border-border bg-card text-foreground hover:bg-muted'
                             }`}
                             onClick={() => onPageChange(p)}
                         >
@@ -75,7 +75,7 @@ export function WorkerPagination({
                 <Button
                     variant="outline"
                     size="icon"
-                    className="w-8 h-8 rounded-lg border-slate-200 bg-white"
+                    className="w-8 h-8 rounded-lg border-border bg-card"
                     onClick={() => onPageChange(currentPage + 1)}
                     disabled={currentPage === totalPages}
                 >

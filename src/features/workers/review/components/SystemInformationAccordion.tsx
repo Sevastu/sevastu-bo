@@ -12,43 +12,43 @@ export const SystemInformationAccordion = memo(function SystemInformationAccordi
     const [isOpen, setIsOpen] = useState(false);
 
     return (
-        <div className="bg-primary/30 rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+        <div className="bg-primary/10 rounded-2xl border border-border shadow-sm overflow-hidden">
             <button 
                 onClick={() => setIsOpen(!isOpen)}
-                className="w-full px-6 py-4 flex items-center justify-between bg-slate-100 hover:bg-slate-100 transition-colors focus:outline-none"
+                className="w-full px-6 py-4 flex items-center justify-between bg-muted hover:bg-muted transition-colors focus:outline-none"
             >
                 <div className="flex items-center gap-2">
-                    <Server className="w-5 h-5 text-slate-500" />
-                    <h3 className="text-sm font-bold text-slate-800 uppercase tracking-wider">System Information</h3>
+                    <Server className="w-5 h-5 text-muted-foreground" />
+                    <h3 className="text-sm font-bold text-foreground uppercase tracking-wider">System Information</h3>
                 </div>
-                {isOpen ? <ChevronUp className="w-5 h-5 text-slate-500" /> : <ChevronDown className="w-5 h-5 text-slate-500" />}
+                {isOpen ? <ChevronUp className="w-5 h-5 text-muted-foreground" /> : <ChevronDown className="w-5 h-5 text-muted-foreground" />}
             </button>
             
             {isOpen && (
-                <div className="p-6 border-t border-slate-200 bg-gray-300 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className="p-6 border-t border-border bg-muted grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     <div>
-                        <p className="text-xs font-bold text-slate-600 uppercase tracking-widest mb-1">Worker ID (Profile ID)</p>
-                        <p className="text-sm font-mono text-slate-700 bg-slate-50 p-2 rounded border border-slate-100">{profile?._id || 'N/A'}</p>
+                        <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest mb-1">Worker ID (Profile ID)</p>
+                        <p className="text-sm font-mono text-foreground bg-card p-2 rounded border border-border">{profile?._id || 'N/A'}</p>
                     </div>
                     <div>
-                        <p className="text-xs font-bold text-slate-600 uppercase tracking-widest mb-1">User ID</p>
-                        <p className="text-sm font-mono text-slate-700 bg-slate-50 p-2 rounded border border-slate-100">{profile?.userId || 'N/A'}</p>
+                        <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest mb-1">User ID</p>
+                        <p className="text-sm font-mono text-foreground bg-card p-2 rounded border border-border">{profile?.userId || 'N/A'}</p>
                     </div>
                     <div>
-                        <p className="text-xs font-bold text-slate-600 uppercase tracking-widest mb-1">OCR Record ID</p>
-                        <p className="text-sm font-mono text-slate-700 bg-slate-50 p-2 rounded border border-slate-100">{ocr?._id || 'N/A'}</p>
+                        <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest mb-1">OCR Record ID</p>
+                        <p className="text-sm font-mono text-foreground bg-card p-2 rounded border border-border">{ocr?._id || 'N/A'}</p>
                     </div>
                     <div>
-                        <p className="text-xs font-bold text-slate-600 uppercase tracking-widest mb-1">Profile Created At</p>
-                        <p className="text-sm font-semibold text-slate-900">{profile?.createdAt ? new Date(profile.createdAt).toLocaleString() : 'N/A'}</p>
+                        <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest mb-1">Profile Created At</p>
+                        <p className="text-sm font-semibold text-foreground">{profile?.createdAt ? new Date(profile.createdAt).toLocaleString() : 'N/A'}</p>
                     </div>
                     <div>
-                        <p className="text-xs font-bold text-slate-600 uppercase tracking-widest mb-1">Profile Updated At</p>
-                        <p className="text-sm font-semibold text-slate-900">{profile?.updatedAt ? new Date(profile.updatedAt).toLocaleString() : 'N/A'}</p>
+                        <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest mb-1">Profile Updated At</p>
+                        <p className="text-sm font-semibold text-foreground">{profile?.updatedAt ? new Date(profile.updatedAt).toLocaleString() : 'N/A'}</p>
                     </div>
                     <div>
-                        <p className="text-xs font-bold text-slate-600 uppercase tracking-widest mb-1">OCR Last Updated At</p>
-                        <p className="text-sm font-semibold text-slate-900">{ocr?.updatedAt ? new Date(ocr.updatedAt).toLocaleString() : 'N/A'}</p>
+                        <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest mb-1">OCR Last Updated At</p>
+                        <p className="text-sm font-semibold text-foreground">{ocr?.updatedAt ? new Date(ocr.updatedAt).toLocaleString() : 'N/A'}</p>
                     </div>
                 </div>
             )}

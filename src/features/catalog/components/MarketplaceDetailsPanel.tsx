@@ -46,11 +46,11 @@ export function MarketplaceDetailsPanel({
     if (!node || !type) {
         return (
             <div className="h-full flex flex-col items-center justify-center p-8 text-center bg-card border border-border/20 rounded-lg m-4">
-                <div className="h-12 w-12 rounded-full bg-slate-100 flex items-center justify-center mb-4">
-                    <Info className="h-6 w-6 text-slate-400" />
+                <div className="h-12 w-12 rounded-full bg-muted flex items-center justify-center mb-4">
+                    <Info className="h-6 w-6 text-muted-foreground" />
                 </div>
-                <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-400 mb-2">No Item Selected</h3>
-                <p className="text-sm text-slate-500 max-w-[250px]">
+                <h3 className="text-lg font-semibold text-foreground mb-2">No Item Selected</h3>
+                <p className="text-sm text-muted-foreground max-w-[250px]">
                     Select a Category, Service, or Sub-Service from the catalog tree to view and manage its details.
                 </p>
             </div>
@@ -109,7 +109,7 @@ export function MarketplaceDetailsPanel({
                 <div className="flex items-start justify-between relative z-10">
                     <div className="space-y-1">
                         {/* Breadcrumbs Hierarchy */}
-                        <div className="flex items-center flex-wrap gap-1 text-xs font-medium text-black mb-3">
+                        <div className="flex items-center flex-wrap gap-1 text-xs font-medium text-foreground mb-3">
                             {breadcrumbs.map((item, index) => (
                                 <React.Fragment key={`${item}-${index}`}>
                                     <span
@@ -129,7 +129,7 @@ export function MarketplaceDetailsPanel({
                             ))}
                         </div>
                         <div className="flex items-center justify-between gap-3">
-                            <h2 className="text-3xl font-bold tracking-tight text-black mb-2">
+                            <h2 className="text-3xl font-bold tracking-tight text-foreground mb-2">
                                 {node.name}
                             </h2>
                             <Badge
@@ -148,13 +148,13 @@ export function MarketplaceDetailsPanel({
                     </div>
                     <Badge
                         variant={node.isActive ? "default" : "secondary"}
-                        className={`px-3 py-1 rounded-full text-xs font-semibold ${node.isActive ? 'bg-emerald-100 text-emerald-700 hover:bg-emerald-200 dark:bg-emerald-900/50 dark:text-emerald-400 border-emerald-200 dark:border-emerald-800' : ''}`}
+                        className={`px-3 py-1 rounded-full text-xs font-semibold ${node.isActive ? 'bg-success/10 text-success hover:bg-success/20 border-success/20' : ''}`}
                     >
                         {node.isActive ? "Active" : "Inactive"}
                     </Badge>
                 </div>
 
-                <p className="text-sm text-slate-600 dark:text-slate-400 max-w-[95%] leading-relaxed relative z-10 mt-2">
+                <p className="text-sm text-muted-foreground max-w-[95%] leading-relaxed relative z-10 mt-2">
                     {node.description || ('shortDescription' in node && node.shortDescription) || <span className="italic opacity-60">No description provided.</span>}
                 </p>
             </div>
@@ -207,10 +207,10 @@ export function MarketplaceDetailsPanel({
                             <ImageIcon className="h-4 w-4 text-primary" />
                             Media Assets
                         </h4>
-                        <div className="bg-white overflow-hidden">
+                        <div className="bg-card overflow-hidden">
                             {('iconUrl' in node && node.iconUrl) ? (
                                 <div className="p-4 flex items-center gap-4">
-                                    <div className="relative w-16 h-16 rounded-lg overflow-hidden border bg-slate-50 dark:bg-zinc-950 p-2 shadow-sm">
+                                    <div className="relative w-16 h-16 rounded-lg overflow-hidden border bg-muted p-2 shadow-sm">
                                         <Image src={node.iconUrl} alt={node.name} fill className="object-contain p-1" />
                                     </div>
                                     <div className="flex-1">
@@ -231,9 +231,9 @@ export function MarketplaceDetailsPanel({
                             ) : (
                                 <div className="flex flex-col items-center justify-center py-8 text-center bg-primary/10">
                                     <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center mb-3">
-                                        <ImageIcon className="h-5 w-5 text-slate-400" />
+                                        <ImageIcon className="h-5 w-5 text-muted-foreground" />
                                     </div>
-                                    <p className="text-sm font-medium text-slate-700 dark:text-slate-300">No media uploaded</p>
+                                    <p className="text-sm font-medium text-foreground">No media uploaded</p>
                                     <p className="text-xs text-muted-foreground mt-1 max-w-[250px] mb-4">Enhance visibility by adding high-quality assets.</p>
                                     <Button variant="outline" size="sm" className="gap-2 h-8 text-xs font-medium" onClick={() => onEdit?.(type, node._id)}>
                                         <UploadCloud className="h-3.5 w-3.5" />
@@ -255,40 +255,40 @@ export function MarketplaceDetailsPanel({
                             </h4>
                             <div className="grid grid-cols-2 gap-4">
                                 {/* Pricing KPI Card */}
-                                <div className="bg-red-200 rounded-lg p-5 shadow-sm relative overflow-hidden group hover:border-primary/30 transition-colors">
+                                <div className="bg-card rounded-lg p-5 shadow-sm relative overflow-hidden group hover:border-primary/30 transition-colors">
                                     <div className="absolute top-0 right-0 p-3 opacity-[0.03] group-hover:opacity-[0.05] transition-opacity"><IndianRupee className="h-16 w-16" /></div>
                                     <div className="flex items-center gap-2 mb-2">
-                                        <Badge variant="secondary" className="text-[10px] uppercase tracking-wider font-semibold bg-slate-100 dark:bg-zinc-800 text-slate-600 dark:text-slate-300">
+                                        <Badge variant="secondary" className="text-[10px] uppercase tracking-wider font-semibold bg-muted text-muted-foreground">
                                             {('priceType' in node) ? node.priceType : 'Fixed'} Price
                                         </Badge>
                                     </div>
                                     <p className="text-[11px] font-medium text-muted-foreground uppercase tracking-wider mb-1 mt-4">Base Rate</p>
                                     <div className="flex items-end gap-1">
-                                        <span className="text-xl font-semibold text-slate-500">₹</span>
-                                        <span className="text-3xl font-bold tracking-tight text-slate-900 dark:text-card">
+                                        <span className="text-xl font-semibold text-muted-foreground">₹</span>
+                                        <span className="text-3xl font-bold tracking-tight text-foreground">
                                             {('basePrice' in node) ? node.basePrice : 0}
                                         </span>
                                     </div>
                                     {('pricing' in node && node.pricing) && (
-                                        <div className="flex flex-col gap-1 mt-4 pt-4 border-t border-slate-100 dark:border-zinc-800 text-xs font-medium text-muted-foreground">
-                                            {node.pricing.minimumPrice && <div className="flex justify-between"><span>Minimum</span> <span className="text-slate-700 dark:text-slate-300">₹{node.pricing.minimumPrice}</span></div>}
-                                            {node.pricing.maximumPrice && <div className="flex justify-between"><span>Maximum</span> <span className="text-slate-700 dark:text-slate-300">₹{node.pricing.maximumPrice}</span></div>}
+                                        <div className="flex flex-col gap-1 mt-4 pt-4 border-t border-border text-xs font-medium text-muted-foreground">
+                                            {node.pricing.minimumPrice && <div className="flex justify-between"><span>Minimum</span> <span className="text-foreground">₹{node.pricing.minimumPrice}</span></div>}
+                                            {node.pricing.maximumPrice && <div className="flex justify-between"><span>Maximum</span> <span className="text-foreground">₹{node.pricing.maximumPrice}</span></div>}
                                         </div>
                                     )}
                                 </div>
 
                                 {/* Duration KPI Card */}
-                                <div className="bg-red-200 rounded-lg p-5 shadow-sm relative overflow-hidden group hover:border-primary/30 transition-colors">
+                                <div className="bg-card rounded-lg p-5 shadow-sm relative overflow-hidden group hover:border-primary/30 transition-colors">
                                     <div className="absolute top-0 right-0 p-3 opacity-[0.03] group-hover:opacity-[0.05] transition-opacity"><Clock className="h-16 w-16" /></div>
-                                    <Badge variant="secondary" className="text-[10px] uppercase tracking-wider font-semibold bg-slate-100 dark:bg-zinc-800 text-slate-600 dark:text-slate-300 mb-2">
+                                    <Badge variant="secondary" className="text-[10px] uppercase tracking-wider font-semibold bg-muted text-muted-foreground mb-2">
                                         Execution Time
                                     </Badge>
                                     <p className="text-[11px] font-medium text-muted-foreground uppercase tracking-wider mb-1 mt-4">Est. Duration</p>
                                     <div className="flex items-baseline gap-1.5">
-                                        <span className="text-3xl font-bold tracking-tight text-slate-900 dark:text-card">
+                                        <span className="text-3xl font-bold tracking-tight text-foreground">
                                             {('estimatedDurationMinutes' in node) ? node.estimatedDurationMinutes : 60}
                                         </span>
-                                        <span className="text-sm font-semibold text-slate-500">minutes</span>
+                                        <span className="text-sm font-semibold text-muted-foreground">minutes</span>
                                     </div>
                                 </div>
                             </div>
@@ -302,13 +302,13 @@ export function MarketplaceDetailsPanel({
                                     Marketplace Positioning
                                 </div>
                             </h4>
-                            <div className="bg-white rounded-lg divide-y divide-slate-100 dark:divide-zinc-800 overflow-hidden shadow-sm">
+                            <div className="bg-card rounded-lg divide-y divide-border overflow-hidden shadow-sm">
 
                                 <div className="p-4 flex items-center justify-between hover:bg-primary/10 transition-colors">
                                     <div className="space-y-1 pr-4">
                                         <div className="flex items-center gap-2">
                                             <span className="text-sm font-semibold">Featured Placement</span>
-                                            {('marketplace' in node && node.marketplace?.featured) && <Badge variant="outline" className="h-5 px-1.5 text-[9px] bg-yellow-50 text-yellow-700 border-yellow-200 dark:bg-yellow-900/30 dark:text-yellow-400 dark:border-yellow-800/50 uppercase tracking-wider font-bold">Featured</Badge>}
+                                            {('marketplace' in node && node.marketplace?.featured) && <Badge variant="outline" className="h-5 px-1.5 text-[9px] bg-warning/10 text-warning border-warning/20 uppercase tracking-wider font-bold">Featured</Badge>}
                                         </div>
                                         <p className="text-xs text-muted-foreground leading-snug">Pin this service to the top of homepage discovery feeds.</p>
                                     </div>
@@ -323,7 +323,7 @@ export function MarketplaceDetailsPanel({
                                     <div className="space-y-1 pr-4">
                                         <div className="flex items-center gap-2">
                                             <span className="text-sm font-semibold">Popular Badge</span>
-                                            {('marketplace' in node && node.marketplace?.popular) && <Badge variant="outline" className="h-5 px-1.5 text-[9px] bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-900/30 dark:text-blue-400 dark:border-blue-800/50 uppercase tracking-wider font-bold">Popular</Badge>}
+                                            {('marketplace' in node && node.marketplace?.popular) && <Badge variant="outline" className="h-5 px-1.5 text-[9px] bg-primary/10 text-primary border-primary/20 uppercase tracking-wider font-bold">Popular</Badge>}
                                         </div>
                                         <p className="text-xs text-muted-foreground leading-snug">Add a 'Popular' highlight to drive higher conversion rates.</p>
                                     </div>
@@ -338,7 +338,7 @@ export function MarketplaceDetailsPanel({
                                     <div className="space-y-1 pr-4">
                                         <div className="flex items-center gap-2">
                                             <span className="text-sm font-semibold">Search Indexing</span>
-                                            {('marketplace' in node && node.marketplace?.searchable) && <Badge variant="outline" className="h-5 px-1.5 text-[9px] bg-emerald-50 text-emerald-700 border-emerald-200 uppercase tracking-wider font-bold">Indexed</Badge>}
+                                            {('marketplace' in node && node.marketplace?.searchable) && <Badge variant="outline" className="h-5 px-1.5 text-[9px] bg-success/10 text-success border-success/20 uppercase tracking-wider font-bold">Indexed</Badge>}
                                         </div>
                                         <p className="text-xs text-muted-foreground leading-snug">Allow customers to find this via the global search bar.</p>
                                     </div>
@@ -361,25 +361,25 @@ export function MarketplaceDetailsPanel({
                         Search Engine Optimization
                     </h4>
                     {('seo' in node && (node.seo?.metaTitle || node.seo?.metaDescription)) ? (
-                        <div className="p-5 bg-primary/20 border border-slate-200 rounded-lg shadow-sm hover:border-blue-500/30 transition-colors cursor-default">
+                        <div className="p-5 bg-primary/20 border border-border rounded-lg shadow-sm hover:border-primary/30 transition-colors cursor-default">
                             <p className="text-primary font-medium text-lg hover:underline cursor-pointer truncate mb-0.5">
                                 {node.seo.metaTitle || node.name}
                             </p>
                             <div className="flex items-center gap-1.5 mb-2">
-                                <span className="text-emerald-700 dark:text-emerald-500 text-sm font-medium">sevastu.com</span>
-                                <ChevronRight className="h-3 w-3 text-slate-400" />
-                                <span className="text-slate-500 text-sm">{('slug' in node && node.slug) ? node.slug : '...'}</span>
+                                <span className="text-success text-sm font-medium">sevastu.com</span>
+                                <ChevronRight className="h-3 w-3 text-muted-foreground" />
+                                <span className="text-muted-foreground text-sm">{('slug' in node && node.slug) ? node.slug : '...'}</span>
                             </div>
-                            <p className="text-sm text-slate-600 dark:text-slate-400 line-clamp-2 leading-relaxed">
+                            <p className="text-sm text-muted-foreground line-clamp-2 leading-relaxed">
                                 {node.seo.metaDescription || ('shortDescription' in node ? node.shortDescription : '') || node.description}
                             </p>
                         </div>
                     ) : (
-                        <div className="flex flex-col items-center justify-center py-8 text-center bg-primay/10 border border-slate-200 dark:border-zinc-800 border-dashed rounded-xl">
+                        <div className="flex flex-col items-center justify-center py-8 text-center bg-primary/10 border border-border border-dashed rounded-xl">
                             <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center mb-3">
-                                <Search className="h-5 w-5 text-slate-400" />
+                                <Search className="h-5 w-5 text-muted-foreground" />
                             </div>
-                            <p className="text-sm font-medium text-slate-700 dark:text-slate-300">SEO not configured</p>
+                            <p className="text-sm font-medium text-foreground">SEO not configured</p>
                             <p className="text-xs text-muted-foreground mt-1 max-w-[250px] mb-4">Add a meta title and description to improve external search rankings.</p>
                             <Button variant="outline" size="sm" className="gap-2 h-8 text-xs font-medium" onClick={() => onEdit?.(type, node._id)}>
                                 <Edit className="h-3.5 w-3.5" />
@@ -405,10 +405,10 @@ export function MarketplaceDetailsPanel({
                     <Button
                         variant="secondary"
                         onClick={handleStatusToggle}
-                        className="gap-2 shadow-sm bg-slate-100 hover:bg-slate-200 font-semibold"
+                        className="gap-2 shadow-sm bg-muted hover:bg-muted/80 font-semibold"
                         disabled={updating}
                     >
-                        {updating ? <Loader2 className="h-4 w-4 animate-spin" /> : <PowerOff className={`h-4 w-4 ${node.isActive ? 'text-rose-500' : 'text-emerald-500'}`} />}
+                        {updating ? <Loader2 className="h-4 w-4 animate-spin" /> : <PowerOff className={`h-4 w-4 ${node.isActive ? 'text-destructive' : 'text-success'}`} />}
                         {node.isActive ? 'Deactivate' : 'Activate'}
                     </Button>
                     <Button

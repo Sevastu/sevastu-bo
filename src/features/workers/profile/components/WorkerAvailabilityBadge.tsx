@@ -7,16 +7,16 @@ interface WorkerAvailabilityBadgeProps {
 export function WorkerAvailabilityBadge({ isAvailable }: WorkerAvailabilityBadgeProps) {
   if (isAvailable) {
     return (
-      <Badge className="bg-emerald-100/80 text-emerald-700 hover:bg-emerald-100 border-emerald-200 px-2.5 py-0.5 rounded-full text-xs font-semibold">
-        <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-1.5 animate-pulse" />
+      <Badge className="bg-success/10 text-success hover:bg-success/20 border-success/20 px-2.5 py-0.5 rounded-full text-xs font-semibold">
+        <span className="w-1.5 h-1.5 rounded-full bg-success mr-1.5 animate-pulse" />
         Available for Hire
       </Badge>
     );
   }
 
   return (
-    <Badge className="bg-slate-100/80 text-slate-600 hover:bg-slate-100 border-slate-200 px-2.5 py-0.5 rounded-full text-xs font-medium">
-      <span className="w-1.5 h-1.5 rounded-full bg-slate-400 mr-1.5" />
+    <Badge className="bg-muted text-muted-foreground hover:bg-muted/80 border-border px-2.5 py-0.5 rounded-full text-xs font-medium">
+      <span className="w-1.5 h-1.5 rounded-full bg-muted-foreground mr-1.5" />
       Currently Unavailable
     </Badge>
   );

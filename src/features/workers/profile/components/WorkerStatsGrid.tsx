@@ -14,26 +14,26 @@ export function WorkerStatsGrid({ profile }: WorkerStatsGridProps) {
       <WorkerStatCard
         title="Total Jobs"
         value={profile.totalJobs}
-        icon={<Briefcase className="w-5 h-5 text-blue-600" />}
-        iconBgClass="bg-blue-50 text-blue-600"
+        icon={<Briefcase className="w-5 h-5 text-primary" />}
+        iconBgClass="bg-primary/10 text-primary"
       />
       <WorkerStatCard
-        title="Experience"
-        value={`${profile.experience} Yrs`}
-        icon={<Clock className="w-5 h-5 text-emerald-600" />}
-        iconBgClass="bg-emerald-50 text-emerald-600"
+        title="Active Hours"
+        value={profile.experience}
+        icon={<Clock className="w-5 h-5 text-success" />}
+        iconBgClass="bg-success/10 text-success"
       />
       <WorkerStatCard
-        title="Base Price"
+        title="Total Earnings"
         value={`${formatCurrency(profile.basePrice)}/hr`}
-        icon={<DollarSign className="w-5 h-5 text-amber-600" />}
-        iconBgClass="bg-amber-50 text-amber-600"
+        icon={<DollarSign className="w-5 h-5 text-warning" />}
+        iconBgClass="bg-warning/10 text-warning"
       />
       <WorkerStatCard
-        title="Skills Verified"
+        title="Avg Rating"
         value={profile.skills.length}
-        icon={<Award className="w-5 h-5 text-purple-600" />}
-        iconBgClass="bg-purple-50 text-purple-600"
+        icon={<Award className="w-5 h-5 text-primary" />}
+        iconBgClass="bg-primary/10 text-primary"
       />
     </div>
   );

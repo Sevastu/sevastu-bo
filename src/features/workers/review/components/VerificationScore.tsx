@@ -24,22 +24,22 @@ export const VerificationScore = memo(function VerificationScore({ kyc, ocr }: V
     ];
 
     return (
-        <div className="bg-slate-900 rounded-2xl p-6 shadow-md text-white relative overflow-hidden">
+        <div className="bg-foreground rounded-2xl p-6 shadow-md text-primary-foreground relative overflow-hidden">
             {/* Background design */}
-            <div className="absolute -top-12 -right-12 w-40 h-40 bg-blue-500/10 rounded-full blur-2xl pointer-events-none" />
+            <div className="absolute -top-12 -right-12 w-40 h-40 bg-primary/20 rounded-full blur-2xl pointer-events-none" />
 
             <div className="relative z-10">
                 <div className="flex items-start justify-between mb-8">
                     <div>
                         <h3 className="text-xl font-bold flex items-center gap-2">
-                            <Target className="w-5 h-5 text-blue-400" />
+                            <Target className="w-5 h-5 text-primary" />
                             Verification Score
                         </h3>
-                        <p className="text-slate-400 text-sm mt-1">System computed trust level</p>
+                        <p className="text-muted-foreground text-sm mt-1">System computed trust level</p>
                     </div>
                     <div className="text-right">
                         <div className="text-3xl font-black">
-                            {totalScore}<span className="text-slate-500 text-xl">/{maxScore}</span>
+                            {totalScore}<span className="text-muted-foreground text-xl">/{maxScore}</span>
                         </div>
                         <div className={`text-xs font-bold px-2 py-1 rounded mt-2 inline-block ${risk.bg} ${risk.color}`}>
                             {risk.level}
@@ -48,13 +48,13 @@ export const VerificationScore = memo(function VerificationScore({ kyc, ocr }: V
                 </div>
 
                 <div className="space-y-2 mb-6">
-                    <div className="flex justify-between text-xs font-bold text-slate-400">
+                    <div className="flex justify-between text-xs font-bold text-muted-foreground">
                         <span>Progress</span>
                         <span>{progressPercent}%</span>
                     </div>
-                    <div className="h-2 bg-slate-800 rounded-full overflow-hidden">
+                    <div className="h-2 bg-muted-foreground/30 rounded-full overflow-hidden">
                         <div
-                            className="h-full bg-blue-500 rounded-full transition-all duration-1000 ease-out"
+                            className="h-full bg-primary rounded-full transition-all duration-1000 ease-out"
                             style={{ width: `${progressPercent}%` }}
                         />
                     </div>
@@ -64,10 +64,10 @@ export const VerificationScore = memo(function VerificationScore({ kyc, ocr }: V
                     {scoreItems.map((item, i) => (
                         <div key={i} className="flex items-center justify-between text-sm">
                             <div className="flex items-center gap-2">
-                                <CheckCircle2 className={`w-4 h-4 ${item.active ? 'text-emerald-400' : 'text-slate-600'}`} />
-                                <span className={item.active ? 'text-slate-200' : 'text-slate-500'}>{item.label}</span>
+                                <CheckCircle2 className={`w-4 h-4 ${item.active ? 'text-success' : 'text-muted-foreground'}`} />
+                                <span className={item.active ? 'text-primary-foreground' : 'text-muted-foreground'}>{item.label}</span>
                             </div>
-                            <span className={`font-mono ${item.active ? 'text-blue-400' : 'text-slate-600'}`}>
+                            <span className={`font-mono ${item.active ? 'text-primary' : 'text-muted-foreground'}`}>
                                 +{item.active ? item.points : 0} pts
                             </span>
                         </div>

@@ -43,16 +43,16 @@ export const DocumentsSection = memo(function DocumentsSection({
 
     if (!hasDocuments) {
         return (
-            <div className="rounded-lg border border-dashed border-slate-300 bg-red-200 p-10 text-center shadow-sm">
-                <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-slate-100">
-                    <FileText className="h-7 w-7 text-slate-400" />
+            <div className="rounded-lg border border-dashed border-border bg-destructive/10 p-10 text-center shadow-sm">
+                <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-muted">
+                    <FileText className="h-7 w-7 text-muted-foreground" />
                 </div>
 
-                <h3 className="text-lg font-semibold text-slate-900">
+                <h3 className="text-lg font-semibold text-foreground">
                     No Documents Available
                 </h3>
 
-                <p className="mt-2 text-sm text-slate-500">
+                <p className="mt-2 text-sm text-muted-foreground">
                     This worker hasn't uploaded any identity documents yet.
                 </p>
             </div>
@@ -64,13 +64,13 @@ export const DocumentsSection = memo(function DocumentsSection({
             {/* Header */}
             <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                    <FileText className="h-5 w-5 text-blue-600" />
-                    <h3 className="text-lg font-bold text-slate-900">
+                    <FileText className="h-5 w-5 text-primary" />
+                    <h3 className="text-lg font-bold text-foreground">
                         Identity Documents
                     </h3>
                 </div>
 
-                <span className="rounded-lg bg-blue-50 px-3 py-1 text-xs font-semibold text-blue-700">
+                <span className="rounded-lg bg-primary/10 px-3 py-1 text-xs font-semibold text-primary">
                     {Number(Boolean(frontKey)) + Number(Boolean(backKey))} Documents
                 </span>
             </div>
