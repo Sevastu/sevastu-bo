@@ -13,6 +13,9 @@ export interface JobHistory {
 }
 
 export interface Job {
+    preferredSchedule: Date;
+    customer: any;
+    assignment: any;
     id: string;
     customerId: string;
     workerId: string;

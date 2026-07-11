@@ -53,44 +53,56 @@ export function JobDetailsSheet({ job, open, onOpenChange, onUpdate, isAdmin }: 
         <Sheet open={open} onOpenChange={onOpenChange}>
             <SheetContent className="sm:max-w-xl w-full h-full p-0 flex flex-col gap-0 border-l border-border/50 bg-card overflow-hidden">
                 <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-primary/5 to-transparent pointer-events-none" />
-                
+
                 <div className="flex-1 overflow-y-auto px-8 py-8 space-y-10 scrollbar-thin scrollbar-thumb-muted">
                     <SheetHeader className="space-y-4">
                         <div className="flex items-center justify-between">
                             <Badge className={cn("px-4 py-1.5 rounded-full font-bold uppercase tracking-widest text-[10px] border shadow-sm", statusColors[job.status])}>
                                 {job.status.replace('_', ' ')}
                             </Badge>
-                            <span className="text-xs text-muted-foreground font-mono bg-muted px-2 py-1 rounded-md">ID: {job.id.slice(-8).toUpperCase()}</span>
+                            <span className="text-xs text-muted-foreground font-mono bg-muted px-2 py-1 rounded-md">
+                                ID: {(job.id || (job as any)._id || 'UNKNOWN').slice(-8).toUpperCase()}
+                            </span>
                         </div>
                         <div>
-                            <SheetTitle className="text-3xl font-extrabold tracking-tight text-foreground">{job.service}</SheetTitle>
+                            <SheetTitle className="text-3xl font-extrabold tracking-tight text-foreground">
+                                {job.service || (job as any).serviceName || ((job as any).serviceId && (job as any).serviceId.name) || 'Unknown Service'}
+                            </SheetTitle>
                             <SheetDescription className="text-base font-medium text-muted-foreground mt-1">
-                                {job.subService} • Scheduled for {formatDate(new Date(job.scheduledAt), "MMMM dd, hh:mm a")}
+                                {job.subService || (job as any).subServiceName || ((job as any).subServiceId && (job as any).subServiceId.name) || 'Unknown Sub-service'} • Scheduled for {formatDate(new Date(job.scheduledAt || (job as any).preferredSchedule || new Date()), "MMMM dd, hh:mm a")}
                             </SheetDescription>
                         </div>
                     </SheetHeader>
 
                     <div className="grid grid-cols-2 gap-4">
                         <div className="flex flex-col p-4 rounded-2xl bg-muted/30 border border-border/50 gap-3">
-                           <div className="flex items-center gap-2 text-muted-foreground">
-                               <User className="w-4 h-4" />
-                               <span className="text-xs font-bold uppercase tracking-wider">Customer</span>
-                           </div>
-                           <div className="flex flex-col gap-0.5">
-                               <p className="font-bold text-foreground truncate">{job.customerId}</p>
-                               <p className="text-xs text-muted-foreground flex items-center gap-1"><Phone className="w-3 h-3" /> +91 XXXXX XXXXX</p>
-                           </div>
+                            <div className="flex items-center gap-2 text-muted-foreground">
+                                <User className="w-4 h-4" />
+                                <span className="text-xs font-bold uppercase tracking-wider">Customer</span>
+                            </div>
+                            <div className="flex flex-col gap-0.5">
+                                <p className="font-bold text-foreground truncate">
+                                    {(job as any).customerName || ((job as any).customerId && (job as any).customerId.name) || job.customerId || 'Unknown Customer'}
+                                </p>
+                                <p className="text-xs text-muted-foreground flex items-center gap-1">
+                                    <Phone className="w-3 h-3" /> {(job as any).customerPhone || ((job as any).customerId && (job as any).customerId.phone) || '+91 XXXXX XXXXX'}
+                                </p>
+                            </div>
                         </div>
 
                         <div className="flex flex-col p-4 rounded-2xl bg-muted/30 border border-border/50 gap-3">
-                           <div className="flex items-center gap-2 text-muted-foreground">
-                               <Hammer className="w-4 h-4" />
-                               <span className="text-xs font-bold uppercase tracking-wider">Professional</span>
-                           </div>
-                           <div className="flex flex-col gap-0.5">
-                               <p className="font-bold text-foreground truncate">{job.workerId || "Unassigned"}</p>
-                               {job.workerId && <p className="text-xs text-muted-foreground flex items-center gap-1 text-green-500 font-bold">Verified Provider</p>}
-                           </div>
+                            <div className="flex items-center gap-2 text-muted-foreground">
+                                <Hammer className="w-4 h-4" />
+                                <span className="text-xs font-bold uppercase tracking-wider">Professional</span>
+                            </div>
+                            <div className="flex flex-col gap-0.5">
+                                <p className="font-bold text-foreground truncate">
+                                    {(job as any).assignedWorkerName || ((job as any).currentAssignmentId && (job as any).currentAssignmentId.workerId && (job as any).currentAssignmentId.workerId.name) || job.workerId || "Unassigned"}
+                                </p>
+                                {((job as any).assignedWorkerName || job.workerId || (job as any).currentAssignmentId) && (
+                                    <p className="text-xs text-muted-foreground flex items-center gap-1 text-green-500 font-bold">Verified Provider</p>
+                                )}
+                            </div>
                         </div>
                     </div>
 
@@ -111,21 +123,21 @@ export function JobDetailsSheet({ job, open, onOpenChange, onUpdate, isAdmin }: 
                             </div>
                             <div className="flex-1 min-w-0">
                                 <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider mb-0.5">Pricing Details</p>
-                                <p className="text-sm font-extrabold text-foreground">₹ {job.price.toLocaleString('en-IN')}</p>
+                                <p className="text-sm font-extrabold text-foreground">₹ {(job.price || 0).toLocaleString('en-IN')}</p>
                             </div>
                         </div>
                     </div>
 
                     <Separator className="bg-border/50" />
-                    
+
                     {/* Job Assignment Panel */}
                     {(isAdmin && (job.status === JobStatus.OPEN || job.status === JobStatus.ASSIGNED)) && (
                         <>
-                            <JobAssignmentPanel 
-                                jobId={job.id} 
-                                currentWorkerId={job.workerId} 
-                                jobStatus={job.status} 
-                                onAssigned={onUpdate} 
+                            <JobAssignmentPanel
+                                jobId={job.id || (job as any)._id}
+                                currentWorkerId={job.workerId || (job as any).currentAssignmentId}
+                                jobStatus={job.status}
+                                onAssigned={onUpdate}
                             />
                             <Separator className="bg-border/50" />
                         </>
@@ -146,8 +158,8 @@ export function JobDetailsSheet({ job, open, onOpenChange, onUpdate, isAdmin }: 
 
                 <div className="p-8 bg-muted/20 border-t border-border/50 space-y-4">
                     <div className="flex gap-4">
-                        <Button 
-                            variant="destructive" 
+                        <Button
+                            variant="destructive"
                             className="flex-1 h-12 rounded-xl font-bold gap-2 shadow-sm active:scale-95 transition-all"
                             disabled={!isAdmin || job.status === JobStatus.CANCELLED || job.status === JobStatus.COMPLETED || isCancelling}
                             onClick={handleCancel}

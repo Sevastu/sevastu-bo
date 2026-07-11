@@ -9,7 +9,7 @@ interface KPICardProps {
   icon: React.ReactNode;
 }
 
-export const KPICard: React.FC<KPICardProps> = ({
+export const KPICard: React.FC<KPICardProps> = React.memo(({
   title,
   value,
   change,
@@ -50,4 +50,6 @@ export const KPICard: React.FC<KPICardProps> = ({
       </div>
     </div>
   );
-};
+});
+
+KPICard.displayName = 'KPICard';

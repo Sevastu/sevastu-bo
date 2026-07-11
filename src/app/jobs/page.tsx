@@ -1,14 +1,7 @@
 "use client";
 
-import { useEffect } from "react";
-import { useRouter } from "next/navigation";
+import JobDashboard from "./components/JobDashboard";
 
 export default function JobsPage() {
-  const router = useRouter();
-  
-  useEffect(() => {
-    router.replace("/jobs/fulfillment");
-  }, [router]);
-  
-  return null;
+  return <JobDashboard />;
 }
