@@ -52,9 +52,8 @@ export const AssignmentCard: React.FC<AssignmentCardProps> = ({
   isActionLoading = false,
 }) => {
   const {
-    id,
-    workerName,
-    assignedBy,
+    _id,
+    workerId,
     status,
     createdAt,
     updatedAt,
@@ -67,17 +66,17 @@ export const AssignmentCard: React.FC<AssignmentCardProps> = ({
     if (action === 'complete' || action === 'cancel') {
       setShowConfirm(action);
     } else if (action === 'accept') {
-      onAccept(id);
+      onAccept(_id);
     } else if (action === 'start') {
-      onStart(id);
+      onStart(_id);
     }
   };
 
   const confirmAction = () => {
     if (showConfirm === 'complete') {
-      onComplete(id);
+      onComplete(_id);
     } else if (showConfirm === 'cancel') {
-      onCancel(id);
+      onCancel(_id);
     }
     setShowConfirm(null);
   };
@@ -92,7 +91,7 @@ export const AssignmentCard: React.FC<AssignmentCardProps> = ({
               <div>
                 <h4 className="text-sm font-medium flex items-center gap-2">
                   <User className="w-4 h-4" />
-                  {workerName || "Unknown Worker"}
+                  {workerId?.name || "Unknown Worker"}
                 </h4>
               </div>
               <Badge className={cn(
@@ -107,14 +106,8 @@ export const AssignmentCard: React.FC<AssignmentCardProps> = ({
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
               <div>
                 <p className="text-muted-foreground uppercase tracking-widest">Assignment ID</p>
-                <p className="font-mono text-sm font-bold mt-1">{id.slice(-8)}</p>
+                <p className="font-mono text-sm font-bold mt-1">{_id.slice(-8)}</p>
               </div>
-              {assignedBy && (
-                <div>
-                  <p className="text-muted-foreground uppercase tracking-widest">Assigned By</p>
-                  <p className="text-sm font-medium mt-1">{assignedBy}</p>
-                </div>
-              )}
               <div>
                 <p className="text-muted-foreground uppercase tracking-widest">Assigned At</p>
                 <p className="text-sm font-medium mt-1">

@@ -28,7 +28,7 @@ export default function JobActionMenu({
 
   const handleNavigation = (hash?: string) => {
     // Navigate to the Job Operations Workspace
-    router.push(`/jobs/${job.id}${hash ? `#${hash}` : ''}`);
+    router.push(`/jobs/${job._id}${hash ? `#${hash}` : ''}`);
   };
 
   const items: (ActionMenuItem | 'separator')[] = [

@@ -100,8 +100,8 @@ export const ScheduleWorkspace: React.FC<ScheduleWorkspaceProps> = ({ jobId }) =
             isLoading={isLoadingSchedule}
             onOpenReschedule={() => setIsRescheduleOpen(true)}
             onOpenReplace={() => setIsReplaceOpen(true)}
-            onConfirm={() => confirmSchedule.mutate(schedule?.id)}
-            onCancel={() => cancelSchedule.mutate(schedule?.id)}
+            onConfirm={() => schedule?.id && confirmSchedule.mutate(schedule.id)}
+            onCancel={() => schedule?.id && cancelSchedule.mutate(schedule.id)}
             isConfirming={confirmSchedule.isPending}
             isCancelling={cancelSchedule.isPending}
           />

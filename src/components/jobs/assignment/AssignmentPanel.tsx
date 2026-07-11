@@ -30,7 +30,7 @@ export const AssignmentPanel: React.FC<AssignmentPanelProps> = ({ job }) => {
   }>({ open: false, action: null });
 
   const loadAssignment = useCallback(async () => {
-    if (!job.assignment?.id) {
+    if (!job.currentAssignmentId?._id) {
       setAssignment(null);
       return;
     }
@@ -41,12 +41,16 @@ export const AssignmentPanel: React.FC<AssignmentPanelProps> = ({ job }) => {
       // Since there's no getAssignment endpoint, we'll use the job's assignment data
       // In a real implementation, this would call the API
       setAssignment({
-        id: job.assignment.id,
-        jobId: job.id,
-        workerId: job.assignment.worker?.id || '',
-        workerName: job.assignment.worker?.name || 'Unknown Worker',
-        status: (job.assignment.status as AssignmentStatus) || AssignmentStatus.ASSIGNED,
-        createdAt: job.assignment.assignedAt || job.createdAt,
+        _id: job.currentAssignmentId._id,
+        jobId: job._id,
+        workerId: job.currentAssignmentId.workerId ? {
+          _id: job.currentAssignmentId.workerId._id,
+          name: job.currentAssignmentId.workerId.name,
+          phone: job.currentAssignmentId.workerId.phone,
+          email: job.currentAssignmentId.workerId.email
+        } : undefined,
+        status: (job.currentAssignmentId.status as AssignmentStatus) || AssignmentStatus.ASSIGNED,
+        createdAt: job.currentAssignmentId.createdAt || job.createdAt,
         updatedAt: job.updatedAt,
       });
     } catch (err) {
@@ -67,16 +71,16 @@ export const AssignmentPanel: React.FC<AssignmentPanelProps> = ({ job }) => {
     try {
       switch (action) {
         case 'accept':
-          await assignmentRepository.acceptAssignment(assignment.id);
+          await assignmentRepository.acceptAssignment(assignment._id);
           break;
         case 'start':
-          await assignmentRepository.startAssignment(assignment.id);
+          await assignmentRepository.startAssignment(assignment._id);
           break;
         case 'complete':
-          await assignmentRepository.completeAssignment(assignment.id);
+          await assignmentRepository.completeAssignment(assignment._id);
           break;
         case 'cancel':
-          await assignmentRepository.cancelAssignment(assignment.id);
+          await assignmentRepository.cancelAssignment(assignment._id);
           break;
       }
       await loadAssignment();
@@ -168,7 +172,7 @@ export const AssignmentPanel: React.FC<AssignmentPanelProps> = ({ job }) => {
           <div className="flex items-start justify-between">
             <div className="flex-1">
               <div className="flex items-center gap-2">
-                <span className="font-medium text-sm">Worker #{assignment.workerId?.slice(-4) || '-'}</span>
+                <span className="font-medium text-sm">Worker #{assignment.workerId?._id?.slice(-4) || '-'}</span>
                 <Badge className={cn("px-2 py-0.5 rounded-full font-bold uppercase tracking-widest text-[8px] border shadow-none", assignmentStatusColors[assignment.status])}>
                   {assignment.status}
                 </Badge>

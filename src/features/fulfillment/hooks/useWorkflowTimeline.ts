@@ -1,6 +1,7 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { timelineRepository } from '@/features/fulfillment/repositories/timeline.repository';
 import { jobsRepository } from '@/features/fulfillment/repositories/jobs.repository';
+import { ScheduleStatus } from '@/features/fulfillment/types/schedule.types';
 import { assignmentRepository } from '@/features/fulfillment/repositories/assignment.repository';
 import { scheduleRepository } from '@/features/fulfillment/repositories/schedule.repository';
 import { 
@@ -69,7 +70,7 @@ export const useWorkflowTimeline = (jobId?: string) => {
 
     if (job?.status === 'CANCELLED') score = 0;
     // Example logic: if we have schedule but it's delayed
-    if (schedule?.status === 'DELAYED') scheduleHealth -= 20;
+    if (schedule?.status === ScheduleStatus.RESCHEDULED) scheduleHealth -= 20;
     
     return {
       overall: Math.floor((score + assignmentHealth + scheduleHealth) / 3),
