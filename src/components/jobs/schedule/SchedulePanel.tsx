@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useCallback } from "react";
-import { ScheduleApi } from "@/features/fulfillment/api/schedule.api";
+import { ScheduleRepository } from "@/features/fulfillment/repositories/schedule.repository";
 import { Schedule, ScheduleStatus } from "@/features/fulfillment/types/schedule.types";
 import { Job } from "@/features/fulfillment/types/job.types";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -13,7 +13,7 @@ import { cn } from "@/lib/utils";
 import { scheduleStatusColors } from "@/lib/status-colors";
 import { ConfirmDialog } from "@/components/ConfirmDialog";
 
-const scheduleApi = new ScheduleApi();
+const scheduleRepository = new ScheduleRepository();
 
 interface SchedulePanelProps {
   job: Job;
@@ -35,8 +35,8 @@ export const SchedulePanel: React.FC<SchedulePanelProps> = ({ job }) => {
     setLoading(true);
     setError(null);
     try {
-      const data = await scheduleApi.getScheduleByJob(job.id);
-      setSchedule(data);
+      const response = await scheduleRepository.getScheduleByJob(job.id);
+      setSchedule(response.data);
     } catch (err) {
       // No schedule found is not an error
       setSchedule(null);
@@ -56,10 +56,10 @@ export const SchedulePanel: React.FC<SchedulePanelProps> = ({ job }) => {
     try {
       switch (action) {
         case 'confirm':
-          await scheduleApi.confirmSchedule(schedule.id);
+          await scheduleRepository.confirmSchedule(schedule.id);
           break;
         case 'cancel':
-          await scheduleApi.cancelSchedule(schedule.id);
+          await scheduleRepository.cancelSchedule(schedule.id);
           break;
         case 'reschedule':
           // For reschedule, we'd need a dialog to get new times

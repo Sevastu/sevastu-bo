@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useCallback } from "react";
-import { TimelineApi } from "@/features/fulfillment/api/timeline.api";
+import { TimelineRepository } from "@/features/fulfillment/repositories/timeline.repository";
 import { TimelineEvent } from "@/features/fulfillment/types/timeline.types";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -9,7 +9,7 @@ import { ChevronDown, ChevronUp, Clock, RefreshCw, AlertCircle } from "lucide-re
 import { formatDate } from "@/lib/date-utils";
 import { cn } from "@/lib/utils";
 
-const timelineApi = new TimelineApi();
+const timelineRepository = new TimelineRepository();
 
 interface JobTimelinePanelProps {
   jobId: string;
@@ -78,21 +78,28 @@ export const JobTimelinePanel: React.FC<JobTimelinePanelProps> = ({ jobId }) => 
     setLoading(true);
     setError(null);
     try {
-      const response = await timelineApi.getTimelineByPage(jobId, {
+      const response = await timelineRepository.getTimeline(jobId, {
         page: pageNum,
         limit: 20,
         sort: 'createdAt',
         order: 'desc'
-      });
+      } as any);
       
+      const newData = response.data || [];
       if (append) {
-        setEvents(prev => [...prev, ...response.data]);
+        setEvents(prev => {
+          const combined = [...prev, ...newData];
+          const totalCount = response.pagination?.total ?? combined.length;
+          setTotal(totalCount);
+          setHasMore(combined.length < totalCount);
+          return combined;
+        });
       } else {
-        setEvents(response.data);
+        setEvents(newData);
+        const totalCount = response.pagination?.total ?? newData.length;
+        setTotal(totalCount);
+        setHasMore(newData.length < totalCount);
       }
-      
-      setTotal(response.pagination.total);
-      setHasMore(response.data.length < response.pagination.total);
     } catch (err) {
       setError("Failed to load timeline events. Please try again.");
     } finally {

@@ -7,11 +7,14 @@ export enum AssignmentStatus {
 }
 
 export interface Assignment {
-  id: string;
+  _id: string;
   jobId: string;
-  workerId: string;
-  workerName?: string;
-  assignedBy?: string;
+  workerId?: {
+    _id: string;
+    name?: string;
+    phone?: string;
+    email?: string;
+  };
   status: AssignmentStatus;
   acceptedAt?: string;
   startedAt?: string;

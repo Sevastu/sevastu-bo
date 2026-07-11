@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useCallback } from "react";
-import { RecommendationApi } from "@/features/fulfillment/api/recommendation.api";
+import { RecommendationApi } from "@/features/fulfillment/repositories/recommendation.api";
 import { Recommendation, RecommendationStatus } from "@/features/fulfillment/types/recommendation.types";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";

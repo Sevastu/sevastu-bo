@@ -50,15 +50,15 @@ export const RecentJobsTable: React.FC<RecentJobsTableProps> = ({ jobs, onViewJo
               </tr>
             </thead>
             <tbody>
-              {jobs.map((job) => (
-                <tr key={job.id} className="border-b border-border/50 last:border-0">
+              {jobs.map((job, idx) => (
+                <tr key={job.id || (job as any)._id || idx} className="border-b border-border/50 last:border-0">
                   <td className="py-3">
                     <span className="font-mono text-[10px] font-bold text-muted-foreground bg-muted px-2 py-0.5 rounded uppercase">
-                      {job.id.slice(-8)}
+                      {(job.id || (job as any)._id || '').slice(-8) || 'N/A'}
                     </span>
                   </td>
                   <td className="py-3">
-                    <span className="font-medium text-sm">{job.customerName || '-'}</span>
+                    <span className="font-medium text-sm">{job.customer?.name || '-'}</span>
                   </td>
                   <td className="py-3">
                     <Badge className={cn("px-2 py-0.5 rounded-full font-bold uppercase tracking-widest text-[8px] border shadow-none", jobStatusColors[job.status])}>
@@ -66,7 +66,7 @@ export const RecentJobsTable: React.FC<RecentJobsTableProps> = ({ jobs, onViewJo
                     </Badge>
                   </td>
                   <td className="py-3">
-                    <span className="font-medium text-sm">{job.assignedWorkerName || '-'}</span>
+                    <span className="font-medium text-sm">{job.assignment?.worker?.name || '-'}</span>
                   </td>
                   <td className="py-3">
                     <div className="flex items-center gap-2 text-muted-foreground text-xs font-medium">
@@ -79,7 +79,7 @@ export const RecentJobsTable: React.FC<RecentJobsTableProps> = ({ jobs, onViewJo
                       size="sm"
                       variant="ghost"
                       className="h-8 w-8 p-0 rounded-lg hover:bg-primary/5 hover:text-primary transition-all active:scale-90"
-                      onClick={() => onViewJob(job.id)}
+                      onClick={() => onViewJob(job.id || (job as any)._id)}
                     >
                       <Eye className="w-4 h-4" />
                     </Button>

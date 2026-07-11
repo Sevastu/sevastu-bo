@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState, useCallback } from "react";
-import { JobApi } from "@/features/fulfillment/api/job.api";
+import { jobsRepository } from "@/features/fulfillment/repositories/jobs.repository";
 import { Job, JobStatus } from "@/features/fulfillment/types/job.types";
 import { AppLayout } from "@/components/layout/AppLayout";
 import { Button } from "@/components/ui/button";
@@ -9,8 +9,6 @@ import { RefreshCw, Users, Calendar, Clock, CheckCircle, XCircle, AlertCircle } 
 import { OperationsMetricsCard, RecentJobsTable } from "@/components/operations";
 import { useRouter } from "next/navigation";
 import { metricsColors } from "@/lib/status-colors";
-
-const jobApi = new JobApi();
 
 export default function OperationsDashboardPage() {
   const router = useRouter();
@@ -23,7 +21,7 @@ export default function OperationsDashboardPage() {
     setError(null);
     try {
       // Fetch all jobs to derive metrics
-      const res = await jobApi.getJobs({ limit: 100 });
+      const res = await jobsRepository.getJobs({ limit: 100 });
       setJobs(res.data);
     } catch (err) {
       setError("Failed to load operational data. Please try again.");
