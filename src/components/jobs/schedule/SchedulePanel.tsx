@@ -30,12 +30,12 @@ export const SchedulePanel: React.FC<SchedulePanelProps> = ({ job }) => {
   }>({ open: false, action: null });
 
   const loadSchedule = useCallback(async () => {
-    if (!job.id) return;
+    if (!job._id) return;
     
     setLoading(true);
     setError(null);
     try {
-      const response = await scheduleRepository.getScheduleByJob(job.id);
+      const response = await scheduleRepository.getScheduleByJob(job._id);
       setSchedule(response.data);
     } catch (err) {
       // No schedule found is not an error
@@ -43,7 +43,7 @@ export const SchedulePanel: React.FC<SchedulePanelProps> = ({ job }) => {
     } finally {
       setLoading(false);
     }
-  }, [job.id]);
+  }, [job._id]);
 
   useEffect(() => {
     loadSchedule();

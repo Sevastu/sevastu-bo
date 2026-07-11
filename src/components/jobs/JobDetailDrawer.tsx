@@ -14,7 +14,7 @@ import {
   Briefcase
 } from 'lucide-react';
 import { StatusBadge } from '../ui/StatusBadge';
-import { WorkerAssignmentPanel } from './WorkerAssignmentPanel';
+import WorkerAssignmentPanel from './WorkerAssignmentPanel';
 import { Job } from '@/features/jobs/types';
 
 interface JobDetailDrawerProps {

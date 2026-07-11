@@ -9,7 +9,10 @@ export interface OperationsMetrics {
   cancelledToday: number;
 }
 
-export interface RecentJob extends Pick<Job, 'id' | 'customerName' | 'status' | 'assignedWorkerName' | 'createdAt'> {
+export interface RecentJob {
+  _id: string;
   customerName: string;
+  status: Job['status'];
   assignedWorkerName?: string;
+  createdAt: string;
 }

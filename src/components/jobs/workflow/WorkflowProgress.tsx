@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useEffect, useCallback } from "react";
-import { WorkflowApi } from "@/features/fulfillment/api/workflow.api";
 import { Job } from "@/features/fulfillment/types/job.types";
 import { JobStatus } from "@/features/fulfillment/types/job.types";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -12,7 +11,6 @@ import { formatDate } from "@/lib/date-utils";
 import { cn } from "@/lib/utils";
 import { jobStatusColors } from "@/lib/status-colors";
 
-const workflowApi = new WorkflowApi();
 
 interface WorkflowProgressProps {
   job: Job;
@@ -44,7 +42,7 @@ export const WorkflowProgress: React.FC<WorkflowProgressProps> = ({ job }) => {
     } finally {
       setLoading(false);
     }
-  }, [job.id]);
+  }, [job._id]);
 
   useEffect(() => {
     loadWorkflow();

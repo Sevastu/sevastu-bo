@@ -1,6 +1,5 @@
 import React from 'react';
 import { ScheduleWorkspace } from '@/components/jobs/schedule/ScheduleWorkspace';
-import { PageBreadcrumb } from '@/components/common/breadcrumb'; // Assuming common breadcrumb component
 import { ChevronRight } from 'lucide-react';
 
 export default function SchedulePage({ params }: { params: { jobId: string } }) {
