@@ -4,14 +4,15 @@ import { Job } from '@/features/fulfillment/types/job.types';
 import StatusBadge from '@/components/common/StatusBadge';
 import { AlertCircle } from 'lucide-react';
 import { jobStatusColors, assignmentStatusColors, scheduleStatusColors } from '@/lib/status-colors';
-import { ScheduleStatus } from '@/features/fulfillment/types/schedule.types';
+import { Schedule, ScheduleStatus } from '@/features/fulfillment/types/schedule.types';
 import { AssignmentStatus } from '@/features/fulfillment/types/assignment.types';
 
 interface StatusCardProps {
   job: Job;
+  schedule?: Schedule | null;
 }
 
-export default function StatusCard({ job }: StatusCardProps) {
+export default function StatusCard({ job, schedule }: StatusCardProps) {
   return (
     <Card className="bg-primary/5 border-primary/20">
       <CardHeader className="pb-2">
@@ -29,16 +30,16 @@ export default function StatusCard({ job }: StatusCardProps) {
           <div className="flex items-center justify-between mt-2">
             <span className="text-sm font-medium">Assignment</span>
             <StatusBadge 
-              label={job.assignment?.status || 'PENDING'} 
-              className={job.assignment?.status ? assignmentStatusColors[job.assignment.status as AssignmentStatus] : 'bg-secondary text-secondary-foreground'} 
+              label={job.currentAssignmentId?.status || 'PENDING'} 
+              className={job.currentAssignmentId?.status ? assignmentStatusColors[job.currentAssignmentId.status as AssignmentStatus] : 'bg-secondary text-secondary-foreground'} 
             />
           </div>
           
           <div className="flex items-center justify-between mt-2">
             <span className="text-sm font-medium">Schedule</span>
             <StatusBadge 
-              label={job.confirmedSchedule ? ScheduleStatus.CONFIRMED : ScheduleStatus.PENDING} 
-              className={job.confirmedSchedule ? scheduleStatusColors[ScheduleStatus.CONFIRMED] : scheduleStatusColors[ScheduleStatus.PENDING]} 
+              label={schedule ? schedule.status : ScheduleStatus.PENDING} 
+              className={schedule ? scheduleStatusColors[schedule.status] : scheduleStatusColors[ScheduleStatus.PENDING]} 
             />
           </div>
         </div>

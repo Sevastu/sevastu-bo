@@ -98,7 +98,7 @@ export default function JobDetailsPage({ jobId }: JobDetailsPageProps) {
 
                 {/* Right 30% */}
                 <div className="lg:col-span-4 flex flex-col gap-5">
-                  <StatusCard job={job} />
+                  <StatusCard job={job} schedule={schedule} />
                   <AvailabilityCard availability={availability} workerId={assignment?.workerId} />
                   <ActivityCard timeline={timeline} />
                 </div>
