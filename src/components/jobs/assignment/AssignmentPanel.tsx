@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useCallback } from "react";
-import { AssignmentApi } from "@/features/fulfillment/api/assignment.api";
+import { AssignmentRepository } from "@/features/fulfillment/repositories/assignment.repository";
 import { Assignment, AssignmentStatus } from "@/features/fulfillment/types/assignment.types";
 import { Job } from "@/features/fulfillment/types/job.types";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -13,7 +13,7 @@ import { cn } from "@/lib/utils";
 import { assignmentStatusColors } from "@/lib/status-colors";
 import { ConfirmDialog } from "@/components/ConfirmDialog";
 
-const assignmentApi = new AssignmentApi();
+const assignmentRepository = new AssignmentRepository();
 
 interface AssignmentPanelProps {
   job: Job;
@@ -30,7 +30,7 @@ export const AssignmentPanel: React.FC<AssignmentPanelProps> = ({ job }) => {
   }>({ open: false, action: null });
 
   const loadAssignment = useCallback(async () => {
-    if (!job.currentAssignmentId) {
+    if (!job.assignment?.id) {
       setAssignment(null);
       return;
     }
@@ -41,12 +41,12 @@ export const AssignmentPanel: React.FC<AssignmentPanelProps> = ({ job }) => {
       // Since there's no getAssignment endpoint, we'll use the job's assignment data
       // In a real implementation, this would call the API
       setAssignment({
-        id: job.currentAssignmentId,
+        id: job.assignment.id,
         jobId: job.id,
-        workerId: job.currentAssignmentId,
-        workerName: job.assignedWorkerName,
-        status: (job.assignmentStatus as AssignmentStatus) || AssignmentStatus.ASSIGNED,
-        createdAt: job.createdAt,
+        workerId: job.assignment.worker?.id || '',
+        workerName: job.assignment.worker?.name || 'Unknown Worker',
+        status: (job.assignment.status as AssignmentStatus) || AssignmentStatus.ASSIGNED,
+        createdAt: job.assignment.assignedAt || job.createdAt,
         updatedAt: job.updatedAt,
       });
     } catch (err) {
@@ -67,16 +67,16 @@ export const AssignmentPanel: React.FC<AssignmentPanelProps> = ({ job }) => {
     try {
       switch (action) {
         case 'accept':
-          await assignmentApi.acceptAssignment(assignment.id);
+          await assignmentRepository.acceptAssignment(assignment.id);
           break;
         case 'start':
-          await assignmentApi.startAssignment(assignment.id);
+          await assignmentRepository.startAssignment(assignment.id);
           break;
         case 'complete':
-          await assignmentApi.completeAssignment(assignment.id);
+          await assignmentRepository.completeAssignment(assignment.id);
           break;
         case 'cancel':
-          await assignmentApi.cancelAssignment(assignment.id);
+          await assignmentRepository.cancelAssignment(assignment.id);
           break;
       }
       await loadAssignment();
