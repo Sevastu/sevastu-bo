@@ -60,7 +60,7 @@ export default function JobDetailsPage({ jobId }: JobDetailsPageProps) {
           description="Monitor and manage job fulfillment lifecycle."
           actions={job && (
             <span className={`px-3 py-1 rounded-full text-xs font-semibold ${jobStatusColors[job.status as JobStatus]}`}>
-              {job.status.replace('_', ' ')}
+              {job.status?.replace('_', ' ')}
             </span>
           )}
         />
