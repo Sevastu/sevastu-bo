@@ -21,6 +21,7 @@ export class JobsRepository {
     if (jobData) {
       jobData.id = jobData.id || jobData._id;
     }
+    // console.log(jobData);
     return { data: jobData, success: true };
   }
 
