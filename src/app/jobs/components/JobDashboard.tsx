@@ -20,6 +20,7 @@ export default function JobDashboard() {
     filters,
     view,
     isLoading,
+    isFetching,
     isError,
     error,
     isAnalyticsLoading,
@@ -49,8 +50,8 @@ export default function JobDashboard() {
             onViewChange={setView}
             searchValue={filters.search}
             onSearch={handleSearch}
-            onRefresh={refresh}
-            isRefreshing={isLoading}
+            onRefresh={refetch}
+            isRefreshing={isFetching}
             onToggleFilters={() => setShowFilters(!showFilters)}
           />
 

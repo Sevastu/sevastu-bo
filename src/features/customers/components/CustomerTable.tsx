@@ -36,7 +36,7 @@ export function CustomerTable({ customers, onRowClick, onViewProfile }: Customer
                             >
                                 <td className="px-6 py-4">
                                     <div className="flex items-center gap-4">
-                                        <CustomerAvatar photoUrl={customer.avatarUrl} name={customer.name} className="w-10 h-10" />
+                                        <CustomerAvatar photoUrl={'https://img.magnific.com/premium-vector/3d-man-avatar-happy-smiling-face-icon-young-businessman-student-freelancer_313242-1219.jpg?semt=ais_hybrid&w=740&q=80'} name={customer.name} className="w-10 h-10" />
                                         <div>
                                             <div className="font-semibold text-foreground group-hover:text-primary transition-colors">
                                                 {customer.name || '—'}

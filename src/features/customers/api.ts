@@ -9,6 +9,7 @@ export interface Customer {
     avatarUrl?: string;
     status: 'active' | 'inactive';
     joinedDate: string;
+    createdAt?: string;
     totalOrders?: number;
     totalSpent?: number;
     lastActiveDate?: string;
@@ -52,12 +53,24 @@ export const fetchCustomers = async (filters: CustomerFilters & { page?: number;
             ? body.pagination
             : { total: rows.length, page: filters.page ?? 1, limit: filters.limit ?? 10 };
 
-    return { data: rows, pagination };
+    // Transform createdAt to joinedDate for frontend compatibility
+    const transformedRows = rows.map((row: any) => ({
+        ...row,
+        joinedDate: row.createdAt
+    }));
+
+    return { data: transformedRows, pagination };
 };
 
 export const fetchCustomerById = async (id: string) => {
-    const res = await apiClient.get<Customer>(`/admin/users/${id}`);
-    return res.data;
+    const res = await apiClient.get(`/admin/users/${id}`);
+    // Extract data from wrapped response
+    const customerData = res.data?.data || res.data;
+    // Transform createdAt to joinedDate for frontend compatibility
+    return {
+        ...customerData,
+        joinedDate: customerData.createdAt
+    };
 };
 
 export const updateCustomerStatus = async (id: string, status: 'active' | 'inactive') => {

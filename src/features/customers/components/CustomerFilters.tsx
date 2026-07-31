@@ -38,63 +38,70 @@ export function CustomerFilters({
     ];
 
     return (
-        <div className="backdrop-blur-md mb-4 mt-4">
-            <div className="bg-card rounded-lg shadow-sm border border-border/20 0 p-4">
-                <div className="flex flex-col gap-4">
-                    <div className="flex flex-col xl:flex-row gap-4 items-center justify-between">
-                        <div className="relative flex-1 w-full max-w-md">
-                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                            <Input
-                                placeholder="Search by name, email, or phone..."
-                                className="pl-9 w-full bg-muted border-border rounded-xl h-10 focus-visible:ring-ring"
-                                value={searchQuery}
-                                onChange={e => onSearchChange(e.target.value)}
-                            />
-                        </div>
+        <div className="backdrop-blur-md mb-4">
+            <div className="bg-card rounded-lg shadow-sm border border-border/20 p-4">
+                <div className="flex items-center gap-3 overflow-x-auto whitespace-nowrap scrollbar-hide">
 
-                        <div className="flex flex-wrap items-center gap-3 w-full xl:w-auto">
-                            <div className="w-full sm:w-40">
-                                <FilterSelect
-                                    value={statusFilter}
-                                    onChange={e => onStatusChange(e.target.value as StatusFilter)}
-                                    options={statusOptions}
-                                />
-                            </div>
-
-                            <div className="h-6 w-px bg-border hidden sm:block mx-1"></div>
-
-                            <div className="flex bg-muted p-1 rounded-xl">
-                                <button
-                                    onClick={() => onViewModeChange('grid')}
-                                    className={`p-1.5 rounded-lg transition-all ${viewMode === 'grid' ? 'bg-card shadow-sm text-primary' : 'text-muted-foreground hover:text-foreground'}`}
-                                    aria-label="Grid View"
-                                >
-                                    <LayoutGrid className="w-4 h-4" />
-                                </button>
-                                <button
-                                    onClick={() => onViewModeChange('table')}
-                                    className={`p-1.5 rounded-lg transition-all ${viewMode === 'table' ? 'bg-card shadow-sm text-primary' : 'text-muted-foreground hover:text-foreground'}`}
-                                    aria-label="Table View"
-                                >
-                                    <List className="w-4 h-4" />
-                                </button>
-                            </div>
-                        </div>
+                    {/* Search */}
+                    <div className="relative flex-1 min-w-[320px] max-w-md">
+                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                        <Input
+                            value={searchQuery}
+                            onChange={(e) => onSearchChange(e.target.value)}
+                            placeholder="Search customers..."
+                            className="pl-9 h-10"
+                        />
                     </div>
-                    
-                    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-                        <CustomerDateFilter dateRange={dateRange} onChange={onDateRangeChange} />
-                        
-                        {hasActiveFilters && (
-                            <Button 
-                                variant="ghost" 
-                                onClick={onClearFilters}
-                                className="text-muted-foreground hover:text-foreground h-10 px-3 hidden md:flex"
-                            >
-                                Clear All Filters
-                            </Button>
-                        )}
+
+                    {/* Status */}
+                    <div className="w-[180px] shrink-0">
+                        <FilterSelect
+                            value={statusFilter}
+                            onChange={(e) => onStatusChange(e.target.value as StatusFilter)}
+                            options={statusOptions}
+                        />
                     </div>
+
+                    {/* Date */}
+                    <div className="shrink-0">
+                        <CustomerDateFilter
+                            dateRange={dateRange}
+                            onChange={onDateRangeChange}
+                        />
+                    </div>
+
+                    {/* Spacer */}
+                    <div className="flex-1" />
+
+                    {/* View Toggle */}
+                    <div className="flex bg-muted p-1 rounded-xl">
+                        <button
+                            onClick={() => onViewModeChange('grid')}
+                            className={`p-1.5 rounded-lg transition-all ${viewMode === 'grid' ? 'bg-card shadow-sm text-primary' : 'text-muted-foreground hover:text-foreground'}`}
+                            aria-label="Grid View"
+                        >
+                            <LayoutGrid className="w-4 h-4" />
+                        </button>
+                        <button
+                            onClick={() => onViewModeChange('table')}
+                            className={`p-1.5 rounded-lg transition-all ${viewMode === 'table' ? 'bg-card shadow-sm text-primary' : 'text-muted-foreground hover:text-foreground'}`}
+                            aria-label="Table View"
+                        >
+                            <List className="w-4 h-4" />
+                        </button>
+                    </div>
+
+                    {/* Clear */}
+                    {hasActiveFilters && (
+                        <Button
+                            variant="outline"
+                            className="shrink-0"
+                            onClick={onClearFilters}
+                        >
+                            Clear Filters
+                        </Button>
+                    )}
+
                 </div>
             </div>
         </div>

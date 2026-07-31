@@ -1,10 +1,14 @@
 "use client";
 
 import { LayoutGrid, List } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
-export type ViewMode = "table" | "cards" | "calendar" | "map" | "timeline";
+export type ViewMode =
+  | "table"
+  | "cards"
+  | "calendar"
+  | "map"
+  | "timeline";
 
 interface ViewToggleProps {
   mode: ViewMode;
@@ -13,30 +17,48 @@ interface ViewToggleProps {
   className?: string;
 }
 
-export default function ViewToggle({ mode, onChange, allowedModes = ["table", "cards"], className }: ViewToggleProps) {
+export default function ViewToggle({
+  mode,
+  onChange,
+  allowedModes = ["table", "cards"],
+  className,
+}: ViewToggleProps) {
   return (
-    <div className={cn("flex items-center bg-muted p-1 rounded-md", className)}>
-      {allowedModes.includes("table") && (
-        <Button
-          variant={mode === "table" ? "secondary" : "ghost"}
-          size="sm"
-          className="h-8 px-2"
-          onClick={() => onChange("table")}
-        >
-          <List className="h-4 w-4" />
-        </Button>
+    <div
+      className={cn(
+        "flex items-center bg-muted p-1 rounded-xl",
+        className
       )}
+    >
       {allowedModes.includes("cards") && (
-        <Button
-          variant={mode === "cards" ? "secondary" : "ghost"}
-          size="sm"
-          className="h-8 px-2"
+        <button
           onClick={() => onChange("cards")}
+          aria-label="Card View"
+          className={cn(
+            "p-1.5 rounded-lg transition-all duration-200",
+            mode === "cards"
+              ? "bg-card shadow-sm text-primary"
+              : "text-muted-foreground hover:text-foreground"
+          )}
         >
-          <LayoutGrid className="h-4 w-4" />
-        </Button>
+          <LayoutGrid className="w-4 h-4" />
+        </button>
       )}
-      {/* Extend for calendar, map, etc. when needed */}
+
+      {allowedModes.includes("table") && (
+        <button
+          onClick={() => onChange("table")}
+          aria-label="Table View"
+          className={cn(
+            "p-1.5 rounded-lg transition-all duration-200",
+            mode === "table"
+              ? "bg-card shadow-sm text-primary"
+              : "text-muted-foreground hover:text-foreground"
+          )}
+        >
+          <List className="w-4 h-4" />
+        </button>
+      )}
     </div>
   );
 }
