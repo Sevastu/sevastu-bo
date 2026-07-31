@@ -11,7 +11,7 @@ interface JobFiltersProps {
 
 export default function JobFilters({ filters, onFilterChange }: JobFiltersProps) {
   return (
-    <div className="p-4 bg-card border rounded-lg grid grid-cols-1 md:grid-cols-4 gap-4 animate-in fade-in slide-in-from-top-4 duration-200">
+    <div className="p-4 bg-card rounded-lg shadow-sm border border-border/20 grid grid-cols-1 md:grid-cols-4 gap-4 animate-in fade-in slide-in-from-top-4 duration-200">
       <div className="space-y-1.5">
         <Label className="text-xs text-muted-foreground">Status</Label>
         <Select 
