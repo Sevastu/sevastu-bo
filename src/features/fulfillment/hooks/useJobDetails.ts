@@ -5,6 +5,7 @@ import { assignmentRepository } from '../repositories/assignment.repository';
 import { scheduleRepository } from '../repositories/schedule.repository';
 import { timelineRepository } from '../repositories/timeline.repository';
 import { availabilityRepository } from '../repositories/availability.repository';
+import { recommendationApi } from '../repositories/recommendation.api';
 import { 
   jobKeys, 
   assignmentKeys, 
@@ -56,6 +57,15 @@ export function useJobDetails(jobId: string) {
 
   const availability = useMemo(() => availabilityQuery.data?.data || null, [availabilityQuery.data]);
 
+  // 6. Fetch Recommendations (matching workers)
+  const recommendationsQuery = useQuery({
+    queryKey: ['fulfillment', 'jobs', jobId, 'recommendations'],
+    queryFn: () => recommendationApi.getRecommendations(jobId),
+    enabled: !!jobId,
+  });
+
+  const recommendations = useMemo(() => recommendationsQuery.data || [], [recommendationsQuery.data]);
+
   // Aggregated Loading and Error States
   const isLoading = 
     jobQuery.isLoading || 
@@ -74,6 +84,7 @@ export function useJobDetails(jobId: string) {
       queryClient.invalidateQueries({ queryKey: jobKeys.detail(jobId) }),
       queryClient.invalidateQueries({ queryKey: scheduleKeys.detail(jobId) }),
       queryClient.invalidateQueries({ queryKey: timelineKeys.detail(jobId) }),
+      queryClient.invalidateQueries({ queryKey: ['fulfillment', 'jobs', jobId, 'recommendations'] }),
       workerId ? queryClient.invalidateQueries({ queryKey: availabilityKeys.list(workerId) }) : Promise.resolve(),
     ]);
   }, [queryClient, jobId, workerId]);
@@ -84,6 +95,7 @@ export function useJobDetails(jobId: string) {
     schedule,
     timeline,
     availability,
+    recommendations,
     
     // States
     isLoading,
@@ -94,6 +106,7 @@ export function useJobDetails(jobId: string) {
     isScheduleLoading: scheduleQuery.isLoading,
     isTimelineLoading: timelineQuery.isLoading,
     isAvailabilityLoading: !!workerId && availabilityQuery.isLoading,
+    isRecommendationsLoading: recommendationsQuery.isLoading,
 
     // Actions
     refresh,

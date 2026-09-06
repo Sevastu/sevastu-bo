@@ -18,6 +18,7 @@ import TimelineCard from '../components/cards/TimelineCard';
 import AvailabilityCard from '../components/cards/AvailabilityCard';
 import ActivityCard from '../components/cards/ActivityCard';
 import StatusCard from '../components/cards/StatusCard';
+import { RecommendationPanel } from '@/components/jobs/recommendations/RecommendationPanel';
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from '@/components/ui/breadcrumb';
 import Link from 'next/link';
 
@@ -90,6 +91,9 @@ export default function JobDetailsPage({ jobId }: JobDetailsPageProps) {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                     <CustomerCard customer={job.customerId} address={job.address} />
                     <WorkerCard assignment={assignment} />
+                  </div>
+                  <div id="recommendations-section">
+                    <RecommendationPanel jobId={job._id || jobId} />
                   </div>
                   <AssignmentCard assignment={assignment} />
                   <ScheduleCard schedule={schedule} />

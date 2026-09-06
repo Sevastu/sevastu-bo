@@ -155,6 +155,15 @@ export const RecommendationPanel: React.FC<RecommendationPanelProps> = ({ jobId 
                     <Badge className={cn("px-2 py-0.5 rounded-full font-bold uppercase tracking-widest text-[8px] border shadow-none", recommendationStatusColors[rec.status])}>
                       {rec.status}
                     </Badge>
+                    {rec.availabilityStatus === 'AVAILABLE_SOON' ? (
+                      <Badge variant="outline" className="px-2 py-0.5 rounded-full font-semibold text-[10px] bg-amber-500/10 text-amber-600 border-amber-300 dark:border-amber-800">
+                        🟡 Busy • Free in ~{rec.availableInMinutes || 45}m
+                      </Badge>
+                    ) : (
+                      <Badge variant="outline" className="px-2 py-0.5 rounded-full font-semibold text-[10px] bg-emerald-500/10 text-emerald-600 border-emerald-300 dark:border-emerald-800">
+                        🟢 Available Now
+                      </Badge>
+                    )}
                   </div>
                   <div className="flex items-center gap-4 mt-2 text-xs text-muted-foreground">
                     <span className="flex items-center gap-1">
