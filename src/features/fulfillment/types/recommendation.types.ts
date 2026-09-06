@@ -15,6 +15,9 @@ export interface Recommendation {
   score: number;
   distance?: number;
   availability?: string;
+  availabilityStatus?: 'AVAILABLE_NOW' | 'AVAILABLE_SOON';
+  availableInMinutes?: number;
+  estimatedAvailableAt?: string;
   status: RecommendationStatus;
   expiresAt: string;
   createdAt: string;
