@@ -87,16 +87,18 @@ export default function WorkflowProgress({
 
   if (job.status === JobStatus.CANCELLED) {
     return (
-      <div className="rounded-xl border border-red-500/20 bg-red-500/10 p-6">
-        <div className="flex items-center justify-center gap-2 text-red-600">
-          <XCircle className="h-6 w-6" />
-          <span className="font-semibold text-lg">
+      <div className="rounded-2xl border border-red-500/20 bg-gradient-to-br from-red-500/10 to-red-500/5 p-8 shadow-sm">
+        <div className="flex items-center justify-center gap-3 text-red-600">
+          <div className="p-3 rounded-full bg-red-500/10">
+            <XCircle className="h-6 w-6" />
+          </div>
+          <span className="font-bold text-xl">
             Job Cancelled
           </span>
         </div>
 
-        <p className="mt-2 text-center text-sm text-muted-foreground">
-          This workflow has been cancelled.
+        <p className="mt-3 text-center text-sm text-muted-foreground max-w-md mx-auto">
+          This workflow has been cancelled and will not proceed further.
         </p>
       </div>
     );
@@ -104,7 +106,7 @@ export default function WorkflowProgress({
 
   return (
     <div className="overflow-x-auto">
-      <div className="min-w-max rounded-2xl border bg-card px-8 py-8">
+      <div className="min-w-max rounded-2xl border border-border/50 bg-gradient-to-br from-card to-card/50 backdrop-blur-sm px-8 py-8 shadow-sm">
         <div className="flex items-start">
           {WORKFLOW_STEPS.map((step, index) => {
             const isCompleted = index < currentIndex;
@@ -113,20 +115,20 @@ export default function WorkflowProgress({
 
             return (
               <React.Fragment key={step.id}>
-                <div className="flex flex-col items-center">
+                <div className="flex flex-col items-center min-w-[80px]">
                   <div
                     className={cn(
-                      "relative flex h-11 w-11 items-center justify-center rounded-full border-1 transition-all duration-300",
+                      "relative flex h-12 w-12 items-center justify-center rounded-xl border-2 transition-all duration-500",
 
                       isCompleted &&
-                        `${step.color} shadow-sm`,
+                        `${step.color} shadow-lg ring-4 ring-background`,
 
                       isCurrent &&
-                        `${step.color} scale-110 shadow-lg`,
+                        `${step.color} scale-110 shadow-xl ring-4 ring-background animate-pulse`,
 
                       !isCompleted &&
                         !isCurrent &&
-                        "border-border bg-muted/40 text-muted-foreground"
+                        "border-border bg-muted/30 text-muted-foreground"
                     )}
                   >
                     {isCompleted ? (
@@ -138,7 +140,7 @@ export default function WorkflowProgress({
 
                   <span
                     className={cn(
-                      "mt-3 whitespace-nowrap text-xs font-semibold",
+                      "mt-3 whitespace-nowrap text-xs font-bold uppercase tracking-wider",
 
                       isCurrent
                         ? "text-foreground"
@@ -153,7 +155,7 @@ export default function WorkflowProgress({
                   {isCurrent && (
                     <span
                       className={cn(
-                        "mt-2 rounded-full px-2 py-1 text-[10px] font-semibold uppercase",
+                        "mt-2 rounded-full px-3 py-1 text-[10px] font-bold uppercase tracking-wider shadow-sm",
                         step.color
                       )}
                     >
@@ -163,14 +165,14 @@ export default function WorkflowProgress({
                 </div>
 
                 {index < WORKFLOW_STEPS.length - 1 && (
-                  <div className="flex items-center">
+                  <div className="flex items-center flex-1 min-w-[60px]">
                     <div
                       className={cn(
-                        "mx-4 h-1 w-20 rounded-full transition-all md:w-28",
+                        "h-1.5 w-full rounded-full transition-all duration-500",
 
                         isCompleted
-                          ? `bg-gradient-to-r ${step.connector}`
-                          : "bg-border"
+                          ? `bg-gradient-to-r ${step.connector} shadow-sm`
+                          : "bg-border/50"
                       )}
                     />
                   </div>

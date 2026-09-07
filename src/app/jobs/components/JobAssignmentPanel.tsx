@@ -2,7 +2,8 @@
 
 import React, { useState, useEffect } from "react";
 import { fetchBestWorkers, reassignJob } from "@/features/jobs/api";
-import { MatchedWorker, JobStatus } from "@/features/jobs/types";
+import { MatchedWorker } from "@/features/jobs/types";
+import { JobStatus } from "@/features/fulfillment/types/job.types";
 import { Button } from "../../../components/ui/button";
 import { Badge } from "../../../components/ui/badge";
 import { Loader2, UserPlus, MapPin, Trophy, ShieldCheck, UserCheck, AlertTriangle } from "lucide-react";
@@ -40,7 +41,15 @@ export function JobAssignmentPanel({ jobId, currentWorkerId, jobStatus, onAssign
         };
         
         // Load if job is open or if we want to allow force reassignment anytime
-        if (jobStatus !== JobStatus.COMPLETED && jobStatus !== JobStatus.CANCELLED) {
+        const canAssign = [
+            JobStatus.CREATED,
+            JobStatus.MATCHING,
+            JobStatus.WAITING_FOR_WORKERS,
+            JobStatus.ASSIGNED,
+            JobStatus.SCHEDULED
+        ].includes(jobStatus);
+        
+        if (canAssign) {
             loadWorkers();
         } else {
             setLoading(false);
@@ -48,7 +57,12 @@ export function JobAssignmentPanel({ jobId, currentWorkerId, jobStatus, onAssign
     }, [jobId, jobStatus]);
 
     const handleAssign = async (workerId: string) => {
-        if (!confirm("Are you sure you want to assign this professional?")) return;
+        const isJobAssigned = jobStatus === JobStatus.ASSIGNED || jobStatus === JobStatus.SCHEDULED;
+        const message = isJobAssigned 
+            ? "This will reassign the job to a different worker. The current worker will be notified. Continue?"
+            : "Are you sure you want to assign this professional?";
+            
+        if (!confirm(message)) return;
         setAssigningId(workerId);
         try {
             await reassignJob(jobId, workerId);
@@ -61,8 +75,9 @@ export function JobAssignmentPanel({ jobId, currentWorkerId, jobStatus, onAssign
         }
     };
 
+    // Don't show panel for finished jobs
     if (jobStatus === JobStatus.COMPLETED || jobStatus === JobStatus.CANCELLED) {
-        return null; // Don't show panel for finished jobs
+        return null;
     }
 
     if (loading) {
@@ -86,11 +101,15 @@ export function JobAssignmentPanel({ jobId, currentWorkerId, jobStatus, onAssign
         );
     }
 
+    // Check if job is already assigned and show different UI
+    const isJobAssigned = jobStatus === JobStatus.ASSIGNED || jobStatus === JobStatus.SCHEDULED;
+    const panelTitle = isJobAssigned ? "Reassign Worker" : "Assignment Engine";
+
     return (
         <div className="space-y-4">
             <div className="flex items-center justify-between">
                 <h3 className="text-lg font-bold tracking-tight flex items-center gap-2">
-                    <ShieldCheck className="w-5 h-5 text-primary" /> Assignment Engine
+                    <ShieldCheck className="w-5 h-5 text-primary" /> {panelTitle}
                 </h3>
                 <Badge variant="outline" className="text-[10px] font-bold tracking-widest uppercase shadow-none border-primary/20 text-primary bg-primary/5">
                     {workers.length} Candidates
@@ -100,6 +119,14 @@ export function JobAssignmentPanel({ jobId, currentWorkerId, jobStatus, onAssign
             <div className="grid gap-3">
                 {workers.map((worker, index) => {
                     const isAssigned = worker.userId === currentWorkerId;
+                    const isJobAssigned = jobStatus === JobStatus.ASSIGNED || jobStatus === JobStatus.SCHEDULED;
+                    
+                    // Simplified button logic:
+                    // - If worker is currently assigned: Show "Current" (disabled) - can't assign same worker again
+                    // - If worker is not assigned: Show "Assign" or "Reassign" based on job status
+                    
+                    const isButtonDisabled = isAssigned || assigningId !== null;
+                    const buttonText = isJobAssigned ? "Reassign" : "Assign";
                     
                     return (
                         <div key={worker.userId} className={cn(
@@ -132,19 +159,19 @@ export function JobAssignmentPanel({ jobId, currentWorkerId, jobStatus, onAssign
                                 <Button 
                                     size="sm" 
                                     variant={isAssigned ? "outline" : "default"}
-                                    disabled={isAssigned || assigningId !== null}
+                                    disabled={isButtonDisabled}
                                     onClick={() => handleAssign(worker.userId)}
                                     className={cn(
                                         "shrink-0 h-9 rounded-lg font-bold text-[11px] uppercase tracking-wider px-4",
-                                        isAssigned && "pointer-events-none opacity-50"
+                                        isButtonDisabled && "opacity-50 cursor-not-allowed"
                                     )}
                                 >
                                     {assigningId === worker.userId ? (
                                         <Loader2 className="w-4 h-4 animate-spin" />
                                     ) : isAssigned ? (
-                                        <><UserCheck className="w-3.5 h-3.5 mr-1.5" /> Active</>
+                                        <><UserCheck className="w-3.5 h-3.5 mr-1.5" /> Current</>
                                     ) : (
-                                        <><UserPlus className="w-3.5 h-3.5 mr-1.5" /> Assign</>
+                                        <><UserPlus className="w-3.5 h-3.5 mr-1.5" /> {buttonText}</>
                                     )}
                                 </Button>
                             </div>

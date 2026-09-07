@@ -20,13 +20,13 @@ export default function SectionCard({
   contentClassName,
 }: SectionCardProps) {
   return (
-    <Card className={cn('overflow-hidden', className)}>
+    <Card className={cn('overflow-hidden border-border/50 shadow-sm hover:shadow-md transition-shadow duration-300', className)}>
       <CardHeader className="flex flex-row items-start justify-between space-y-0 pb-4">
         <div className="space-y-1">
-          <CardTitle className="text-xl">{title}</CardTitle>
-          {description && <CardDescription>{description}</CardDescription>}
+          <CardTitle className="text-xl font-bold tracking-tight">{title}</CardTitle>
+          {description && <CardDescription className="text-sm">{description}</CardDescription>}
         </div>
-        {action && <div>{action}</div>}
+        {action && <div className="flex items-center">{action}</div>}
       </CardHeader>
       <CardContent className={cn('pt-0', contentClassName)}>
         {children}
