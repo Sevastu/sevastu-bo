@@ -21,6 +21,7 @@ interface JobDetailDrawerProps {
   isOpen: boolean;
   onClose: () => void;
   job: Job | null;
+  onJobUpdated?: () => void;
 }
 
 const timelineSteps = [
@@ -30,7 +31,7 @@ const timelineSteps = [
   { id: 'completed', label: 'Completed', icon: <CheckCircle size={16} /> },
 ];
 
-export const JobDetailDrawer: React.FC<JobDetailDrawerProps> = ({ isOpen, onClose, job }) => {
+export const JobDetailDrawer: React.FC<JobDetailDrawerProps> = ({ isOpen, onClose, job, onJobUpdated }) => {
   const [showAssignmentPanel, setShowAssignmentPanel] = useState(false);
 
   if (!job) return null;
@@ -187,15 +188,6 @@ export const JobDetailDrawer: React.FC<JobDetailDrawerProps> = ({ isOpen, onClos
               </div>
             </div>
           )}
-
-          {/* Worker Assignment Panel */}
-          {job.status === 'open' && (
-            <WorkerAssignmentPanel
-              isOpen={showAssignmentPanel}
-              onClose={() => setShowAssignmentPanel(false)}
-              jobId={job.id}
-            />
-          )}
         </div>
 
         {/* Action Buttons */}
@@ -204,11 +196,8 @@ export const JobDetailDrawer: React.FC<JobDetailDrawerProps> = ({ isOpen, onClos
             {job.status === 'open' && (
               <>
                 <button
-                  onClick={() => {
-                    // TODO: Implement worker assignment logic
-                    console.log('Assign worker to job:', job.id);
-                  }}
-                  className="flex-1 bg-[var(--color-primary)] text-white px-4 py-2 rounded-lg hover:bg-[var(--color-primary)] transition-colors font-medium"
+                  onClick={() => setShowAssignmentPanel(true)}
+                  className="flex-1 bg-[var(--color-primary)] text-white px-4 py-2 rounded-lg hover:bg-[var(--color-primary)] transition-colors font-medium cursor-pointer"
                 >
                   Assign Worker
                 </button>
@@ -230,6 +219,20 @@ export const JobDetailDrawer: React.FC<JobDetailDrawerProps> = ({ isOpen, onClos
           </div>
         </div>
       </div>
+
+      {/* Worker Assignment Panel rendered outside transform container */}
+      {job.status === 'open' && (
+        <WorkerAssignmentPanel
+          isOpen={showAssignmentPanel}
+          onClose={() => setShowAssignmentPanel(false)}
+          jobId={job.id}
+          onAssigned={() => {
+            setShowAssignmentPanel(false);
+            onClose();
+            onJobUpdated?.();
+          }}
+        />
+      )}
     </div>
   );
 };
