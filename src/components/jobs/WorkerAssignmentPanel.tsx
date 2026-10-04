@@ -27,6 +27,7 @@ interface WorkerAssignmentPanelProps {
   isOpen: boolean;
   onClose: () => void;
   jobId: string;
+  onAssigned?: () => void;
 }
 
 type SortStrategy = 'RECOMMENDATION' | 'AVAILABILITY' | 'LEAST_BUSY' | 'RATING' | 'NEAREST' | 'EXPERIENCE';
@@ -157,7 +158,7 @@ const WorkerCard: React.FC<{
   );
 };
 
-export default function WorkerAssignmentPanel({ isOpen, onClose, jobId }: WorkerAssignmentPanelProps) {
+export default function WorkerAssignmentPanel({ isOpen, onClose, jobId, onAssigned }: WorkerAssignmentPanelProps) {
   const [sortStrategy, setSortStrategy] = useState<SortStrategy>('RECOMMENDATION');
   const queryClient = useQueryClient();
   const assignmentRepository = new AssignmentRepository();
@@ -176,6 +177,7 @@ export default function WorkerAssignmentPanel({ isOpen, onClose, jobId }: Worker
       queryClient.invalidateQueries({ queryKey: assignmentKeys.all });
       queryClient.invalidateQueries({ queryKey: jobKeys.all });
       queryClient.invalidateQueries({ queryKey: timelineKeys.all });
+      onAssigned?.();
       onClose();
     }
   });
@@ -222,7 +224,7 @@ export default function WorkerAssignmentPanel({ isOpen, onClose, jobId }: Worker
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex justify-end">
+    <div className="fixed inset-0 z-[60] flex justify-end">
       {/* Backdrop */}
       <div 
         className="absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity"
